@@ -31,14 +31,112 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/bitwarden/">bitwarden</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/02/NCShift/">NCShift</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><ol>
+<li><p>网管结构体</p>
+<p>在排班中，我们只需要用到网管的学号，空闲表，课表，姓名，个人事务表，值班表（显示自己要值的班次)</p>
+<p>布尔数组：空闲表、课表、个人事务表、值班表  都用0表示空闲 1表示被占用</p>
+<p>那么都可以用一种结构体Occupation Table OT来表示</p>
+<p>数组大小: [17] [7] [7] 1-14节课 七天一周 一共17周</p>
+</li>
+<li><p>排班表</p>
+<p>排班表:10-12 14-16 16-18 18-21</p>
+</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/02/golang-learning/">golang-learning</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><ol>
+<li><p>golang代码在发布之前，要go fmt 转化成标准化代码格式，而避免了大家为了各种标准格式产生争议</p>
+</li>
+<li><p>一个go程序有一个main包</p>
+</li>
+<li><p>左大括号 <strong>{</strong> 必须和方法声明放在同一行，这是编译器的强制规定</p>
+</li>
+<li><p>GO语言中不存在类型继承</p>
+</li>
+<li><p>函数也可以是一个确定的类型，就是以函数作为返回类型。这种类型的声明要写在函数名和可选的参数列表之后，例如：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FunctionName</span> <span class="params">(a typea, b typeb)</span> <span class="title">typeFunc</span></span></span><br></pre></td></tr></table></div></figure></li>
+<li><p>一个函数可以拥有多返回值，返回类型之间需要使用逗号分割，并使用小括号 <code>()</code> 将它们括起来，如：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FunctionName</span> <span class="params">(a typea, b typeb)</span> <span class="params">(t1 type1, t2 type2)</span></span></span><br></pre></td></tr></table></div></figure></li>
+<li><p>由于 Go 语言不存在隐式类型转换，因此所有的转换都必须显式说明，就像调用一个函数一样（类型在这里的作用可以看作是一种函数）：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">valueOfTypeB = typeB(valueOfTypeA)</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>类型 B 的值 = 类型 B(类型 A 的值)</strong></p>
+<p>示例：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="number">5.0</span></span><br><span class="line">b := <span class="keyword">int</span>(a)</span><br></pre></td></tr></table></div></figure>
+
+<p>但这只能在定义正确的情况下转换成功，例如从一个取值范围较小的类型转换到一个取值范围较大的类型（例如将 int16 转换为 int32）。当从一个取值范围较大的转换到取值范围较小的类型时（例如将 int32 转换为 int16 或将 float32 转换为 int），会发生精度丢失（截断）的情况。当编译器捕捉到非法的类型转换时会引发编译时错误，否则将引发运行时错误。</p>
+<p>具有相同底层类型的变量之间可以相互转换：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a IZ = <span class="number">5</span></span><br><span class="line">c := <span class="keyword">int</span>(a)</span><br><span class="line">d := IZ(c)</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/centos-firewall-state/">centos-firewall-state</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-28</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="CentOS-7-查看开放端口指令以及开放端口"   >
+          <a href="#CentOS-7-查看开放端口指令以及开放端口" class="heading-link"><i class="fas fa-link"></i></a><a href="#CentOS-7-查看开放端口指令以及开放端口" class="headerlink" title="CentOS 7 查看开放端口指令以及开放端口"></a>CentOS 7 查看开放端口指令以及开放端口</h3>
+      <ol>
+<li><p>查看已开放端口</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --list-ports</span><br></pre></td></tr></table></div></figure></li>
+<li><p>开放单个端口(开放后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --zone=public --add-port=8080/tcp --permanent</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>（–permanent 为永久生效，不加为单次有效（重启失效））</strong></p>
+</li>
+<li><p>开放多个端口(开放后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --zone=public --add-port=30000-59999/tcp --permanent</span><br></pre></td></tr></table></div></figure></li>
+<li><p>关闭端口(关闭后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --zone=public --remove-port=8080/tcp --permanent</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看端口是否打开</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --zone= public --query-port=80/tcp</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看防火墙状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --state</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">$ systemctl status firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>开关防火墙</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start firewalld</span><br><span class="line">$ systemctl stop firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>重启防火墙</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ firewall-cmd --reload</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">$ systemctl restart firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>设置防火墙开机状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开机自启防火墙</span></span><br><span class="line">$ systemctl <span class="built_in">enable</span> firewalld</span><br><span class="line"><span class="comment">#开机默认关闭</span></span><br><span class="line">$ systemctl <span class="built_in">disable</span> firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看防火墙设置开机自启是否成功</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl is-enabled firewalld; <span class="built_in">echo</span> $?</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-docker-install/">linux-docker-install</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-28</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="Linux下Docker和Docker-compose环境的搭建"   >
+          <a href="#Linux下Docker和Docker-compose环境的搭建" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux下Docker和Docker-compose环境的搭建" class="headerlink" title="Linux下Docker和Docker-compose环境的搭建"></a>Linux下Docker和Docker-compose环境的搭建</h2>
+      <ol>
+<li><p>安装docker-ce</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -SsL get.docker.com | sh</span><br></pre></td></tr></table></div></figure></li>
+<li><p>安装python-pip</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install python3-pip</span><br></pre></td></tr></table></div></figure></li>
+<li><p>更新pip</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip3 install --upgrade pip</span><br></pre></td></tr></table></div></figure></li>
+<li><p>安装docker-compose</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install docker-compose</span><br></pre></td></tr></table></div></figure>
+
+<p>检查docker-compose版本</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose version</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/02/28/jWPotzHM2qyKscx.png" alt="微信截图_20220228134909.png"></p>
+</li>
+</ol>
+<p>属于是站在巨人的肩上摘苹果了</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-jdk/">linux-jdk</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-28</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="Linux环境下jdk-jre的安装配置过程"   >
+          <a href="#Linux环境下jdk-jre的安装配置过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux环境下jdk-jre的安装配置过程" class="headerlink" title="Linux环境下jdk/jre的安装配置过程"></a>Linux环境下jdk/jre的安装配置过程</h2>
+      <p>CentOS 7示例</p>
+<ol>
+<li><p>下载解压jdk包</p>
+<p>[]: <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://jdk.java.net/17/" >https://jdk.java.net/17/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>    “openjdk”</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local 目录下安装jdk</span></span><br><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">$ wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz</span><br><span class="line">$ tar -zxvf jdk-17.0.2.tar.gz</span><br><span class="line">$ mv jdk-17.0.2 java</span><br></pre></td></tr></table></div></figure></li>
+<li><p>添加环境变量</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入profile文件，按i进入编辑模式</span></span><br><span class="line">$ vim /etc/profile</span><br><span class="line"><span class="comment">#在文件最下方添加 G A</span></span><br><span class="line">$ <span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java</span><br><span class="line">$ <span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin;</span><br><span class="line">$ <span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br><span class="line"><span class="comment">#:wq 保存并退出vim</span></span><br><span class="line"><span class="comment">#重新加载当前bash的环境变量</span></span><br><span class="line">$ <span class="built_in">source</span> /etc/profile</span><br><span class="line">$ java -version</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/02/28/weUBQbXJm29GspA.png" alt="微信截图_20220228133240.png"></p>
+</li>
+</ol>
+<p>搞定，JDK环境有了</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/bitwarden/">bitwarden</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-25</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="Bitwarden"   >
-          <a href="#Bitwarden" class="heading-link"><i class="fas fa-link"></i></a><a href="#Bitwarden" class="headerlink" title="Bitwarden"></a><img src="https://s2.loli.net/2022/02/24/b5CHytfiXhmrwYS.png" alt="15990069.png"><strong>Bitwarden</strong></h1>
+          <a href="#Bitwarden" class="heading-link"><i class="fas fa-link"></i></a><a href="#Bitwarden" class="headerlink" title="Bitwarden"></a>Bitwarden</h1>
       
         <h4 id="Why-I-use-it"   >
           <a href="#Why-I-use-it" class="heading-link"><i class="fas fa-link"></i></a><a href="#Why-I-use-it" class="headerlink" title="Why I use it?"></a>Why I use it?</h4>
       <p>日益增多的账号给我带来了烦恼，我总是用固定的几个密码组合，虽然不至于让我丢失账号密码，但是密码安全性也摆在那里，如果有一个密码被泄露了，那么其它使用相同密码的平台的我的账号也会遭殃，而且作为半个偏运维人员，我总是有着很多很多密码，所以为了我的密码强度以及安全性，我决定用开源的bitwarden，我先说一下我对几个平台的看法，</p>
-<p>1password  要收费(学生党的话还是尽量把钱花在刀刃上)，其他都好，还带SSO</p>
+<p>1password  要收费(学生党的话还是尽量把钱花在刀刃上)，其他都好</p>
 <p>lastpass       曾经出过安全事故，但感觉也不错</p>
 <p>Keepass       网络功能需要配合网盘</p>
 <p>bitwarden    开源，可自建后台，速度快体积小免费插件多</p>
@@ -54,9 +152,35 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sSL https://get.docker.com/ | bash -x</span><br></pre></td></tr></table></div></figure>
 
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install docker-compose</span><br></pre></td></tr></table></div></figure></li>
-<li></li>
+<li><p>找个地方放bitwarden.sh</p>
+</li>
+<li><p>申请installation id/key:</p>
+<p>[]: <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bitwarden.com/host/" >https://bitwarden.com/host/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>配置好域名解析，申请SSL证书（如果需要的话）</p>
+</li>
+<li><p>(optional)创建Bitwarden的User和目录（可以省略， 我直接省略了）</p>
+</li>
 </ol>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/pve-import-ROS/">pve_import_ROS</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-24</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/v6NzP7bHEncSTse.png" alt="a6i6g-6j9kh.png"></p>
+
+        <h4 id="开始安装"   >
+          <a href="#开始安装" class="heading-link"><i class="fas fa-link"></i></a><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h4>
+      <ol>
+<li><p>下载安装脚本</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -Lso bitwarden.sh https://go.btwrdn.co/bw-sh &amp;&amp; chmod 700 bitwarden.sh</span><br></pre></td></tr></table></div></figure></li>
+<li><p>安装</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./bitwarden.sh install</span><br></pre></td></tr></table></div></figure>
+
+<p>引导做得很完善，记得每一步都要输入正确， 不然就得把/bitwarden目录删掉重来了</p>
+</li>
+<li><p>(optional)如果使用自己已有的SSL证书，要把证书，私钥，中间证书都放到./bitwarden/ssl/your.domain</p>
+</li>
+<li><p>第一次启动</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./bitwarden.sh start</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+<p>​        会开始拉取docker镜像，网不好就需要一会儿</p>
+<p>​        装好了之后，在各个APP和浏览器中配置好Server URL就可以开始使用了，稳的一批</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/pve-import-ROS/">pve_import_ROS</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-28</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/v6NzP7bHEncSTse.png" alt="a6i6g-6j9kh.png"></p>
 <ol>
 <li>
         <h5 id="准备工作"   >
@@ -66,18 +190,18 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <li>
         <h5 id="导入"   >
           <a href="#导入" class="heading-link"><i class="fas fa-link"></i></a><a href="#导入" class="headerlink" title="导入"></a>导入</h5>
-      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name &lt;yourTarget&gt;</span><br></pre></td></tr></table></div></figure>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find / -name &lt;yourTarget&gt;</span><br></pre></td></tr></table></div></figure>
 
 <p>cd到放镜像的文件夹</p>
 <p>然后开导</p>
 <p>ovf格式：(ovf格式的话不需要事先添加虚拟机)</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importovf &lt;要创建的虚拟机ID&gt; RouterOS.ovf &lt;存储(<span class="built_in">local</span>、local-lvm)&gt; --format qcow2</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ qm importovf &lt;要创建的虚拟机ID&gt; RouterOS.ovf &lt;存储(<span class="built_in">local</span>、local-lvm)&gt; --format qcow2</span><br></pre></td></tr></table></div></figure>
 
 <p>vmdk格式:（要事先创建一个虚拟机，要注意<strong>用IDE磁盘管理</strong>）</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk &lt;已有的虚拟机ID&gt; RouterOS.vmdk &lt;存储(<span class="built_in">local</span>、local-lvm)&gt;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ qm importdisk &lt;已有的虚拟机ID&gt; RouterOS.vmdk &lt;存储(<span class="built_in">local</span>、local-lvm)&gt;</span><br></pre></td></tr></table></div></figure>
 
 <p>实例:</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk 233 ./RouterOS.vmdk local-lvm</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ qm importdisk 233 ./RouterOS.vmdk local-lvm</span><br></pre></td></tr></table></div></figure>
 
 <p>233是虚拟机的id</p>
 </li>
@@ -85,7 +209,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
         <h5 id="保留授权码"   >
           <a href="#保留授权码" class="heading-link"><i class="fas fa-link"></i></a><a href="#保留授权码" class="headerlink" title="保留授权码"></a>保留授权码</h5>
       <p>进入宿主机,ssh、VNC or telnet 你钟意就行</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/pve/qemu-server/233.conf</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vi /etc/pve/qemu-server/233.conf</span><br></pre></td></tr></table></div></figure>
 
 <p>然后在ide: local:233/vm-233-disk-0.qcow2后添加以下内容，vi的话使用命令A</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">,model=VMware%20Virtual%20IDE%20Hard%20Drive,serial=00000000000000000001</span><br></pre></td></tr></table></div></figure>
@@ -117,9 +241,9 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <li>经常要去找答案，经常要折腾，日常升级就要去Github看issue，等半天别人解决得了自己也不一定能解决得了，肯定是有解决方法的，但是要整多久就不一定了，我觉得这是它作为主力机来说最大的缺点，就是它不稳定，如果你不更新的话又不能体验到新的东西，而且有时候更新是为了fix bug，反而更新之后直接挂了，这很不合理</li>
 </ol>
 <p>没有什么缺点了，它除了要折腾，什么都好，如果说有一天，大家都用Linux作为日常主力机，所有软件产商都发行Linux的软件包版本，那么我肯定会把Linux当作主力机，但是现在看来，这不是很可能，现在体验感生态最好的应该还是Apple家，我年底也应该就冲个M2 or M1 MAX了。因为我换回Windows之后，我马上理解到了，日常使用起来舒服顺手，马上进入工作状态，才是一个该被装在笔记本里面的系统，而Linux现在的状态，就应该就是拿来当作服务器里的生产工具，它非常好用非常高效率，也非常稳定。希望Arch Linux可以发展到那个高度吧。我先滚回Windows的舒适圈了。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/07/crontab/">crontab</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-07</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h4 id="crontab的基本使用"   >
-          <a href="#crontab的基本使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#crontab的基本使用" class="headerlink" title="crontab的基本使用"></a>crontab的基本使用</h4>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/07/crontab/">crontab</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-28</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="crontab的基本使用"   >
+          <a href="#crontab的基本使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#crontab的基本使用" class="headerlink" title="crontab的基本使用"></a>crontab的基本使用</h3>
       <p>用crontab肯定要写好crontab啦</p>
 <p>Linux格式的crontab</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*    *    *    *    *</span><br><span class="line">-    -    -    -    -</span><br><span class="line">|    |    |    |    |</span><br><span class="line">|    |    |    |    +----- 星期中星期几 (0 - 6) (星期天 为0)</span><br><span class="line">|    |    |    +---------- 月份 (1 - 12) </span><br><span class="line">|    |    +--------------- 一个月中的第几天 (1 - 31)</span><br><span class="line">|    +-------------------- 小时 (0 - 23)</span><br><span class="line">+------------------------- 分钟 (0 - 59)</span><br></pre></td></tr></table></div></figure>
@@ -189,169 +313,4 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <p>3、不剥夺条件：进程已获得资源，在未使用完之前，不能强行剥夺;</p>
 <p>4、循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系;</p>
 <p>如果四个条件都满足，那么死锁的产生是必然的</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/28/tmux/">tmux</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-01-28</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/01/28/E8NfHnSgsOFdhVa.png" alt="tmux.png"></p>
-
-        <h2 id="Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用"   >
-          <a href="#Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用" class="heading-link"><i class="fas fa-link"></i></a><a href="#Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用" class="headerlink" title="Tmux   一款终端复用器（terminal multiplexer)，高效便捷实用"></a>Tmux   一款终端复用器（terminal multiplexer)，高效便捷实用</h2>
-      
-        <h4 id="可以做到什么？"   >
-          <a href="#可以做到什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#可以做到什么？" class="headerlink" title="可以做到什么？"></a>可以做到什么？</h4>
-      <ol>
-<li>将<strong>会话与窗口解绑</strong>，当我们关闭窗口时（exit 或者关闭一个terminal）,不关闭tmux的会话(session)，运行中的进程也不会被杀死，可以在一台Linux机子上用一个会话跑多个tmux会话窗口运行多个命令行程序</li>
-<li>可以vertical和horizon<strong>拆分窗口</strong>，配置好config后可以在多个窗口中自由切换，甚至可以多人共享会话</li>
-<li>支持attach进上一次的会话，即<strong>保留</strong>了<strong>工作状态</strong>(session)，让我们工作的时候不需要繁琐地进入工作环境，支持保留多个工作状态</li>
-</ol>
-<hr>
-
-        <h6 id="安装"   >
-          <a href="#安装" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装" class="headerlink" title="安装"></a>安装</h6>
-      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Manjaro</span></span><br><span class="line">$ yay -S tmux</span><br></pre></td></tr></table></div></figure>
-
-<hr>
-
-        <h6 id="常用指令"   >
-          <a href="#常用指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h6>
-      <p>新建session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tmux</span><br></pre></td></tr></table></div></figure>
-
-<p>上面的命令会直接创建一个session，默认会生成一个数字编号，可以通过$ tmux ls来看到</p>
-<p>我们也可以在new session的时候直接指定这个session的名字，来方便我们记忆和回到这个session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>离开session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tmux detach</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>查看session列表</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tmux ls</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>进入session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入上一个session</span></span><br><span class="line">$ tmux attach</span><br><span class="line"><span class="comment">#进入指定session</span></span><br><span class="line">$ tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>切换session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#切换到上一个session</span></span><br><span class="line">$ tmux switch</span><br><span class="line"><span class="comment">#切换到指定session</span></span><br><span class="line">$ tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>杀死session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#杀死上一个session</span></span><br><span class="line">$ tmux <span class="built_in">kill</span></span><br><span class="line"><span class="comment">#杀死指定session</span></span><br><span class="line">$ tmux <span class="built_in">kill</span> -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/22/kms/">kms</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-07</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h6 id="在本地部署了kms服务器，在windows中激活系统的操作"   >
-          <a href="#在本地部署了kms服务器，在windows中激活系统的操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#在本地部署了kms服务器，在windows中激活系统的操作" class="headerlink" title="在本地部署了kms服务器，在windows中激活系统的操作"></a>在本地部署了kms服务器，在windows中激活系统的操作</h6>
-      <p>设置本地kms服务器</p>
-<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> slmgr /skms &lt;ip<span class="literal">-address</span>&gt;</span><br></pre></td></tr></table></div></figure>
-
-<p>使用kms服务器自动激活系统</p>
-<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span>  slmgr /ato</span><br></pre></td></tr></table></div></figure>
-
-<p>查看系统过期时间</p>
-<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> slmgr /xpr</span><br></pre></td></tr></table></div></figure>
-
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/22/PeerWG/">alpine-instructions</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-24</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/sxymAliEUcRPqOz.png" alt="a4y9b-enpz8.png"></p>
-<p>alpine 指令</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ alpine-tun-tool</span><br></pre></td></tr></table></div></figure>
-
-<p>重启</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rc-service networking restart </span><br></pre></td></tr></table></div></figure>
-
-<p>管理alpine启动项 添加frr开机启动</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rc-update add frr</span><br></pre></td></tr></table></div></figure>
-
-<p>/etc/wireguard 存放了wireguard接口配置</p>
-<p>/etc/udp2raw</p>
-<p>mtu 1360</p>
-<p>AllowIPS:  x.x.x.x/x</p>
-<p>启用bfd: 在/etc/frr/daemons 修改bfd=yes</p>
-<p>进入frr指令</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vtysh</span><br></pre></td></tr></table></div></figure>
-
-<p>显示frr bgp状态</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ show bgp summary</span><br></pre></td></tr></table></div></figure>
-
-<p>显示bgp中的路由</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">do</span> show ip bgp</span><br></pre></td></tr></table></div></figure>
-
-<p>前面带*号的是有效路由，不带的是无效路由</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/20/dpkg/">dpkg</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-07</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h5 id="Debian-package-manager"   >
-          <a href="#Debian-package-manager" class="heading-link"><i class="fas fa-link"></i></a><a href="#Debian-package-manager" class="headerlink" title="Debian package manager"></a>Debian package manager</h5>
-      <p>有时候Aur源中没有我们想要的软件，但是你找到了一个适用于Arch的deb包，我们就可以用下面这个Debian package manager来安装管理这些deb包</p>
-
-        <h6 id="常用指令"   >
-          <a href="#常用指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h6>
-      <ul>
-<li>安装一个包 - Install a package: </li>
-</ul>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg -i path/to/file.deb</span><br></pre></td></tr></table></div></figure>
-
-<ul>
-<li>删除一个包 - Remove a package: </li>
-</ul>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg -r package_name</span><br></pre></td></tr></table></div></figure>
-
-<ul>
-<li>列出所有已安装的deb包 - List installed packages: </li>
-</ul>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg -l [pattern]</span><br></pre></td></tr></table></div></figure>
-
-<ul>
-<li>列出该包的目录信息 - List a package’s contents: </li>
-</ul>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dpkg -L package_name</span><br></pre></td></tr></table></div></figure>
-
-
-
-
-
-
-        <h5 id="fetchscreen-可以显示当前Linux系统信息"   >
-          <a href="#fetchscreen-可以显示当前Linux系统信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#fetchscreen-可以显示当前Linux系统信息" class="headerlink" title="fetchscreen 可以显示当前Linux系统信息"></a>fetchscreen 可以显示当前Linux系统信息</h5>
-      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fetchscreen</span><br></pre></td></tr></table></div></figure>
-
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yay -S fetchscreen</span><br></pre></td></tr></table></div></figure>
-
-<p><img src="https://s2.loli.net/2022/01/20/8nFNHLW4SIhVE7X.png" alt="2022-01-20_21-52.png"></p>
-<p>尝试自己起了一个图床，感到图床还是一个比较需要维护的服务，暂定以后再起;同时感到公共图床已经能满足大部分需求了，还快，不需要自己管理维护，但是要忍受使用时的广告awa</p>
-<p>或者使用本地存储也是一个方案，但是图床服务也许确实有必要？</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/18/Tips-%E5%B0%8F%E7%BB%8F%E9%AA%8C/">Debian-checksum</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-18</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-02-22</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h4 id="Debian-想要计算md5-checksum的话，可以安装coreutils"   >
-          <a href="#Debian-想要计算md5-checksum的话，可以安装coreutils" class="heading-link"><i class="fas fa-link"></i></a><a href="#Debian-想要计算md5-checksum的话，可以安装coreutils" class="headerlink" title="Debian 想要计算md5 checksum的话，可以安装coreutils"></a>Debian 想要计算md5 checksum的话，可以安装coreutils</h4>
-      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install coreutils</span><br></pre></td></tr></table></div></figure>
-
-<p>计算md5：</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ md5sum &lt;yourtarget&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-
-        <h4 id="Openwrt计算sha256-只需要："   >
-          <a href="#Openwrt计算sha256-只需要：" class="heading-link"><i class="fas fa-link"></i></a><a href="#Openwrt计算sha256-只需要：" class="headerlink" title="Openwrt计算sha256,只需要："></a>Openwrt计算sha256,只需要：</h4>
-      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sha256sum &lt;yourtarget&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-
-        <h4 id="Openwrt-添加frr"   >
-          <a href="#Openwrt-添加frr" class="heading-link"><i class="fas fa-link"></i></a><a href="#Openwrt-添加frr" class="headerlink" title="Openwrt 添加frr"></a>Openwrt 添加frr</h4>
-      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ opkg update</span><br></pre></td></tr></table></div></figure>
-
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ opkg install frr frr-babeld frr-bfdd frr-bgpd frr-eigrpd frr-fabricd frr-isisd frr-ldpd frr-libfrr frr-nhrpd frr-ospf6d frr-ospfd frr-pbrd frr-pimd frr-ripd frr-ripngd frr-staticd frr-vrrpd frr-vtysh frr-watchfrr frr-zebra</span><br></pre></td></tr></table></div></figure>
-
-
-
-
-        <h4 id="如果depoly出来的网站效果没有发生变化，也许是浏览器缓存的问题"   >
-          <a href="#如果depoly出来的网站效果没有发生变化，也许是浏览器缓存的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#如果depoly出来的网站效果没有发生变化，也许是浏览器缓存的问题" class="headerlink" title="如果depoly出来的网站效果没有发生变化，也许是浏览器缓存的问题"></a>如果depoly出来的网站效果没有发生变化，也许是浏览器缓存的问题</h4>
-      <p>有近似的html和jss，浏览器认为服务器资源没有发生变化，不重新发送get请求获取新的资源</p>
-<p>所以这时候就要清理当前页面的浏览器缓存</p>
-<p>小Tips:可以先F12 或者 右键inspect 打开控制台，然后右键刷新按钮</p>
-<p><img src="https://s2.loli.net/2022/01/20/tsj1QD9EB6lHodn.png" alt="ClearCache.png"></p>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="ck1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">11</div><div class="sidebar-ov-state-item__name">归档</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span>粤ICP备2021174751号</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="ck1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">16</div><div class="sidebar-ov-state-item__name">归档</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span>粤ICP备2021174751号</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
