@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yhsyc.club/tags/index.html</loc>
+    
+    <lastmod>2022-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yhsyc.club/2022/03/14/raid/</loc>
     
     <lastmod>2022-03-15</lastmod>
@@ -218,6 +227,20 @@
 
   
   <url>
+    <loc>http://yhsyc.club/tags/alpine/</loc>
+    <lastmod>2022-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Linux/</loc>
+    <lastmod>2022-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://yhsyc.club/tags/Network/</loc>
     <lastmod>2022-03-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -232,35 +255,7 @@
   </url>
   
   <url>
-    <loc>http://yhsyc.club/tags/Linux/</loc>
-    <lastmod>2022-03-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yhsyc.club/tags/tools/</loc>
-    <lastmod>2022-03-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yhsyc.club/tags/alpine/</loc>
-    <lastmod>2022-03-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yhsyc.club/tags/bitwarden/</loc>
-    <lastmod>2022-03-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yhsyc.club/tags/password/</loc>
     <lastmod>2022-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -303,6 +298,20 @@
   
   <url>
     <loc>http://yhsyc.club/tags/openwrt/</loc>
+    <lastmod>2022-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/bitwarden/</loc>
+    <lastmod>2022-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/password/</loc>
     <lastmod>2022-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -456,14 +465,14 @@
   </url>
   
   <url>
-    <loc>http://yhsyc.club/tags/tmux/</loc>
+    <loc>http://yhsyc.club/tags/RAID/</loc>
     <lastmod>2022-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yhsyc.club/tags/RAID/</loc>
+    <loc>http://yhsyc.club/tags/tmux/</loc>
     <lastmod>2022-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
