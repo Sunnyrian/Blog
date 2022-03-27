@@ -31,44 +31,382 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-docker-install/">Linux下Docker和Docker-compose环境搭建</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-11</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h2 id="Linux下Docker和Docker-compose环境的搭建"   >
-          <a href="#Linux下Docker和Docker-compose环境的搭建" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux下Docker和Docker-compose环境的搭建" class="headerlink" title="Linux下Docker和Docker-compose环境的搭建"></a>Linux下Docker和Docker-compose环境的搭建</h2>
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/07/k8s-learning/">Kubernetes 学习笔记以及 Kubernetes 集群 +KubeSphere 部署指南</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="kubernetes-学习笔记"   >
+          <a href="#kubernetes-学习笔记" class="heading-link"><i class="fas fa-link"></i></a><a href="#kubernetes-学习笔记" class="headerlink" title="kubernetes 学习笔记"></a>kubernetes 学习笔记</h1>
+      
+        <h3 id="Kubernetes-中的各种东西介绍"   >
+          <a href="#Kubernetes-中的各种东西介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-中的各种东西介绍" class="headerlink" title="Kubernetes 中的各种东西介绍"></a>Kubernetes 中的各种东西介绍</h3>
       <ol>
-<li><p>安装docker-ce</p>
+<li>
+        <h5 id="Kubernetes-API-Server"   >
+          <a href="#Kubernetes-API-Server" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-API-Server" class="headerlink" title="Kubernetes API Server"></a>Kubernetes API Server</h5>
+      <p>提供 Kubernetes 各类资源对象的增删改查的 HTTP Rset 接口，是整个系统的数据总线和数据中心，提供了集群管理的 REST API 接口，包括认证授权、数据校验以及集群状态变更、提供了其他模块之间的数据交互和通信的枢纽，是资源配额控制的入口，拥有完备的安全机制</p>
+</li>
+<li>
+        <h5 id="Kubernetes-Controller-Manager"   >
+          <a href="#Kubernetes-Controller-Manager" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-Controller-Manager" class="headerlink" title="Kubernetes Controller Manager"></a>Kubernetes Controller Manager</h5>
+      <p>作为集群内部的管理控制中心，负责集群内的 Node 节点，Pod 副本、服务端点（Endpoint）、命名空间（NameSpace）、服务账号（ServiceAccount）、资源配额（ResourceQuota）的管理。当某个 Node 意外宕机时，Controller 会及时发现并执行自动化修复流程，确保集群始终处于预期的工作状态</p>
+</li>
+<li>
+        <h5 id="Kubernetes-Scheduler（调度器）"   >
+          <a href="#Kubernetes-Scheduler（调度器）" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-Scheduler（调度器）" class="headerlink" title="Kubernetes Scheduler（调度器）"></a>Kubernetes Scheduler（调度器）</h5>
+      <p>Kubernetes Scheduler 的作用是根据特定的调度算法把 Pod 调度到指定的工作节点（Node）上，这一过程也叫绑定（Bind）。Scheduler 的输入为需要调度的 Pod 和可以被调度的节点的信息，输出为调度算法选择的 Node 节点，并将该 Pod 绑定到这个 Node 节点</p>
+</li>
+<li>
+        <h5 id="Etcd"   >
+          <a href="#Etcd" class="heading-link"><i class="fas fa-link"></i></a><a href="#Etcd" class="headerlink" title="Etcd"></a>Etcd</h5>
+      <p>是 Kubernetes 集群中的一个十分重要的组件，用于保存集群中所有的网络配置和对象的状态信息</p>
+</li>
+<li>
+        <h5 id="Kubelet"   >
+          <a href="#Kubelet" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubelet" class="headerlink" title="Kubelet"></a>Kubelet</h5>
+      <p>在 Kubunetes 集群中，每个 Node 节点都会启动 kubelet 进程，用来处理 Master 节点下发到本节点的任务，管理 Pod 和其中的容器。kubelet 会在 API Server 上注册节点信息，定期向 Master 汇报节点资源的使用情况，并通过 cAdvisor 监控容器和节点资源。可以把 kubelet 理解成是一个代理进程，是 Node节点上的 Pod 管家</p>
+</li>
+<li>
+        <h5 id="Kube-proxy"   >
+          <a href="#Kube-proxy" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kube-proxy" class="headerlink" title="Kube-proxy"></a>Kube-proxy</h5>
+      <p>它运行在所有的 Node 节点上，监听每个节点上 Kubernetes API 中定义的服务变化情况，并创建路由规则来进行服务负载均衡</p>
+</li>
+<li>
+        <h5 id="Pod"   >
+          <a href="#Pod" class="heading-link"><i class="fas fa-link"></i></a><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h5>
+      <p>是 Kubernetes 最基本的操作单元，一个 Pod 中可以包含一个或多个紧密相关的容器，一个 Pod 可以被一个容器化的环境看作应用层的逻辑宿主机。每个Pod 中运行着一个特殊的被称之为 Pause 的容器，其他容器则称为业务容器，业务容器共享 Pause 容器的网络栈和 Volume 挂载卷</p>
+</li>
+<li>
+        <h5 id="Service（服务）"   >
+          <a href="#Service（服务）" class="heading-link"><i class="fas fa-link"></i></a><a href="#Service（服务）" class="headerlink" title="Service（服务）"></a>Service（服务）</h5>
+      <p>通常由一组 Pod 组成一个集群来提供服务，服务的特点：</p>
+<ul>
+<li>拥有一个指定的名字,比如 mysql-server</li>
+<li>拥有一个虚拟 IP 地址和端口号，销毁之前不会改变，只能内网访问</li>
+<li>能够提供某种远程服务能力</li>
+<li>被映射到了提供这种服务能力的一组容器应用上</li>
+</ul>
+</li>
+<li>
+        <h5 id="Kubectl"   >
+          <a href="#Kubectl" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h5>
+      <p>是一个 Kubernetes 的客户端工具，通常会在 Kubernetes 的 Master 节点的安装过程中被一同安装，在任意环境安装，只要能连接 Master 节点，就可以通过它来管理 Kubernetes 集群</p>
+</li>
+</ol>
+
+        <h3 id="使用-Kubeadm-安装-Kubernetes-集群"   >
+          <a href="#使用-Kubeadm-安装-Kubernetes-集群" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-Kubeadm-安装-Kubernetes-集群" class="headerlink" title="使用 Kubeadm 安装 Kubernetes 集群"></a>使用 Kubeadm 安装 Kubernetes 集群</h3>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/install-kubeadm/" >Kubeadm 官方教程</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<ol>
+<li>
+        <h5 id="前期准备-所有节点"   >
+          <a href="#前期准备-所有节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#前期准备-所有节点" class="headerlink" title="前期准备(所有节点)"></a>前期准备(所有节点)</h5>
+      <p>安装 docker</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></div></figure>
+
+<p>禁用 SELinux</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/SELINUX=permissive/SELINUX=disabled&#x27;</span> /etc/sysconfig/selinux</span><br><span class="line">setenforce 0</span><br></pre></td></tr></table></div></figure>
+
+<p>安装 kubelet</p>
+<p>添加镜像 repo</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="string">EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span></span><br><span class="line"><span class="string">[kubernetes]</span></span><br><span class="line"><span class="string">name=Kubernetes</span></span><br><span class="line"><span class="string">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch</span></span><br><span class="line"><span class="string">enabled=1</span></span><br><span class="line"><span class="string">gpgcheck=1</span></span><br><span class="line"><span class="string">repo_gpgcheck=1</span></span><br><span class="line"><span class="string">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg</span></span><br><span class="line"><span class="string">exclude=kubelet kubeadm kubectl</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes</span><br><span class="line">systemctl <span class="built_in">enable</span> kubelet</span><br><span class="line">systemctl start kubelet</span><br></pre></td></tr></table></div></figure>
+
+<p>禁用交换分区</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a</span><br><span class="line">vim /etc/fstab</span><br><span class="line"><span class="comment">#修改/etc/fstab文件，注释掉下面该行</span></span><br><span class="line"><span class="comment">#/dev/mapper/centos-swap swap swap default 0 0</span></span><br></pre></td></tr></table></div></figure>
+
+<p>修改防火墙规则</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -P FORWARD ACCEPT </span><br><span class="line">iptables-save</span><br></pre></td></tr></table></div></figure>
+
+<p>配置转发</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="string">EOF | sudo tee /etc/modules-load.d/k8s.conf</span></span><br><span class="line"><span class="string">br_netfilter</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line">cat &lt;&lt;<span class="string">EOF | sudo tee /etc/sysctl.d/k8s.conf</span></span><br><span class="line"><span class="string">net.bridge.bridge-nf-call-ip6tables = 1</span></span><br><span class="line"><span class="string">net.bridge.bridge-nf-call-iptables = 1</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">sudo sysctl --system</span><br></pre></td></tr></table></div></figure>
+
+<p>设置域名解析（否则后期 API-SERVER 会报错,也可以在 DNS 服务器上添加解析记录）</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; /etc/hosts &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># K8S Cluster</span></span><br><span class="line"><span class="string">100.x.x.x m.x.yhsyc.club</span></span><br><span class="line"><span class="string">100.x.x.x s1.x.yhsyc.club</span></span><br><span class="line"><span class="string">100.x.x.x s2.x.yhsyc.club</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="部署-Master-节点"   >
+          <a href="#部署-Master-节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署-Master-节点" class="headerlink" title="部署 Master 节点"></a>部署 Master 节点</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --apiserver-advertise-address 100.88.1.99 --control-plane-endpoint m.x.yhsyc.club --pod-network-cidr 192.168.0.0/17 --service-cidr 192.168.128.0/18 --service-dns-domain x.yhsyc.club --node-name m.yhsyc.club</span><br></pre></td></tr></table></div></figure>
+
+<p>这个过程中，kubeadm 完成了以下几个主要步骤：</p>
+<ul>
+<li>检查初始化节点所需要的先决条件，如果不满足，就给出错误提示</li>
+<li>生成 Kubernetes 集群的令牌</li>
+<li>生成自签名的 CA 和客户端证书</li>
+<li>自动创建 kubeconfig 配置文件，该文件是提供给 kubelet 连接 API Server 时使用的</li>
+<li>配置基于角色的访问控制，并且设置 Master 节点只允许控制组件服务</li>
+<li>创建其他的相关服务，例如 kube-proxy 和 kube-dns 等</li>
+</ul>
+<p><strong>要注意init完成之后的提示信息</strong>，有操作指引，可以复制之后的指令直接加入 master</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) <span class="variable">$HOME</span>/.kube/config</span><br><span class="line"><span class="comment">#如果不导入，那么会报证书问题</span></span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="下载网络插件-Cilium"   >
+          <a href="#下载网络插件-Cilium" class="heading-link"><i class="fas fa-link"></i></a><a href="#下载网络插件-Cilium" class="headerlink" title="下载网络插件 Cilium"></a>下载网络插件 Cilium</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz&#123;,.sha256sum&#125;</span><br><span class="line">sha256sum --check cilium-linux-amd64.tar.gz.sha256sum</span><br><span class="line">sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/<span class="built_in">local</span>/bin</span><br><span class="line">rm cilium-linux-amd64.tar.gz&#123;,.sha256sum&#125; -rf</span><br></pre></td></tr></table></div></figure>
+
+<p>安装 Cilium</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cilium install</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/03/09/JiMxcPgwdruIO8m.png" alt="微信截图_20220309193213.png"></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apply 安装 flannel 作为网络插件 </span></span><br><span class="line"><span class="comment"># 这里我试了 flannel，网络容器起不起来，之后转用 cilium，发现是我内核版本太低导致装不上，但不确定 flannel 是不是也是</span></span><br><span class="line"><span class="comment">#kubectl apply -f https://raw.githubusercontent.com/flannel-#io/flannel/master/Documentation/kube-flannel.yml</span></span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="部署-Node-节点"   >
+          <a href="#部署-Node-节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署-Node-节点" class="headerlink" title="部署 Node 节点"></a>部署 Node 节点</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">token=$(kubeadm token list | grep authentication,signing | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">kubeadm join --token <span class="variable">$token</span> &lt;ip-address&gt;</span><br><span class="line">--node-name s1.x.yhsyc.club  <span class="comment"># &lt;&lt; 加这一行</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#示例</span></span><br><span class="line">kubeadm join m.x.yhsyc.club:6443 --token mdd3oz.l3ld96hi07nvfqyr --discovery-token-ca-cert-hash sha256:ed8f89b489a70a515a68182bf5b30ec2aaaf8cf336d1f2d8dfa2a307f0c40522 --node-name s1.x.yhsyc.club</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/03/12/iDTb9vNosHxguza.png" alt="微信截图_20220311092742.png"></p>
+</li>
+<li>
+        <h5 id="如果部署过程中有什么不对的，可以重新部署-init"   >
+          <a href="#如果部署过程中有什么不对的，可以重新部署-init" class="heading-link"><i class="fas fa-link"></i></a><a href="#如果部署过程中有什么不对的，可以重新部署-init" class="headerlink" title="如果部署过程中有什么不对的，可以重新部署 init"></a>如果部署过程中有什么不对的，可以重新部署 init</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm reset</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="部署完成后可以通过下面指令来显示节点信息"   >
+          <a href="#部署完成后可以通过下面指令来显示节点信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署完成后可以通过下面指令来显示节点信息" class="headerlink" title="部署完成后可以通过下面指令来显示节点信息"></a>部署完成后可以通过下面指令来显示节点信息</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/03/12/2alYt96sZhxu1n5.png" alt="微信截图_20220311092917.png"></p>
+</li>
+<li>
+        <h5 id="可以看一下-pod-服务都有什么，有没有状态不对的-pod"   >
+          <a href="#可以看一下-pod-服务都有什么，有没有状态不对的-pod" class="heading-link"><i class="fas fa-link"></i></a><a href="#可以看一下-pod-服务都有什么，有没有状态不对的-pod" class="headerlink" title="可以看一下 pod 服务都有什么，有没有状态不对的 pod"></a>可以看一下 pod 服务都有什么，有没有状态不对的 pod</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -A</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>到这里的话 K8S 集群就是可以开始工作的了</p>
+</li>
+</ol>
+
+        <h3 id="使用-NFS-作为-K8S-集群的存储"   >
+          <a href="#使用-NFS-作为-K8S-集群的存储" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-NFS-作为-K8S-集群的存储" class="headerlink" title="使用 NFS 作为 K8S 集群的存储"></a>使用 NFS 作为 K8S 集群的存储</h3>
+      <ol>
+<li>
+        <h5 id="安装-NFS-服务器"   >
+          <a href="#安装-NFS-服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装-NFS-服务器" class="headerlink" title="安装 NFS 服务器"></a>安装 NFS 服务器</h5>
+      <p>这里我用了一台 200 G SSD 的 Alpine 来作为 NFS 服务器</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apk add nfs-utils</span><br></pre></td></tr></table></div></figure>
+
+<p>安装完成之后在 /etc/exports 中加一行配置</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/exports</span><br><span class="line">/data 100.x.x.0/24(rw,async,no_subtree_check,no_wdelay,crossmnt,no_root_squash,insecure_locks,sec=sys,anonuid=0,anongid=0)</span><br></pre></td></tr></table></div></figure>
+
+<p>设置NFS服务开机自启并重启服务器</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-update add nfs &amp;&amp; reboot</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="在所有节点安装-nfs-客户端"   >
+          <a href="#在所有节点安装-nfs-客户端" class="heading-link"><i class="fas fa-link"></i></a><a href="#在所有节点安装-nfs-客户端" class="headerlink" title="在所有节点安装 nfs 客户端"></a>在所有节点安装 nfs 客户端</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install nfs-utils</span><br><span class="line">systemctl start nfs &amp;&amp; systemctl <span class="built_in">enable</span> nfs</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="添加-SelfLink"   >
+          <a href="#添加-SelfLink" class="heading-link"><i class="fas fa-link"></i></a><a href="#添加-SelfLink" class="headerlink" title="添加 SelfLink"></a>添加 SelfLink</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/kubernetes/manifests/kube-apiserver.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加- --feature-gates=RemoveSelfLink=false</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">...</span><br><span class="line">  - <span class="built_in">command</span>:</span><br><span class="line">    - kube-apiserver</span><br><span class="line">    - --advertise-address=192.168.5.11</span><br><span class="line">    - --allow-privileged=<span class="literal">true</span></span><br><span class="line">    - --feature-gates=RemoveSelfLink=<span class="literal">false</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">#</span></span><br></pre></td></tr></table></div></figure>
+
+<p>保存退出，kubernetes 会自动重建 apiserver，如果没有这一步的话后面创建 pod 会一直 pending，挂载失败</p>
+</li>
+<li>
+        <h5 id="部署-nfs-client-provisioner（master"   >
+          <a href="#部署-nfs-client-provisioner（master" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署-nfs-client-provisioner（master" class="headerlink" title="部署 nfs-client-provisioner（master)"></a>部署 nfs-client-provisioner（master)</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#从github上clone yaml</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/kubernetes-incubator/external-storage.git</span><br><span class="line">cp -R external-storage/nfs-client/deploy/ <span class="variable">$HOME</span></span><br><span class="line"><span class="built_in">cd</span> deploy</span><br></pre></td></tr></table></div></figure>
+
+<p>创建权限 rbac.yaml</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Set the subject of the RBAC objects to the current namespace where the provisioner is being deployed</span></span><br><span class="line">NS=$(kubectl config get-contexts|grep -e <span class="string">&quot;^\*&quot;</span> |awk <span class="string">&#x27;&#123;print $5&#125;&#x27;</span>)</span><br><span class="line">NAMESPACE=<span class="variable">$&#123;NS:-default&#125;</span></span><br><span class="line">sed -i<span class="string">&#x27;&#x27;</span> <span class="string">&quot;s/namespace:.*/namespace: <span class="variable">$NAMESPACE</span>/g&quot;</span> ./deploy/rbac.yaml ./deploy/deployment.yaml</span><br><span class="line">kubectl create -f deploy/rbac.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>配置 deploy/class.yaml</p>
+<figure class="highlight yaml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">storage.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StorageClass</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">managed-nfs-storage</span></span><br><span class="line"><span class="attr">provisioner:</span> <span class="string">fuseim.pri/ifs</span> <span class="comment"># or choose another name, must match deployment&#x27;s env PROVISIONER_NAME&#x27;</span></span><br><span class="line"><span class="attr">parameters:</span></span><br><span class="line">  <span class="attr">archiveOnDelete:</span> <span class="string">&quot;false&quot;</span> <span class="comment"># When set to &quot;false&quot; your PVs will not be archived</span></span><br><span class="line">                           <span class="comment"># by the provisioner upon deletion of the PVC.</span></span><br></pre></td></tr></table></div></figure>
+
+<p>修改 deployment.yaml 文件<br>这里修改的参数包括 NFS 服务器所在的 IP 地址（192.168.5.11），以及 NFS 服务器共享的路径（/nfs/data/pv002），两处都需要修改为你实际的 NFS 服务器和共享目录</p>
+<figure class="highlight yaml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">root@master</span> <span class="string">deploy</span>]<span class="comment"># cat deployment.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">Recreate</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">serviceAccountName:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">quay.io/external_storage/nfs-client-provisioner:latest</span></span><br><span class="line">          <span class="attr">volumeMounts:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nfs-client-root</span></span><br><span class="line">              <span class="attr">mountPath:</span> <span class="string">/persistentvolumes</span></span><br><span class="line">          <span class="attr">env:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">PROVISIONER_NAME</span></span><br><span class="line">              <span class="attr">value:</span> <span class="string">fuseim.pri/ifs</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">NFS_SERVER</span></span><br><span class="line">              <span class="attr">value:</span> <span class="number">100.88</span><span class="number">.1</span><span class="number">.96</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">NFS_PATH</span></span><br><span class="line">              <span class="attr">value:</span> <span class="string">/data</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nfs-client-root</span></span><br><span class="line">          <span class="attr">nfs:</span></span><br><span class="line">            <span class="attr">server:</span> <span class="number">100.88</span><span class="number">.1</span><span class="number">.96</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/data</span></span><br></pre></td></tr></table></div></figure>
+
+<p>应用 nfs</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f deploy/deployment.yaml -f deploy/class.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/03/10/TfXUuaJovhKdYFQ.png" alt="微信截图_20220310163620.png"></p>
+</li>
+<li>
+        <h5 id="测试环境"   >
+          <a href="#测试环境" class="heading-link"><i class="fas fa-link"></i></a><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h5>
+      <p>部署测试 pod</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f deploy/test-claim.yaml -f deploy/test-pod.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>查看 pvc，pv 状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pvc,pv</span><br></pre></td></tr></table></div></figure>
+
+<p>能看到下面就说明成了</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@master]<span class="comment"># kubectl get pvc,pv</span></span><br><span class="line">NAME                                           STATUS   VOLUME                                                              CAPACITY   ACCESS MODES   STORAGECLASS          AGE</span><br><span class="line">persistentvolumeclaim/test-claim               Bound    ingress-nginx-test-claim-pvc-efd702ba-102d-4d61-9a5f-6fc4805f12c0   1Mi        RWX            managed-nfs-storage   25m</span><br><span class="line"></span><br><span class="line">NAME                                                                                 CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                  STORAGECLASS          REASON   AGE</span><br><span class="line">persistentvolume/ingress-nginx-test-claim-pvc-efd702ba-102d-4d61-9a5f-6fc4805f12c0   1Mi        RWX            Delete           Bound    ingress-nginx/test-claim               managed-nfs-storage            19m</span><br></pre></td></tr></table></div></figure>
+
+<p>删除测试 pod</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f deploy/test-pod.yaml -f deploy/test-claim.yaml</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="设置默认-StorageClass-master-节点"   >
+          <a href="#设置默认-StorageClass-master-节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置默认-StorageClass-master-节点" class="headerlink" title="设置默认 StorageClass(master 节点)"></a>设置默认 StorageClass(master 节点)</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl patch storageclass managed-nfs-storage -p <span class="string">&#x27;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io/is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#x27;</span></span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h3 id="安装-Prometheus-和-Grafana"   >
+          <a href="#安装-Prometheus-和-Grafana" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装-Prometheus-和-Grafana" class="headerlink" title="安装 Prometheus 和 Grafana"></a>安装 Prometheus 和 Grafana</h3>
+      
+        <h6 id="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"   >
+          <a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="headerlink" title="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"></a>建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题</h6>
+      <p>GitHub link : <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/giantswarm/prometheus" >Prometheus and Grafana</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>快速安装</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply \</span><br><span class="line">  --filename https://raw.githubusercontent.com/giantswarm/prometheus/master/manifests-all.yaml</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="安装KubeSphere"   >
+          <a href="#安装KubeSphere" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装KubeSphere" class="headerlink" title="安装KubeSphere"></a>安装KubeSphere</h3>
+      <p>GitHub link : <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/kubesphere/ks-installer/blob/master/README_zh.md" >KubeSphere</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h5 id="最小化快速部署"   >
+          <a href="#最小化快速部署" class="heading-link"><i class="fas fa-link"></i></a><a href="#最小化快速部署" class="headerlink" title="最小化快速部署"></a>最小化快速部署</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/kubesphere-installer.yaml</span><br><span class="line">kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/cluster-configuration.yaml</span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="查看部署进度及日志"   >
+          <a href="#查看部署进度及日志" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看部署进度及日志" class="headerlink" title="查看部署进度及日志"></a>查看部署进度及日志</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l app=ks-install -o jsonpath=<span class="string">&#x27;&#123;.items[0].metadata.name&#125;&#x27;</span>) -f</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/03/10/EsC9lnmbINfKojc.png" alt="微信截图_20220310201916.png"></p>
+<p>部署完成后可执行如下命令查看控制台的服务端口，使用  <code>IP:consolePort(default: 30880)</code> 访问 KubeSphere UI 界面，默认的集群管理员账号为 <code>admin/P@88w0rd</code>。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc/ks-console -n kubesphere-system</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://s2.loli.net/2022/03/24/YjyzMN4mO1HotZE.png" alt="微信截图_20220323214439.png"></p>
+
+        <h3 id="在安装前或者安装后开启插件"   >
+          <a href="#在安装前或者安装后开启插件" class="heading-link"><i class="fas fa-link"></i></a><a href="#在安装前或者安装后开启插件" class="headerlink" title="在安装前或者安装后开启插件"></a>在安装前或者安装后开启插件</h3>
+      <ol>
+<li>编辑你的 cluster-configuration.yaml</li>
+<li>找到你要启用的插件 将 enable 后的 false 改为 true，保存退出</li>
+<li>重新应用一下该文件，搞定</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vi cluster-configuration.yaml</span><br><span class="line">/openpitrix <span class="comment">#搜索openpitrix插件</span></span><br><span class="line"></span><br><span class="line">openpitrix:</span><br><span class="line">  store:</span><br><span class="line">    enabled: <span class="literal">true</span> <span class="comment"># 将“false”更改为“true”</span></span><br><span class="line">   </span><br><span class="line">:wq  <span class="comment">#保存退出</span></span><br><span class="line">kubectl apply -f cluster-configuration.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>可以查看安装进度</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l app=ks-install -o jsonpath=<span class="string">&#x27;&#123;.items[0].metadata.name&#125;&#x27;</span>) -f</span><br></pre></td></tr></table></div></figure>
+
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/04/alpine-openssh/">Openssh 配置 root 账号登录</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-04</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>alpine-iso 启动虚拟机后</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setup-alpine</span><br></pre></td></tr></table></div></figure>
+
+<p>配置 alpine 并将 alpine 系统写入到选择的磁盘中</p>
+<p>官方镜像默认 openssh 不让用 root 账号登陆，需要修改配置文件并重启 sshd</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/PermitRootLogin</span><br><span class="line">A</span><br><span class="line">将<span class="comment">#PermitRootLogin prohibit-password</span></span><br><span class="line">改为PermitRootLogin yes</span><br><span class="line">:wq</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-service sshd restart</span><br></pre></td></tr></table></div></figure>
+
+<p>这样就可以用root账号密码通过ssh登录了</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/02/network-center-shift/">网管排班系统（未完结）</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-23</span></span></div></header><div class="post-body"><div class="post-excerpt"><ol>
+<li><p>网管结构体</p>
+<p>在排班中，我们只需要用到网管的学号，空闲表，课表，姓名，个人事务表，值班表（显示自己要值的班次)</p>
+<p>布尔数组：空闲表、课表、个人事务表、值班表  都用0表示空闲 1表示被占用</p>
+<p>那么都可以用一种结构体 Occupation Table OT 来表示</p>
+<p>数组大小: [17] [7] [7] 1-14节课 七天一周 一共17周</p>
+</li>
+<li><p>排班表</p>
+<p>排班表:10-12 14-16 16-18 18-21</p>
+</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/02/golang-learning/">Go 学习笔记</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt"><ol>
+<li><p>Go 代码在发布之前，要 go fmt 转化成标准化代码格式，而避免了大家为了各种标准格式产生争议</p>
+</li>
+<li><p>一个 go 程序有一个 main 包</p>
+</li>
+<li><p>左大括号 <strong>{</strong> 必须和方法声明放在同一行，这是编译器的强制规定</p>
+</li>
+<li><p>GO 语言中不存在类型继承</p>
+</li>
+<li><p>函数也可以是一个确定的类型，就是以函数作为返回类型。这种类型的声明要写在函数名和可选的参数列表之后，例如：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FunctionName</span> <span class="params">(a typea, b typeb)</span> <span class="title">typeFunc</span></span></span><br></pre></td></tr></table></div></figure></li>
+<li><p>一个函数可以拥有多返回值，返回类型之间需要使用逗号分割，并使用小括号 <code>()</code> 将它们括起来，如：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FunctionName</span> <span class="params">(a typea, b typeb)</span> <span class="params">(t1 type1, t2 type2)</span></span></span><br></pre></td></tr></table></div></figure></li>
+<li><p>由于 Go 语言不存在隐式类型转换，因此所有的转换都必须显式说明，就像调用一个函数一样（类型在这里的作用可以看作是一种函数）：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">valueOfTypeB = typeB(valueOfTypeA)</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>类型 B 的值 = 类型 B(类型 A 的值)</strong></p>
+<p>示例：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="number">5.0</span></span><br><span class="line">b := <span class="keyword">int</span>(a)</span><br></pre></td></tr></table></div></figure>
+
+<p>但这只能在定义正确的情况下转换成功，例如从一个取值范围较小的类型转换到一个取值范围较大的类型（例如将 int16 转换为 int32）。当从一个取值范围较大的转换到取值范围较小的类型时（例如将 int32 转换为 int16 或将 float32 转换为 int），会发生精度丢失（截断）的情况。当编译器捕捉到非法的类型转换时会引发编译时错误，否则将引发运行时错误。</p>
+<p>具有相同底层类型的变量之间可以相互转换：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a IZ = <span class="number">5</span></span><br><span class="line">c := <span class="keyword">int</span>(a)</span><br><span class="line">d := IZ(c)</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/centos-firewall-state/">CentOS 的防火墙控制及指令</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="CentOS-7-关闭-SELinux-以及防火墙指令"   >
+          <a href="#CentOS-7-关闭-SELinux-以及防火墙指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#CentOS-7-关闭-SELinux-以及防火墙指令" class="headerlink" title="CentOS 7 关闭 SELinux 以及防火墙指令"></a>CentOS 7 关闭 SELinux 以及防火墙指令</h3>
+      <p>暂时禁用 SELinux</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0</span><br></pre></td></tr></table></div></figure>
+
+<p>彻底禁用 SELinux</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/selinux/config</span><br><span class="line"><span class="comment">#将其中的 SELINUX=enforcing</span></span><br><span class="line"><span class="comment">#修改为 SELINUX=disabled</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></div></figure>
+
+<ol>
+<li><p>查看已开放端口</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --list-ports</span><br></pre></td></tr></table></div></figure></li>
+<li><p>开放单个端口(开放后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=8080/tcp --permanent</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>（–permanent 为永久生效，不加为单次有效（重启失效））</strong></p>
+</li>
+<li><p>开放多个端口(开放后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=30000-59999/tcp --permanent</span><br></pre></td></tr></table></div></figure></li>
+<li><p>关闭端口(关闭后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --remove-port=8080/tcp --permanent</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看端口是否打开</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone= public --query-port=80/tcp</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看防火墙状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">systemctl status firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>开关防火墙</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start firewalld</span><br><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>重启防火墙</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">systemctl restart firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>设置防火墙开机状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开机自启防火墙</span></span><br><span class="line">systemctl <span class="built_in">enable</span> firewalld</span><br><span class="line"><span class="comment">#开机默认关闭</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看防火墙设置开机自启是否成功</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl is-enabled firewalld; <span class="built_in">echo</span> $?</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-docker-install/">Linux 下 Docker 和 Docker-compose 环境搭建</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="Linux-下-Docker-和-Docker-compose-环境的搭建"   >
+          <a href="#Linux-下-Docker-和-Docker-compose-环境的搭建" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux-下-Docker-和-Docker-compose-环境的搭建" class="headerlink" title="Linux 下 Docker 和 Docker-compose 环境的搭建"></a>Linux 下 Docker 和 Docker-compose 环境的搭建</h2>
+      <ol>
+<li><p>安装 docker-ce</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -SsL get.docker.com | sh</span><br></pre></td></tr></table></div></figure></li>
-<li><p>安装python-pip</p>
+<li><p>安装 python-pip</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python3-pip</span><br></pre></td></tr></table></div></figure></li>
-<li><p>更新pip</p>
+<li><p>更新 pip</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install --upgrade pip</span><br></pre></td></tr></table></div></figure></li>
-<li><p>安装docker-compose</p>
+<li><p>安装 docker-compose</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></div></figure>
 
-<p>检查docker-compose版本</p>
+<p>检查 docker-compose 版本</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose version</span><br></pre></td></tr></table></div></figure>
 
 <p><img src="https://s2.loli.net/2022/02/28/jWPotzHM2qyKscx.png" alt="微信截图_20220228134909.png"></p>
 </li>
 </ol>
 <p>属于是站在巨人的肩上摘苹果了</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-jdk/">Linux环境下jdk/jre的安装配置过程</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h2 id="Linux环境下jdk-jre的安装配置过程"   >
-          <a href="#Linux环境下jdk-jre的安装配置过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux环境下jdk-jre的安装配置过程" class="headerlink" title="Linux环境下jdk/jre的安装配置过程"></a>Linux环境下jdk/jre的安装配置过程</h2>
-      <p>CentOS 7示例</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-jdk/">Linux 环境下 jdk/jre 的安装配置过程</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="Linux-环境下-jdk-jre-的安装配置过程"   >
+          <a href="#Linux-环境下-jdk-jre-的安装配置过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux-环境下-jdk-jre-的安装配置过程" class="headerlink" title="Linux 环境下 jdk/jre 的安装配置过程"></a>Linux 环境下 jdk/jre 的安装配置过程</h2>
+      <p>CentOS 7 示例</p>
 <ol>
-<li><p>下载解压jdk包</p>
-<p>[]: <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://jdk.java.net/17/" >https://jdk.java.net/17/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>    “openjdk”</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local 目录下安装jdk</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz</span><br><span class="line">tar -zxvf jdk-17.0.2.tar.gz</span><br><span class="line">mv jdk-17.0.2 java</span><br></pre></td></tr></table></div></figure></li>
+<li><p>下载解压 jdk 包</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://jdk.java.net/17/" >openjdk</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 /usr/local 目录下安装jdk</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz</span><br><span class="line">tar -zxvf jdk-17.0.2.tar.gz</span><br><span class="line">mv jdk-17.0.2 java</span><br></pre></td></tr></table></div></figure></li>
 <li><p>添加环境变量</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入profile文件，按i进入编辑模式</span></span><br><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment">#在文件最下方添加 G A</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin;</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br><span class="line"><span class="comment">#:wq 保存并退出vim</span></span><br><span class="line"><span class="comment">#重新加载当前bash的环境变量</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line">java -version</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入 profile 文件，按 i 进入编辑模式</span></span><br><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment">#在文件最下方添加 G A</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin;</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br><span class="line"><span class="comment">#:wq 保存并退出 vim</span></span><br><span class="line"><span class="comment">#重新加载当前 bash 的环境变量</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line">java -version</span><br></pre></td></tr></table></div></figure>
 
 <p><img src="https://s2.loli.net/2022/02/28/weUBQbXJm29GspA.png" alt="微信截图_20220228133240.png"></p>
 </li>
 </ol>
-<p>搞定，JDK环境有了</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/bitwarden/">密钥管理器Bitwarden私有托管服务器搭建</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Bitwarden"   >
-          <a href="#Bitwarden" class="heading-link"><i class="fas fa-link"></i></a><a href="#Bitwarden" class="headerlink" title="Bitwarden"></a>Bitwarden</h1>
+<p>搞定， JDK 环境有了</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/bitwarden/">密钥管理器 bitwarden 私有托管服务器搭建</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="bitwarden"   >
+          <a href="#bitwarden" class="heading-link"><i class="fas fa-link"></i></a><a href="#bitwarden" class="headerlink" title="bitwarden"></a>bitwarden</h1>
       
         <h4 id="Why-I-use-it"   >
           <a href="#Why-I-use-it" class="heading-link"><i class="fas fa-link"></i></a><a href="#Why-I-use-it" class="headerlink" title="Why I use it?"></a>Why I use it?</h4>
@@ -78,25 +416,24 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <p>Keepass       网络功能需要配合网盘</p>
 <p>bitwarden    开源，可自建后台，速度快体积小免费插件多</p>
 <p>比较吸引我的还是bitwarden，开源，又可以自部署平台，完全可以信任了，用的人也多，生态也不错。</p>
-<p>[]: <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bitwarden.com/help/install-on-premise-linux/" >https://bitwarden.com/help/install-on-premise-linux/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>    “bitwarden后台官方部署教程”</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bitwarden.com/help/install-on-premise-linux" >bitwarden后台官方部署教程</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 
         <h4 id="前期准备"   >
           <a href="#前期准备" class="heading-link"><i class="fas fa-link"></i></a><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h4>
       <ol>
-<li><p>一台Linux虚拟机 我用CentOS7 </p>
+<li><p>一台 Linux 虚拟机 我用的 CentOS7 </p>
 </li>
-<li><p>装上Docker 和Docker-Compose</p>
+<li><p>装上 Docker 和 Docker-Compose</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.docker.com/ | bash -x</span><br></pre></td></tr></table></div></figure>
 
-<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></div></figure></li>
-<li><p>找个地方放bitwarden.sh</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></div></figure></li>
+<li><p>找个地方放 bitwarden.sh</p>
 </li>
-<li><p>申请installation id/key:</p>
-<p>[]: <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bitwarden.com/host/" >https://bitwarden.com/host/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bitwarden.com/host/" >申请installation id/key</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 </li>
-<li><p>配置好域名解析，申请SSL证书（如果需要的话）</p>
+<li><p>配置好域名解析，申请 SSL 证书（如果需要的话）</p>
 </li>
-<li><p>(optional)创建Bitwarden的User和目录（可以省略， 我直接省略了）</p>
+<li><p>(optional) 创建 Bitwarden 的 User 和目录（可以省略， 我直接省略了）</p>
 </li>
 </ol>
 
@@ -108,243 +445,77 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <li><p>安装</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bitwarden.sh install</span><br></pre></td></tr></table></div></figure>
 
-<p>引导做得很完善，记得每一步都要输入正确， 不然就得把/bitwarden目录删掉重来了</p>
+<p>引导做得很完善，记得每一步都要输入正确， 不然就得把 /bitwarden 目录删掉重来了</p>
 </li>
-<li><p>(optional)如果使用自己已有的SSL证书，要把证书，私钥，中间证书都放到./bitwarden/ssl/your.domain</p>
+<li><p>(optional) 如果使用自己已有的 SSL 证书，要把证书，私钥，中间证书都放到 ./bitwarden/ssl/your.domain</p>
 </li>
 <li><p>第一次启动</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bitwarden.sh start</span><br></pre></td></tr></table></div></figure></li>
 </ol>
-<p>​        会开始拉取docker镜像，网不好就需要一会儿</p>
-<p>​        装好了之后，在各个APP和浏览器中配置好Server URL就可以开始使用了，稳的一批</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/pve-import-ROS/">在PVE中导入Mikrotik RouterOS并保留授权</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/v6NzP7bHEncSTse.png" alt="a6i6g-6j9kh.png"></p>
+<p>​        会开始拉取 docker 镜像，网不好就需要一会儿</p>
+<p>​        装好了之后，在各个 APP 和浏览器中配置好 Server URL 就可以开始使用了，稳的一批</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/pve-import-ROS/">在 PVE 中导入 Mikrotik RouterOS 并保留授权</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-23</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/v6NzP7bHEncSTse.png" alt="a6i6g-6j9kh.png"></p>
 <ol>
 <li>
         <h5 id="准备工作"   >
           <a href="#准备工作" class="heading-link"><i class="fas fa-link"></i></a><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h5>
-      <p>首先把ROS镜像放到PVE宿主机上面去。什么格式都行啦，.vmdk .img  .ovf 都可以直接导</p>
+      <p>首先把 ROS 镜像放到 PVE 宿主机上面去。什么格式都行啦，.vmdk .img  .ovf 都可以直接导</p>
 </li>
 <li>
         <h5 id="导入"   >
           <a href="#导入" class="heading-link"><i class="fas fa-link"></i></a><a href="#导入" class="headerlink" title="导入"></a>导入</h5>
       <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name &lt;yourTarget&gt;</span><br></pre></td></tr></table></div></figure>
 
-<p>cd到放镜像的文件夹</p>
+<p>cd 到放镜像的文件夹</p>
 <p>然后开导</p>
-<p>ovf格式：(ovf格式的话不需要事先添加虚拟机)</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importovf &lt;要创建的虚拟机ID&gt; RouterOS.ovf &lt;存储(<span class="built_in">local</span>、local-lvm)&gt; --format qcow2</span><br></pre></td></tr></table></div></figure>
+<p>ovf 格式：(ovf 格式的话不需要事先添加虚拟机)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importovf &lt;要创建的虚拟机 ID &gt; RouterOS.ovf &lt;存储 (<span class="built_in">local</span>、local-lvm)&gt; --format qcow2</span><br></pre></td></tr></table></div></figure>
 
-<p>vmdk格式:（要事先创建一个虚拟机，要注意<strong>用IDE磁盘管理</strong>）</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk &lt;已有的虚拟机ID&gt; RouterOS.vmdk &lt;存储(<span class="built_in">local</span>、local-lvm)&gt;</span><br></pre></td></tr></table></div></figure>
+<p>vmdk 格式:（要事先创建一个虚拟机，要注意<strong>用 IDE 磁盘管理</strong>）</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk &lt;已有的虚拟机 ID &gt; RouterOS.vmdk &lt;存储 (<span class="built_in">local</span>、local-lvm)&gt;</span><br></pre></td></tr></table></div></figure>
 
 <p>实例:</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk 233 ./RouterOS.vmdk local-lvm</span><br></pre></td></tr></table></div></figure>
 
-<p>233是虚拟机的id</p>
+<p>233 是虚拟机的 id</p>
 </li>
 <li>
         <h5 id="保留授权码"   >
           <a href="#保留授权码" class="heading-link"><i class="fas fa-link"></i></a><a href="#保留授权码" class="headerlink" title="保留授权码"></a>保留授权码</h5>
-      <p>进入宿主机,ssh、VNC or telnet 你钟意就行</p>
+      <p>进入宿主机 ssh、VNC or telnet 你钟意就行</p>
 <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/pve/qemu-server/233.conf</span><br></pre></td></tr></table></div></figure>
 
-<p>然后在ide: local:233/vm-233-disk-0.qcow2后添加以下内容，vi的话使用命令A</p>
+<p>然后在 ide: local:233/vm-233-disk-0.qcow2 后添加以下内容，vi 的话使用命令 A</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">,model=VMware%20Virtual%20IDE%20Hard%20Drive,serial=00000000000000000001</span><br></pre></td></tr></table></div></figure>
 
 <p><img src="https://s2.loli.net/2022/02/22/esoVM9JEi4nRWYX.png" alt="微信截图_20220222201405.png"></p>
 </li>
 </ol>
-<p>注意事项：磁盘管理一定要用IDE，否则会保留授权码失败或丢虚拟磁盘。</p>
+<p>注意事项：磁盘管理一定要用 IDE，否则会保留授权码失败或丢虚拟磁盘</p>
 <p><img src="https://s2.loli.net/2022/02/22/9efCTgVxUPc7MW5.png" alt="微信图片_20220222201333.png"></p>
 <p>都搞定了就直接开机就能用了，起飞~</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/13/manjaro-experience/">Manjaro当作主力机的使用体验</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/tQ38wAlj7YKoJ6s.png" alt="acisj-8wm4w.png"></p>
-<p>经过7个月的使用，manjaro系统终于被我玩坏了，因为我的强制掉电操作，它的KDE桌面挂掉了，但是还是可以进入tty2等terminal，所幸数据都还在，我直接全部ftp到我的群晖里面，然后重装成Windows11了。那么我要总结一下讲manjaro作为我的笔记本系统的使用感受。</p>
-<p>最最最大的好处就是它是Linux内核系统，我可以随心所欲地用Linux的终端做很多事情，也方便了我的Linux操作系统课程的学习。</p>
-<p>我挺自豪的，拜托，笔记本装manjaro系统来作为日常使用超酷的好嘛</p>
-<h5 id=""><a href="#" class="headerlink" title=""></a></h5><p>Manjaro的优点</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/13/manjaro-experience/">Manjaro 当作主力机的使用体验</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-23</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/tQ38wAlj7YKoJ6s.png" alt="acisj-8wm4w.png"></p>
+<p>经过7个月的使用，manjaro 系统终于被我玩坏了，因为我的强制掉电操作，它的 KDE 桌面挂掉了，但是还是可以进入 tty2 等 terminal，所幸数据都还在，我直接全部 ftp 到我的群晖里面，然后重装成 Windows11 了。那么我要总结一下讲 manjaro 作为我的笔记本系统的使用感受。</p>
+<p>最最最大的好处就是它是 Linux 内核系统，我可以随心所欲地用 Linux 的终端做很多事情，也方便了我的 Linux 操作系统课程的学习。</p>
+<p>我挺自豪的，拜托，笔记本装 manjaro 系统来作为日常使用超酷的好嘛</p>
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5><p>Manjaro 的优点</p>
 <ol>
-<li>它是Arch Linux（这是最重要的，直接是生产环境）</li>
-<li>超级方便的包管理工具yay</li>
-<li>KDE可以非常地个性化，定制自己喜欢的主题</li>
+<li>它是 Arch Linux（这是最重要的，直接是生产环境）</li>
+<li>超级方便的包管理工具 yay</li>
+<li>KDE 可以非常地个性化，定制自己喜欢的主题</li>
 <li>组件化更加地突出了,它是高效率的生产工具</li>
-<li>相比其他Arch Linux的发行版，它的驱动最完整（但没有我的指纹输入的驱动，虽然可以自己写，但是我是懒鬼）</li>
-<li>因为是Linux，可以直接当路由来用，非常完整的网络内核，可以做到很多事情，起隧道，非常全的协议连接，也可以保存我所有的本地网络</li>
-<li>玩不了什么游戏，虽然可以CrossOver装上很多windows上的东西，但是毕竟在装在虚拟机里面跑，性能就摆在那里，打个炉石动画都比Mac mini慢很多（当然啦，暴雪直接就有Mac版)。Value家的东西全都有Linux发行版，比如CSGO。</li>
+<li>相比其他 Arch Linux 的发行版，它的驱动最完整（但没有我的指纹输入的驱动，虽然可以自己写，但是我是懒鬼）</li>
+<li>因为是 Linux，可以直接当路由来用，非常完整的网络内核，可以做到很多事情，起隧道，非常全的协议连接，也可以保存我所有的本地网络</li>
+<li>玩不了什么游戏，虽然可以 CrossOver 装上很多 windows 上的东西，但是毕竟在装在虚拟机里面跑，性能就摆在那里，打个炉石动画都比 Mac mini 慢很多（当然啦，暴雪直接就有 Mac 版)。Value 家的东西全都有 Linux 发行版，比如 CSGO。</li>
 </ol>
-<p>Manjaro的缺点</p>
+<p>Manjaro 的缺点</p>
 <ol>
-<li>没有所有方便日常生活的工具，比如没有Office，微软家的东西基本都没有，wechat要通过wine或者crossover去安装运行，经常因为运行库的问题而运行不了，QQ的体验更加差劲，这里就要表扬tg，直接做了arch版本，可以在snapstore里面直接安装。非常方便</li>
-<li>KDE经常崩溃或者某些组件挂掉，对AMD显卡驱动兼容不友好，某些动画经常鬼畜</li>
-<li>经常要去找答案，经常要折腾，日常升级就要去Github看issue，等半天别人解决得了自己也不一定能解决得了，肯定是有解决方法的，但是要整多久就不一定了，我觉得这是它作为主力机来说最大的缺点，就是它不稳定，如果你不更新的话又不能体验到新的东西，而且有时候更新是为了fix bug，反而更新之后直接挂了，这很不合理</li>
+<li>没有所有方便日常生活的工具，比如没有 Office，微软家的东西基本都没有，wechat要通过 wine 或者 crossover 去安装运行，经常因为运行库的问题而运行不了，QQ 的体验更加差劲，这里就要表扬 tg，直接做了 arch 版本，可以在 snapstore 里面直接安装。非常方便</li>
+<li>KDE 经常崩溃或者某些组件挂掉，对 AMD 显卡驱动兼容不友好，某些动画经常鬼畜</li>
+<li>经常要去找答案，经常要折腾，日常升级就要去 Github 看 issue，等半天别人解决得了自己也不一定能解决得了，肯定是有解决方法的，但是要整多久就不一定了，我觉得这是它作为主力机来说最大的缺点，就是它不稳定，如果你不更新的话又不能体验到新的东西，而且有时候更新是为了 fix bug，反而更新之后直接挂了，这很不合理</li>
 </ol>
-<p>没有什么缺点了，它除了要折腾，什么都好，如果说有一天，大家都用Linux作为日常主力机，所有软件产商都发行Linux的软件包版本，那么我肯定会把Linux当作主力机，但是现在看来，这不是很可能，现在体验感生态最好的应该还是Apple家，我年底也应该就冲个M2 or M1 MAX了。因为我换回Windows之后，我马上理解到了，日常使用起来舒服顺手，马上进入工作状态，才是一个该被装在笔记本里面的系统，而Linux现在的状态，就应该就是拿来当作服务器里的生产工具，它非常好用非常高效率，也非常稳定。希望Arch Linux可以发展到那个高度吧。我先滚回Windows的舒适圈了。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/07/crontab/">crontab的基本使用</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h3 id="crontab的基本使用"   >
-          <a href="#crontab的基本使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#crontab的基本使用" class="headerlink" title="crontab的基本使用"></a>crontab的基本使用</h3>
-      <p>用crontab肯定要写好crontab啦</p>
-<p>Linux格式的crontab</p>
-<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*    *    *    *    *</span><br><span class="line">-    -    -    -    -</span><br><span class="line">|    |    |    |    |</span><br><span class="line">|    |    |    |    +----- 星期中星期几 (0 - 6) (星期天 为0)</span><br><span class="line">|    |    |    +---------- 月份 (1 - 12) </span><br><span class="line">|    |    +--------------- 一个月中的第几天 (1 - 31)</span><br><span class="line">|    +-------------------- 小时 (0 - 23)</span><br><span class="line">+------------------------- 分钟 (0 - 59)</span><br></pre></td></tr></table></div></figure>
-
-<p>后面加上要做的事情，指令，比如说  每隔一分钟输出当前时间到txt文件中</p>
-<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/1 * * * * date &gt;&gt; /home/sunnyrian/crontab.txt</span><br></pre></td></tr></table></div></figure>
-
-<p>我们把它写在一个X.sh中，然后添加到当前用户的crontab定时任务中，那么就会从下一分钟每间隔一分钟执行一次了</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab X.sh</span><br></pre></td></tr></table></div></figure>
-
-<p>查看当前用户的定时任务</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></div></figure>
-
-<p>remove去除当前用户的定时任务</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -r</span><br></pre></td></tr></table></div></figure>
-
-<p>测试一个crontab文件有没有写法错误</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -T &lt;X.sh&gt;</span><br></pre></td></tr></table></div></figure>
-
-<p><img src="https://s2.loli.net/2022/02/07/jNhycDuJGV2X4fa.png" alt="2022-02-07_19-13.png"></p>
-<p>这样就可以快速设置好定时任务啦</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/07/diversion/">RouterOS实现电信移动家宽分流策略</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h4 id="RouterOS实现电信移动家宽分流策略"   >
-          <a href="#RouterOS实现电信移动家宽分流策略" class="heading-link"><i class="fas fa-link"></i></a><a href="#RouterOS实现电信移动家宽分流策略" class="headerlink" title="RouterOS实现电信移动家宽分流策略"></a>RouterOS实现电信移动家宽分流策略</h4>
-      <p>为了充分利用家里的两条家用宽带，一条电信1Gbps带动态公网，一条移动500Mbps上下对等移动大内网</p>
-<p>用RouterOS进行dst选路分流，让访问移动国内IP的流量route到移动出口上，让其他流量走到电信出口</p>
-<p>需要准备的东西:</p>
-<ol>
-<li><p>RouterOS</p>
-</li>
-<li><p>国内移动IP地址段(cmcc的地址段真的少的可怜awa，目前就53条)</p>
-<p>可以在这里搞到</p>
-<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://ispip.clang.cn/" >https://ispip.clang.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-</li>
-<li><p>两条出口线路</p>
-</li>
-<li><p>reserved ip地址段,不走分流策略的ip，比如所有内网地址,10.0.0.0/8, 192.168.0.0/16,255.255.255.255等等，不限于这些，根据个人需要添加</p>
-</li>
-</ol>
-
-        <h6 id="第一步"   >
-          <a href="#第一步" class="heading-link"><i class="fas fa-link"></i></a><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h6>
-      <p>​    导入移动IP地址段到ROS</p>
-<p>​    最好把地址段整成.rsc格式，直接在ROS中import ipset.rsc(像下面这样)</p>
-<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ip firewall address-list</span><br><span class="line">remove [find where list=dst-cmcc-china]</span><br><span class="line">add address=x.x.x.x/x list=dst-cmcc-china</span><br><span class="line">add address=x.x.x.x/x list=dst-cmcc-china	</span><br></pre></td></tr></table></div></figure>
-
-<p>​    添加reserved ip地址段到Address List</p>
-
-        <h6 id="第二步"   >
-          <a href="#第二步" class="heading-link"><i class="fas fa-link"></i></a><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h6>
-      <p>​    添加prerouting chain</p>
-<p>​    勾选Connection NAT State 为！dstnat<img src="https://s2.loli.net/2022/02/07/pdaFfsuQLrBtRAo.png" alt="2022-02-07_16-46.png"></p>
-<p>​    Advanced Dst. Address List: !reserved<img src="https://s2.loli.net/2022/02/07/x7nhawqfYbiRIv1.png" alt="2022-02-07_16-46_1.png"></p>
-<p>​    action设置为jump到dst-internet进行分流    </p>
-
-        <h6 id="第三步"   >
-          <a href="#第三步" class="heading-link"><i class="fas fa-link"></i></a><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h6>
-      <p>​    在mangle中添加dst-internet(名字自己取) chain来filter出Dst.Address List 为dst-cmcc-china的流量，mark routing cmcc</p>
-<p>​    然后添加routing mark 为 cmcc的路由到移动的出口 不勾选Passthrough</p>
-<p>​    第二条chain(和上一条一样名字) 非dst-cmcc-china要accept，走默认路由，即走电信出口</p>
-<p>​    mangle还是需要根据自己的实际需要去调整的</p>
-<p>   然后就搞定晒，可以测速体验一下咯，在speedtest.net选择移动测速点的话就会用移动出口啦</p>
-<p>   访问国内移动IP就会走移动出口啦</p>
-<p>今日复习知识:死锁的四个必要条件</p>
-<p>1、互斥条件：一个资源每次只能被一个进程使用;</p>
-<p>2、请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放;</p>
-<p>3、不剥夺条件：进程已获得资源，在未使用完之前，不能强行剥夺;</p>
-<p>4、循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系;</p>
-<p>如果四个条件都满足，那么死锁的产生是必然的</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/28/tmux/">Tmux终端复用器的使用说明</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/01/28/E8NfHnSgsOFdhVa.png" alt="tmux.png"></p>
-
-        <h2 id="Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用"   >
-          <a href="#Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用" class="heading-link"><i class="fas fa-link"></i></a><a href="#Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用" class="headerlink" title="Tmux   一款终端复用器（terminal multiplexer)，高效便捷实用"></a>Tmux   一款终端复用器（terminal multiplexer)，高效便捷实用</h2>
-      
-        <h4 id="可以做到什么？"   >
-          <a href="#可以做到什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#可以做到什么？" class="headerlink" title="可以做到什么？"></a>可以做到什么？</h4>
-      <ol>
-<li>将<strong>会话与窗口解绑</strong>，当我们关闭窗口时（exit 或者关闭一个terminal）,不关闭tmux的会话(session)，运行中的进程也不会被杀死，可以在一台Linux机子上用一个会话跑多个tmux会话窗口运行多个命令行程序</li>
-<li>可以vertical和horizon<strong>拆分窗口</strong>，配置好config后可以在多个窗口中自由切换，甚至可以多人共享会话</li>
-<li>支持attach进上一次的会话，即<strong>保留</strong>了<strong>工作状态</strong>(session)，让我们工作的时候不需要繁琐地进入工作环境，支持保留多个工作状态</li>
-</ol>
-<hr>
-
-        <h6 id="安装"   >
-          <a href="#安装" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装" class="headerlink" title="安装"></a>安装</h6>
-      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Manjaro</span></span><br><span class="line">yay -S tmux</span><br></pre></td></tr></table></div></figure>
-
-<hr>
-
-        <h6 id="常用指令"   >
-          <a href="#常用指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h6>
-      <p>新建session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux</span><br></pre></td></tr></table></div></figure>
-
-<p>上面的命令会直接创建一个session，默认会生成一个数字编号，可以通过$ tmux ls来看到</p>
-<p>我们也可以在new session的时候直接指定这个session的名字，来方便我们记忆和回到这个session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>离开session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux detach</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>查看session列表</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux ls</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>进入session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入上一个session</span></span><br><span class="line">tmux attach</span><br><span class="line"><span class="comment">#进入指定session</span></span><br><span class="line">tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>切换session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#切换到上一个session</span></span><br><span class="line">tmux switch</span><br><span class="line"><span class="comment">#切换到指定session</span></span><br><span class="line">tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-
-
-<p>杀死session</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#杀死上一个session</span></span><br><span class="line">tmux <span class="built_in">kill</span></span><br><span class="line"><span class="comment">#杀死指定session</span></span><br><span class="line">tmux <span class="built_in">kill</span> -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
-
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/22/kms/">使用本地KMS服务器激活Windows系统</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-09</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h6 id="在本地部署了kms服务器，在windows中激活系统的操作"   >
-          <a href="#在本地部署了kms服务器，在windows中激活系统的操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#在本地部署了kms服务器，在windows中激活系统的操作" class="headerlink" title="在本地部署了kms服务器，在windows中激活系统的操作"></a>在本地部署了kms服务器，在windows中激活系统的操作</h6>
-      <p>设置本地kms服务器</p>
-<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slmgr /skms &lt;ip<span class="literal">-address</span>&gt;</span><br></pre></td></tr></table></div></figure>
-
-<p>使用kms服务器自动激活系统</p>
-<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slmgr /ato</span><br></pre></td></tr></table></div></figure>
-
-<p>查看系统过期时间</p>
-<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slmgr /xpr</span><br></pre></td></tr></table></div></figure>
-
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/22/alpine-instructions/">Alpine的一些指令</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-12</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://s2.loli.net/2022/02/24/sxymAliEUcRPqOz.png" alt="a4y9b-enpz8.png"></p>
-<p>alpine 指令</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alpine-tun-tool</span><br></pre></td></tr></table></div></figure>
-
-<p>重启</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-service networking restart </span><br></pre></td></tr></table></div></figure>
-
-<p>管理alpine启动项 添加frr开机启动</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-update add frr</span><br></pre></td></tr></table></div></figure>
-
-<p>/etc/wireguard 存放了wireguard接口配置</p>
-<p>/etc/udp2raw</p>
-<p>mtu 1360</p>
-<p>AllowIPS:  x.x.x.x/x</p>
-<p>启用bfd: 在/etc/frr/daemons 修改bfd=yes</p>
-<p>进入frr指令</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vtysh</span><br></pre></td></tr></table></div></figure>
-
-<p>显示frr bgp状态</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show bgp summary</span><br></pre></td></tr></table></div></figure>
-
-<p>显示bgp中的路由</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> show ip bgp</span><br></pre></td></tr></table></div></figure>
-
-<p>前面带*号的是有效路由，不带的是无效路由</p>
-<p>用curl下载东西</p>
-<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://www.XXXX.tar.gz</span><br></pre></td></tr></table></div></figure>
-
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="ck1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span>粤ICP备2021174751号</span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+<p>没有什么缺点了，它除了要折腾，什么都好，如果说有一天，大家都用 Linux 作为日常主力机，所有软件产商都发行 Linux 的软件包版本，那么我肯定会把 Linux当作主力机，但是现在看来，这不是很可能，现在体验感生态最好的应该还是 Apple 家，我年底也应该就冲个 M2 or M1 MAX 了。因为我换回 Windows 之后，我马上理解到了，日常使用起来舒服顺手，马上进入工作状态，才是一个该被装在笔记本里面的系统，而 Linux 现在的状态，就应该就是拿来当作服务器里的生产工具，它非常好用非常高效率，也非常稳定。希望 Arch Linux 可以发展到那个高度吧。我先滚回 Windows 的舒适圈了。</p>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="ck1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">28</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">40</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
   var isXML = true;
   var search_path = 'search.json';
 
