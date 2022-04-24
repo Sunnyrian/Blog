@@ -1,3 +1,4 @@
+http://yhsyc.club/2022/04/11/interview-questions/
 http://yhsyc.club/2022/03/07/k8s-learning/
 http://yhsyc.club/2022/03/27/alertmanager/
 http://yhsyc.club/2022/03/27/k8s-configMap/
@@ -68,3 +69,4 @@ http://yhsyc.club/tags/RAID/
 http://yhsyc.club/tags/SNMP/
 http://yhsyc.club/tags/tmux/
 http://yhsyc.club/tags/NAT/
+http://yhsyc.club/tags/interview/
