@@ -2921,12 +2921,12 @@ html.nightmode {
   font-size: 0.9em;
   color: #999;
 }
-@media (min-width: 1570px) {
+@media (min-width: 1270px) {
   .header-nav-inner {
-    width: 1570px;
+    width: 1270px;
   }
   .main-inner {
-    width: 1570px;
+    width: 1270px;
   }
 }
 @media (min-width: 991.98px) {
