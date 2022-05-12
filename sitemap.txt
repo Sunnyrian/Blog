@@ -1,3 +1,5 @@
+http://yhsyc.club/2022/05/12/NCshift/
+http://yhsyc.club/2022/03/02/golang-learning/
 http://yhsyc.club/2022/05/11/ftp/
 http://yhsyc.club/2022/01/18/checksum/
 http://yhsyc.club/2022/01/28/tmux/
@@ -11,7 +13,6 @@ http://yhsyc.club/2022/03/20/snmp-exporter/
 http://yhsyc.club/2022/03/20/mikrotik-exporter/
 http://yhsyc.club/2022/02/28/linux-jdk/
 http://yhsyc.club/2022/02/28/linux-docker-install/
-http://yhsyc.club/2022/03/02/golang-learning/
 http://yhsyc.club/2022/03/13/git-learning/
 http://yhsyc.club/2022/01/20/dpkg/
 http://yhsyc.club/2022/02/07/diversion/
@@ -72,3 +73,5 @@ http://yhsyc.club/tags/RAID/
 http://yhsyc.club/tags/SNMP/
 http://yhsyc.club/tags/NAT/
 http://yhsyc.club/tags/tmux/
+http://yhsyc.club/tags/Golang/
+http://yhsyc.club/tags/Gin/
