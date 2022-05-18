@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yhsyc.club/2022/03/13/git-learning/</loc>
+    
+    <lastmod>2022-05-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yhsyc.club/2022/05/12/NCshift/</loc>
     
     <lastmod>2022-05-18</lastmod>
@@ -129,15 +138,6 @@
   
   <url>
     <loc>http://yhsyc.club/2022/02/28/linux-docker-install/</loc>
-    
-    <lastmod>2022-03-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yhsyc.club/2022/03/13/git-learning/</loc>
     
     <lastmod>2022-03-23</lastmod>
     
