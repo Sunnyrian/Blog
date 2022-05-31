@@ -1,5 +1,5 @@
-http://yhsyc.club/2022/03/13/git-learning/
 http://yhsyc.club/2022/05/12/NCshift/
+http://yhsyc.club/2022/03/13/git-learning/
 http://yhsyc.club/2022/04/11/interview-questions/
 http://yhsyc.club/2022/03/02/golang-learning/
 http://yhsyc.club/2022/05/11/ftp/
@@ -23,7 +23,6 @@ http://yhsyc.club/2022/03/04/alpine-openssh/
 http://yhsyc.club/2022/01/22/alpine-instructions/
 http://yhsyc.club/2022/03/14/raid/
 http://yhsyc.club/2022/02/22/pve-import-ROS/
-http://yhsyc.club/2022/03/02/network-center-shift/
 http://yhsyc.club/2022/02/13/manjaro-experience/
 http://yhsyc.club/2022/03/10/linux-ntp-timezone/
 http://yhsyc.club/2022/03/09/linux-kernel-upgrade/
