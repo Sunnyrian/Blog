@@ -232,7 +232,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 
 <p>这样重启之后就是新内核的系统了，记得改 hostname，关闭 selinux</p>
 <p>有时候部署东西经常出问题，不如试试看更新一下 LinuxKernel，说不定是有内核版本要求呢？</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/07/k8s-learning/">Kubernetes 学习笔记以及 Kubernetes 集群 +KubeSphere 部署指南</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-30</span></span></div></header><div class="post-body"><div class="post-excerpt">
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/07/k8s-learning/">Kubernetes 学习笔记以及 Kubernetes 集群 +KubeSphere 部署指南</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-06-10</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="kubernetes-学习笔记"   >
           <a href="#kubernetes-学习笔记" class="heading-link"><i class="fas fa-link"></i></a><a href="#kubernetes-学习笔记" class="headerlink" title="kubernetes 学习笔记"></a>kubernetes 学习笔记</h1>
       
@@ -263,6 +263,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
         <h5 id="Kubelet"   >
           <a href="#Kubelet" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubelet" class="headerlink" title="Kubelet"></a>Kubelet</h5>
       <p>在 Kubunetes 集群中，每个 Node 节点都会启动 kubelet 进程，用来处理 Master 节点下发到本节点的任务，管理 Pod 和其中的容器。kubelet 会在 API Server 上注册节点信息，定期向 Master 汇报节点资源的使用情况，并通过 cAdvisor 监控容器和节点资源。可以把 kubelet 理解成是一个代理进程，是 Node节点上的 Pod 管家</p>
+<p>是一个 Kubernetes 的客户端工具，通常会在 Kubernetes 的 Master 节点的安装过程中被一同安装，在任意环境安装，只要能连接 Master 节点，就可以通过它来管理 Kubernetes 集群</p>
 </li>
 <li>
         <h5 id="Kube-proxy"   >
@@ -284,11 +285,6 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <li>能够提供某种远程服务能力</li>
 <li>被映射到了提供这种服务能力的一组容器应用上</li>
 </ul>
-</li>
-<li>
-        <h5 id="Kubectl"   >
-          <a href="#Kubectl" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h5>
-      <p>是一个 Kubernetes 的客户端工具，通常会在 Kubernetes 的 Master 节点的安装过程中被一同安装，在任意环境安装，只要能连接 Master 节点，就可以通过它来管理 Kubernetes 集群</p>
 </li>
 <li>
         <h5 id="CoreDNS"   >

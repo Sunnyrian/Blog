@@ -12,7 +12,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/03/10/EsC9lnmbINfKojc.png">
 <meta property="og:image" content="https://s2.loli.net/2022/03/24/YjyzMN4mO1HotZE.png">
 <meta property="article:published_time" content="2022-03-07T11:48:05.000Z">
-<meta property="article:modified_time" content="2022-03-30T03:29:56.000Z">
+<meta property="article:modified_time" content="2022-06-10T07:02:07.807Z">
 <meta property="article:author" content="Sunnyrian">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Kubernetes">
@@ -43,7 +43,7 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Kubernetes 学习笔记以及 Kubernetes 集群 +KubeSphere 部署指南</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-30</span></span></div></header><div class="post-body">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Kubernetes 学习笔记以及 Kubernetes 集群 +KubeSphere 部署指南</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-06-10</span></span></div></header><div class="post-body">
         <h1 id="kubernetes-学习笔记"   >
           <a href="#kubernetes-学习笔记" class="heading-link"><i class="fas fa-link"></i></a><a href="#kubernetes-学习笔记" class="headerlink" title="kubernetes 学习笔记"></a>kubernetes 学习笔记</h1>
       
@@ -74,6 +74,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
         <h5 id="Kubelet"   >
           <a href="#Kubelet" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubelet" class="headerlink" title="Kubelet"></a>Kubelet</h5>
       <p>在 Kubunetes 集群中，每个 Node 节点都会启动 kubelet 进程，用来处理 Master 节点下发到本节点的任务，管理 Pod 和其中的容器。kubelet 会在 API Server 上注册节点信息，定期向 Master 汇报节点资源的使用情况，并通过 cAdvisor 监控容器和节点资源。可以把 kubelet 理解成是一个代理进程，是 Node节点上的 Pod 管家</p>
+<p>是一个 Kubernetes 的客户端工具，通常会在 Kubernetes 的 Master 节点的安装过程中被一同安装，在任意环境安装，只要能连接 Master 节点，就可以通过它来管理 Kubernetes 集群</p>
 </li>
 <li>
         <h5 id="Kube-proxy"   >
@@ -95,11 +96,6 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
 <li>能够提供某种远程服务能力</li>
 <li>被映射到了提供这种服务能力的一组容器应用上</li>
 </ul>
-</li>
-<li>
-        <h5 id="Kubectl"   >
-          <a href="#Kubectl" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h5>
-      <p>是一个 Kubernetes 的客户端工具，通常会在 Kubernetes 的 Master 节点的安装过程中被一同安装，在任意环境安装，只要能连接 Master 节点，就可以通过它来管理 Kubernetes 集群</p>
 </li>
 <li>
         <h5 id="CoreDNS"   >
@@ -333,8 +329,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.0.0"></he
           Kubelet</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Kube-proxy"><span class="toc-text">
           Kube-proxy</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pod"><span class="toc-text">
           Pod</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Service%EF%BC%88%E6%9C%8D%E5%8A%A1%EF%BC%89"><span class="toc-text">
-          Service（服务）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Kubectl"><span class="toc-text">
-          Kubectl</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CoreDNS"><span class="toc-text">
+          Service（服务）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CoreDNS"><span class="toc-text">
           CoreDNS</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Cilium"><span class="toc-text">
           Cilium</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#kube-proxy"><span class="toc-text">
           kube-proxy</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#kube-state-metrics"><span class="toc-text">
