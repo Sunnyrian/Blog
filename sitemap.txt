@@ -1,3 +1,4 @@
+http://yhsyc.club/2022/07/08/maintenance-00/
 http://yhsyc.club/2022/05/12/NCshift/
 http://yhsyc.club/2022/03/07/k8s-learning/
 http://yhsyc.club/2022/03/13/git-learning/
@@ -74,3 +75,4 @@ http://yhsyc.club/tags/NAT/
 http://yhsyc.club/tags/tmux/
 http://yhsyc.club/tags/Golang/
 http://yhsyc.club/tags/Gin/
+http://yhsyc.club/tags/maintenance/
