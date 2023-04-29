@@ -1,0 +1,552 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="2022年 5.08 开始学习 Gin 框架 5.11 打开项目，开始用 Golang 重构项目，思考如何从xls课表中提取出想要的信息 5.12 下午五点 xls 分析功能实现完毕，实现 OT(Occupation Table) 提取功能 ​         晚上十一点  数据库结构设计完毕 SQL语句初步书写完毕 5.13 晚上九点半 完成使用 Gorm 框架 实现 OT 表导入数据库 5.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络中心排班系统开发日志-Golang">
+<meta property="og:url" content="http://yhsyc.club/2022/05/12/NCshift/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="2022年 5.08 开始学习 Gin 框架 5.11 打开项目，开始用 Golang 重构项目，思考如何从xls课表中提取出想要的信息 5.12 下午五点 xls 分析功能实现完毕，实现 OT(Occupation Table) 提取功能 ​         晚上十一点  数据库结构设计完毕 SQL语句初步书写完毕 5.13 晚上九点半 完成使用 Gorm 框架 实现 OT 表导入数据库 5.1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-12T08:56:50.000Z">
+<meta property="article:modified_time" content="2023-04-14T07:10:53.255Z">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="Gin">
+<meta name="twitter:card" content="summary"><title>网络中心排班系统开发日志-Golang | Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/2022/05/12/NCshift/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">网络中心排班系统开发日志-Golang</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-05-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-04-14</span></span></div></header><div class="post-body"><p>2022年</p>
+<p>5.08 开始学习 Gin 框架</p>
+<p>5.11 打开项目，开始用 Golang 重构项目，思考如何从xls课表中提取出想要的信息</p>
+<p>5.12 下午五点 xls 分析功能实现完毕，实现 OT(Occupation Table) 提取功能</p>
+<p>​         晚上十一点  数据库结构设计完毕 SQL语句初步书写完毕</p>
+<p>5.13 晚上九点半 完成使用 Gorm 框架 实现 OT 表导入数据库</p>
+<p>5.14 下午五点半 实现使用Gin框架 从前端POST表单到后台，收集需要排的班次信息，可以开始写排班功能</p>
+<p>5.16 上午九点半 完成输入日期，生成排班表功能</p>
+<p>​         下午六点半 完成输入日期，查询指定日期排班表功能</p>
+<p>5.18 晚上十点半 完成 OT 表正确初始化并根据课表更新、根据 shift 表 生成 值班时长 duty 表</p>
+<p>​         实现根据当前有空的网管，左连接值班时长表，take 值班时长最少的人排上去</p>
+<p>5.19 凌晨三点 完成简单排班功能，班次排得平均得雅痞<br>6.1   凌晨一点，前端注册表单验证基本实现完毕，使用全局数据库连接</p>
+<p>6.8  中午十二点，注册和登录功能实现完毕</p>
+<p>6.14 凌晨2点40，现在我们用 cookie 保存用户登录状态 并从后端获取用户信息，在前端显示</p>
+<p>6.23 可以选择登录方式</p>
+<p>6.28 开始写后台页面，可以查看用户列表</p>
+<p>7.3 实现前端组件复用，完善路由传参</p>
+<p>TODO:</p>
+<ul>
+<li>编写测试用例</li>
+<li>前端判断选择的两个排班日期大小,结束日期晚于起始日期</li>
+<li>前端输入需要排班日期的时候，输入开始和结束日期之后，要更新下方单选列表，选择每一天的值班类型 单纯用js实现比较麻烦，不如用 Vue</li>
+<li>思考到底在哪里连接数据库好</li>
+<li>数据库默认值可以用 default 赋</li>
+<li>根据课表更新 OT 表 这一步可以使用携程，快速操作，但考虑一学期更新不到几次，这个可以考虑延缓改进</li>
+<li>initOccupation 可以一次Save 一个网管的</li>
+<li>前端开始排班之前，应该还要选择排哪些网管的班次</li>
+<li>连续登录五次失败之后需要输入验证码</li>
+<li>在 localStorage 中存储用户的选择配置</li>
+<li>数据库多一个表，存储学期开始日期，对应周数</li>
+</ul>
+<p>需要外置的环境变量参数</p>
+<p>钉钉 Appkey</p>
+<p>钉钉 AppSecret</p>
+<p>/model/database.go dsn</p>
+<p>MySQL 数据库地址 用户名 密码</p>
+<p>/jwt/generateToken secret Token过期事件</p>
+<p>需要用到的网站： </p>
+<ul>
+<li>Go 库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://pkg.go.dev/" >https://pkg.go.dev/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Gorm DAO <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://gorm.io/" >https://gorm.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>GIN web 框架 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://gin-gonic.com/" >https://gin-gonic.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 js <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://v3.cn.vuejs.org/" >https://v3.cn.vuejs.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>gormt 根据数据库自动生成 model <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/xxjwxc/gormt" >https://github.com/xxjwxc/gormt</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>element+ Vue3 组件库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://element-plus.gitee.io/zh-CN" >https://element-plus.gitee.io/zh-CN</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 ts 快速上手 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://24kcs.github.io/vue3_study" >https://24kcs.github.io/vue3_study</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>快速用 go gin 构建项目教程 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developer.okta.com/blog/2021/02/17/building-and-securing-a-go-and-gin-web-application" >https://developer.okta.com/blog/2021/02/17/building-and-securing-a-go-and-gin-web-application</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>为 Gin 框架配置跨域(暂时没用到) <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/43255082" >https://zhuanlan.zhihu.com/p/43255082</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>密码加盐加密存储及其登录验证方式 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/342051053" >https://zhuanlan.zhihu.com/p/342051053</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>axios 基于 promise 的网络请求库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://axios-http.com/zh/docs/intro" >https://axios-http.com/zh/docs/intro</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 前端教程-登录功能 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_18671803/article/details/120920955" >https://blog.csdn.net/qq_18671803/article/details/120920955</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 / Ts Router 讲解 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/Royzilong/article/details/123736090" >https://blog.csdn.net/Royzilong/article/details/123736090</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Typescript 快速上手 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.tslang.cn/" >https://www.tslang.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>axios 正确用法 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.likecs.com/ask-7991875.html" >https://www.likecs.com/ask-7991875.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>定义 gorm db 全局变量 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.h5w3.com/182882.html" >https://www.h5w3.com/182882.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端常用加密方式 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/GTH07399/article/details/123136428" >https://blog.csdn.net/GTH07399/article/details/123136428</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端加密AES、RSA、SHA256用法 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44545318/article/details/122824608" >https://blog.csdn.net/weixin_44545318/article/details/122824608</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>crypto-js <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/brix/crypto-js" >https://github.com/brix/crypto-js</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>JWT IETF docs <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html" >https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>golang-jwt <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/golang-jwt/jwt" >https://github.com/golang-jwt/jwt</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>golang-jwt介绍 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44294408/article/details/122095919" >https://blog.csdn.net/weixin_44294408/article/details/122095919</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>  </li>
+<li>jwt 介绍(阮一峰) <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html" >http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>在 gin 中使用 golang-jwt <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43987921/article/details/119639309" >https://blog.csdn.net/weixin_43987921/article/details/119639309</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>RBAC权限系统分析、设计与实现 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://shuwoom.com/?p=3041" >https://shuwoom.com/?p=3041</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>async 函数的含义和用法 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/05/async.html" >http://www.ruanyifeng.com/blog/2015/05/async.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端鉴权必须了解的 5 个兄弟：cookie、session、token、jwt、单点登录 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1710656941076243312&amp;wfr=spider&amp;for=pc" >https://baijiahao.baidu.com/s?id=1710656941076243312&amp;wfr=spider&amp;for=pc</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端鉴权的兄弟们：cookie、session、token、jwt、单点登录 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://juejin.cn/post/6898630134530752520" >https://juejin.cn/post/6898630134530752520</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>cookie <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://javascript.ruanyifeng.com/bom/cookie.html" >https://javascript.ruanyifeng.com/bom/cookie.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端存储-cookie <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43845090/article/details/109291316" >https://blog.csdn.net/weixin_43845090/article/details/109291316</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>JavaScript 教程 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://wangdoc.com/javascript/basic/index.html" >https://wangdoc.com/javascript/basic/index.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Argument of type ‘‘ is not assignable to parameter of type ‘never‘. <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/survivorsfyh/article/details/112184818" >https://blog.csdn.net/survivorsfyh/article/details/112184818</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>gin-vue-admin <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.dev/flipped-aurora/gin-vue-admin" >https://github.dev/flipped-aurora/gin-vue-admin</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Go 每日一库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/darjun/go-daily-lib" >https://github.com/darjun/go-daily-lib</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Github Daily <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/GitHubDaily/GitHubDaily" >https://github.com/GitHubDaily/GitHubDaily</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>vue-router(v4) 组合式API <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/advanced/composition-api.html#%E5%9C%A8-setup-%E4%B8%AD%E8%AE%BF%E9%97%AE%E8%B7%AF%E7%94%B1%E5%92%8C%E5%BD%93%E5%89%8D%E8%B7%AF%E7%94%B1" >https://router.vuejs.org/zh/guide/advanced/composition-api.html#%E5%9C%A8-setup-%E4%B8%AD%E8%AE%BF%E9%97%AE%E8%B7%AF%E7%94%B1%E5%92%8C%E5%BD%93%E5%89%8D%E8%B7%AF%E7%94%B1</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>git commit 书写规范 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html" >https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>笔记：</p>
+<p>​    前端渲染周日程表的时候，应该的按行渲染的，即一周，一个时间段一个时间段一行过去渲染</p>
+<p>​    获取当前周 -&gt; 获取当前周排班表 -&gt;(option) 选择某一周或者+-周</p>
+<p>每个学期要分库分表吗？没必要，一学期的OT表也不超过2MiB，20个人的规模</p>
+<p>在给ref对象赋值的时候，要用.value，才能更新到值</p>
+<p>毕业设计的题目为《基于Gin、Gorm、Vue的排班OA系统的设计与实现》，提供多人在线实时挑选班次、个人空闲时间管理、调休假、自动排班、考勤统计等功能。</p>
+<p>系统后端使用 Golang 语言编写，使用 Gin 作为 http框架、 Gorm 作为对象关系映射框架，系统前端使用 Vue 和 Element UI 组件库，使用 WebSocket 来实现多端实时通讯。</p>
+<p>本项目的主要功能之一自动排班已经实现完毕，前端用户 JWT token 路由鉴权也已经测试完毕，在完善前端用户体验的同时，继续学习后端开发技巧，同时该项目借鉴大公司开发中的微服务思想，该项目落地部署以及升级都十分便利。</p>
+<p>该需求来自学校网络中心，需要给值班的网管干事排班，以往都是人力去先根据课表知道大家的空闲时间来排班，每周都需要花几个小时排班，费时费力还经常出错，调休也需要人工干预，有了这个系统之后，办公自动化带来的效率是可观的持久的。</p>
+<p>系统使用流程：</p>
+<p>配置好数据库，创建好表</p>
+<p>在每个学期开始时手动初始化该学期的 shift configuration 表，同时更新所有用户的 occupation_init_status 为 0</p>
+<p>在要排班之前根据 shift configuration 生成班次，选择开启自由选班几小时或者自动排班</p>
+<p>2023/2/13</p>
+<p>重新思考项目主要功能框架</p>
+<ul>
+<li>解析课程表可以把每一个 cell 解析为事件 类型 起始时间段 结束时间段</li>
+</ul>
+<p>2023/2/16</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/swaggo/gin-swagger" >https://github.com/swaggo/gin-swagger</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>之后swagger 可以用 oAuth，超帅和安全</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://goswagger.io/" >https://goswagger.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>TODO：</p>
+<ul>
+<li><p><input disabled="" type="checkbox">  自由实时在线挑选班次功能 By webSocket</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  Swagger 接口 API 文档</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/549252410?utm_id=0" >https://zhuanlan.zhihu.com/p/549252410?utm_id=0</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>放弃使用 swagger 来生成 API 文档，因为接口数量少，接口数量简单</p>
+</li>
+<li><p><input disabled="" type="checkbox">  后台可配置每周生成排班时间，排班生成规则</p>
+<p>用配置好的参数调用生成排班方法，发布选班通知，过时间自动补齐空闲班次，补齐后通知未能排上班的班次</p>
+<p>如果有特殊排班需求可配置 维护一个数据库表来管理每天的排班，每个时段排不排班，排几个人</p>
+<p>shift_configuration</p>
+</li>
+</ul>
+<p>2023/2/21</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/383848749" >https://zhuanlan.zhihu.com/p/383848749</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/rs/zerolog" >https://github.com/rs/zerolog</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>2023/3/2</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/211405.htm" >Golang func() init</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </p>
+<p>2023/3/7</p>
+<p>需要确认 个人的当前学期的空闲表是否有被创建</p>
+<p>Current_OccupationTable_Status 0-&gt;未创建  1-&gt;已创建</p>
+<p>在旧学期过去两周后(手动)，重置所有的user.Current_OccupationTable_Status = 0</p>
+<p>管理员功能：</p>
+<p>班次管理</p>
+<p>生成班次</p>
+<p>开启班次自选功能 指定日期的班次 + 截止选班次时间 </p>
+<p>获取某一周的shiftConfig</p>
+<p>发给前端的时间统一用 Unix</p>
+<p>前端也要有一套时间转换的工具</p>
+<p>ENV 配置项该用起来了</p>
+<p>2023/3/9</p>
+<p>在管理员审批通过注册的账号的时候，给该账号生成空闲表</p>
+<p>2023/3/16</p>
+<p>数据库user表 id 要从 1开始，id = 0 会被go视为零值</p>
+<p>注册页添加步骤条 注册-》审核》登陆</p>
+<p>可以设置不显示页尾 -&gt; 只有首页显示页尾 Footer</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://code-farmer-i.github.io/vue-markdown-editor/zh/" >https://code-farmer-i.github.io/vue-markdown-editor/zh/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>优化需求：通用用户查询接口</p>
+<ul>
+<li><p><input disabled="" type="checkbox">  将 getUserList controller 内的数据库逻辑抽象成服务</p>
+</li>
+<li><p><input disabled="" type="checkbox">  密码输错五次添加验证码模块</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  事务开始之后，只有成功或者回滚后才能return</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  设计 should bind query 的请求，number不能从0开始，不然会绑定失败</p>
+</li>
+<li><p><input disabled="" type="checkbox">  在每天值班的四个值班时间结束时间点更新数据库 shift.status -&gt; 2</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  只有自己的班次可以申请换给别人</p>
+</li>
+<li><p><input disabled="" type="checkbox">  认领没有人值班的班次接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  实时挑选班次的系统</p>
+<p>还是用数据库做持久化存储</p>
+<p>在进入排班表页面的时候，建立 websocket 连接</p>
+<p>可选：用一个结构体存下当前用户鼠标最后操作的班次，断开 websocket 连接时删除</p>
+<p>实时传输选班次和放弃班次的结果</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  更新空闲表的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  获取个人空闲表的接口 按周 </p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  管理员可获取所有人的班次表</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增换班表的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增获取换班表详情的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增获取换班表列表的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  换班表列表的接口添加页数和页码</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增同意或拒绝换班申请的接口 同意后更新班次表</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增请假表接口 同意后修改班次表的状态为已请假</p>
+</li>
+<li><p><input disabled="" type="checkbox">  已请假状态别人可以再认领班次</p>
+</li>
+<li><p><input disabled="" type="checkbox">  新增干事排班</p>
+</li>
+<li><p><input disabled="" type="checkbox">  新增干事的班次类型</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  班次状态总览:   -2 干事未排班; -1 未排班; 1 已排班; 2 干事已排班  3已请假; 4干事已请假;  5旷班;  6干事旷班; 7 已值班; 8干事已值班; 9 任选阶段 10 干事任选阶段</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  给周班次上锁解锁接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  生成班次的时候，只有两个选项，直接排班 or 任选 x 小时，x小时后自动锁定班次</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  锁定班次接口</p>
+</li>
+<li><p><input disabled="" type="checkbox">  修改密码的接口</p>
+</li>
+<li><p><input disabled="" type="checkbox">  防止密码爆破操作</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  输出日志</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  值班时长统计</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  前端用户信息修改点击取消要重新触发表单验证</p>
+</li>
+<li><p><input disabled="" type="checkbox">  日志输出格式，信息全写在message中，使用 sprintf</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  请假</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  换班</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  班次调动</p>
+</li>
+<li><p><input disabled="" type="checkbox">  Notfound 3s 返回</p>
+</li>
+<li><p><input disabled="" type="checkbox">  重置 User_item 的接口</p>
+</li>
+</ul>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/configuration/advanced-configuration.html" >https://docs.gitlab.com/runner/configuration/advanced-configuration.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/geekqian/article/details/125942407" >https://blog.csdn.net/geekqian/article/details/125942407</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/264471.htm" >https://www.jb51.net/article/264471.htm</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>gin框架参数零值json绑定的问题 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42279809/article/details/107800081" >https://blog.csdn.net/weixin_42279809/article/details/107800081</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39618369/article/details/125991257" >https://blog.csdn.net/qq_39618369/article/details/125991257</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://devpress.csdn.net/vue/62f8fd487e6682346618b3e8.html" >https://devpress.csdn.net/vue/62f8fd487e6682346618b3e8.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://yhsyc.club">Sunnyrian</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://yhsyc.club/2022/05/12/NCshift/">http://yhsyc.club/2022/05/12/NCshift/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://yhsyc.club/tags/Golang/">Golang</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://yhsyc.club/tags/Gin/">Gin</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/07/08/maintenance-00/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">网络运维日记-7/7凌晨停电</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/05/11/ftp/"><span class="paginator-prev__text">FTP 的日常使用操作</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: 'd2e1ab71baa947c052fd',
+    clientSecret: '73423ad9053ae629eab405687e168307d376de34',
+    repo: 'Blog',
+    owner: 'Sunnyrian',
+    admin: ['Sunnyrian'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

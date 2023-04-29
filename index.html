@@ -1,0 +1,1144 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="Information Technology Sharing">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sunnyrian&#39;s Blog">
+<meta property="og:url" content="http://yhsyc.club/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="Information Technology Sharing">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="Network Linux Maintenance Programming">
+<meta name="twitter:card" content="summary"><title>Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/index.html"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2023/04/29/install-portainer-in-K8S/">在 Kubernetes 中使用 Helm 部署 Portainer</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-04-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-04-29</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>善用 K8S 的 Helm 真的很爽，如果没有太多定制化的需求，大多数时候，找到服务的 chart，添加到 helm repo 中，然后 helm install 一安装，服务就上线了，省去了很多配置 DeployMent 啦，配置 ConfigMap 啦，配置 Volume 啦，这些繁琐的步骤。</p>
+<p>而且很多时候用这些已经集成好的 Charts 是无伤大雅的，没有人会在意你写了多漂亮的 DeployMent YAML 文件，也没有人会在意你专门为这个服务定制的 Volume 存储有多合乎规定。他们只会在乎你的服务有没有起来，项目上线时间会不会晚。</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://docs.portainer.io/start/install-ce/server/kubernetes/baremetal" >在 K8S 中 安装 Portainer</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加 portainer 的 Helm Charts </span></span><br><span class="line">helm repo add portainer https://portainer.github.io/k8s/ </span><br><span class="line"><span class="comment"># 更新 REPO </span></span><br><span class="line">helm repo updatebash</span><br></pre></td></tr></table></div></figure>
+
+
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#下面的代码会在名为 portainer 的命名空间(没有则会创建该命名空间) 部署 Portainer </span></span><br><span class="line">helm upgrade --install --create-namespace -n portainer portainer portainer/portainer --<span class="built_in">set</span> tls.force=<span class="literal">true</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>小 Tips</p>
+<p>不是所有时候都能用 helm 一键搞定服务上线的，需要具备以下几点才可以</p>
+<ul>
+<li><p>所选择的 Charts 已经被充分验证可用</p>
+</li>
+<li><p>服务不要求各种特殊定制化</p>
+</li>
+<li><p>小型企业及个人开发者</p>
+</li>
+<li><p>对生产环境无直接影响</p>
+</li>
+</ul>
+<p>如果以上条件有一项不被满足，就需要重新考虑如何慎重部署该服务了。别偷懒</p>
+<p>这里经过我的愚笨的尝试，我发现在 K8S 中想要 DIY 一个自己的 GitLab-CE，是比较麻烦的，需要调试的地方太多了，并且性能也不如我用 Portainer 一键部署的。</p>
+<p>推荐大家如果想要部署自己的 GitLab-CE， 可以直接时候 Docker-Compose 一键部署。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/09/07/golang-map/">Golang Map以及if的使用技巧</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-09-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-08</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="带类型的-Map"   >
+          <a href="#带类型的-Map" class="heading-link"><i class="fas fa-link"></i></a><a href="#带类型的-Map" class="headerlink" title="带类型的 Map"></a>带类型的 Map</h3>
+      <figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Tea <span class="keyword">struct</span>&#123;</span><br><span class="line">	color <span class="keyword">string</span></span><br><span class="line">	taste <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line">AAA := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*Tea)</span><br><span class="line"><span class="comment">// you can also import some other type</span></span><br><span class="line">BBB := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*<span class="keyword">type</span>.Cat)</span><br></pre></td></tr></table></div></figure>
+
+<p>make() 可以带参数：类型，长度，容量  type, len, size</p>
+
+        <h3 id="二维-Map-的初始化"   >
+          <a href="#二维-Map-的初始化" class="heading-link"><i class="fas fa-link"></i></a><a href="#二维-Map-的初始化" class="headerlink" title="二维 Map 的初始化"></a>二维 Map 的初始化</h3>
+      <figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们得先知道我们要多少行</span></span><br><span class="line">maxRow := <span class="number">20</span></span><br><span class="line">twoDimensionalMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= maxRow; i ++&#123;</span><br><span class="line">    rowMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span><br><span class="line">    twoDimensionalMap[i] = rowMap</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="if-的使用技巧"   >
+          <a href="#if-的使用技巧" class="heading-link"><i class="fas fa-link"></i></a><a href="#if-的使用技巧" class="headerlink" title="if 的使用技巧"></a>if 的使用技巧</h3>
+      <figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们可以通过接收第二个参数来知道是否存在该值</span></span><br><span class="line"><span class="keyword">if</span> value, exist := twoDimensionalMap[<span class="string">&quot;233&quot;</span>][<span class="string">&quot;666&quot;</span>]; exist &#123;</span><br><span class="line">    <span class="comment">// 如果 twoDimensionalMap[&quot;233&quot;][&quot;666&quot;]存在的话 exist = true</span></span><br><span class="line">    <span class="comment">// 会执行下面的语句</span></span><br><span class="line">    fmt.Println(value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/image-20220908120431425.png" alt="image-20220908120431425"></p>
+
+        <h4 id="字段书写类型"   >
+          <a href="#字段书写类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#字段书写类型" class="headerlink" title="字段书写类型"></a>字段书写类型</h4>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命名规则</th>
+<th>模板</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>蛇形 (snake case)</td>
+<td>使用下划线+小写 下划线命名法</td>
+<td>snake_case、user_name</td>
+</tr>
+<tr>
+<td>大驼峰 (upper camel case)</td>
+<td>单词首字母大写</td>
+<td>PythonCat、UserName</td>
+</tr>
+<tr>
+<td>小驼峰 (lower camel case)</td>
+<td>首单词字母小写，之后的单词首字母大写</td>
+<td>userName</td>
+</tr>
+<tr>
+<td>匈牙利 (HN case)</td>
+<td>属性+类型+描述</td>
+<td>nLength、g_cch、hRgn</td>
+</tr>
+<tr>
+<td>帕斯卡 (Pascal case)</td>
+<td>全部首字母大写 = 大驼峰</td>
+<td>UserName</td>
+</tr>
+<tr>
+<td>脊柱 (spinal case | kebab case | train case)</td>
+<td>使用中划线</td>
+<td>python-cat、user-name</td>
+</tr>
+<tr>
+<td>自由 (studly caps | sticky caps)</td>
+<td>大小写混杂、无简明规则</td>
+<td>NeXT、StUdLyCaPs</td>
+</tr>
+<tr>
+<td>驼峰蛇形 (snake camel case)</td>
+<td>结合驼峰和蛇形命名法</td>
+<td>Python_Cat、 user_Name</td>
+</tr>
+</tbody></table></div>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/09/07/MySQL-varchar/">MySQL 字段到底应该按需分配还是梭哈 varchar(255)</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-09-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-08</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="到底应该按需分配还是梭哈-varchar-255-grey-question"   >
+          <a href="#到底应该按需分配还是梭哈-varchar-255-grey-question" class="heading-link"><i class="fas fa-link"></i></a><a href="#到底应该按需分配还是梭哈-varchar-255-grey-question" class="headerlink" title="到底应该按需分配还是梭哈 varchar(255) :grey_question:"></a>到底应该按需分配还是梭哈 varchar(255) :grey_question:</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1962310/importance-of-varchar-length-in-mysql-table#answer-1962329" >https://stackoverflow.com/questions/1962310/importance-of-varchar-length-in-mysql-table#answer-1962329</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>如果我们设计的 varchar 列比实际需求大很多，那么我们在读取数据，对表进行排序的时候，将消耗更多的内存，当数据库引擎觉得内存不够放下我们的列后，它会考虑将部分数据写入磁盘，从而导致性能显著下降</p>
+<p>同时更宽的列意味着更宽的索引</p>
+<p>所以我们只能在完全不考虑性能的场景下梭哈 varchar(255) -&gt; 为了快速满足需求</p>
+<p>尽量搞清楚该字段的限制在哪里，定下一个合理的字段大小</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://stackoverflow.com/questions/20148/myisam-versus-innodb/17706717#17706717" >MyISAM 与 InnoDB 的选择</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/08/22/remove-element-ui-input-border/">Element el-input 去掉边框</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-08-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-08-22</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>有时候我们得到的需求是不需要这个 <el-input> 的边框的，但是我们又不能直接通过 border: none;  or border: 0; 直接把边框干掉</p>
+<p>tip：将border属性设成0，虽然边框不见了，但是浏览器依然会对border-width和border-color进行渲染，会占用浏览器的资源。将border设置成none，浏览器就不会做出渲染动作。</p>
+<p><del>然后我就在别人的贴子发现了好东西， &gt;&gt;&gt; ,  &gt;&gt;&gt; 是vue的深度选择器， vue 引用了第三方组件，需要在组件中局部修改第三方组件的样式，而又不想去除 scoped 属性造成的组件之间的样式污染。此时只能通过 &gt;&gt;&gt; 穿透 scoped</del></p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inputDeep&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">el-input</span>&gt;</span><span class="tag">&lt;/<span class="name">el-input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p><del>/* 利用穿透，设置 input 边框隐藏 */</del><br><del>.inputDeep&gt;&gt;&gt;.el-input_inner{</del><br>    <del>border: 0;</del><br><del>}</del></p>
+<p><del>/* 如果使用 type 为 textarea 的 input 框的话，就要用下面这个了 <em>/<br>.inputDeep&gt;&gt;&gt;.el-textarea_inner {<br>    border: 0;<br>    resize: none;/</em> 去掉文本框右下角拉伸的标识*/</del><br><del>}</del></p>
+
+        <h6 id="上面的-gt-gt-gt-方法已经在-Vue-3-中废除了"   >
+          <a href="#上面的-gt-gt-gt-方法已经在-Vue-3-中废除了" class="heading-link"><i class="fas fa-link"></i></a><a href="#上面的-gt-gt-gt-方法已经在-Vue-3-中废除了" class="headerlink" title="上面的 &gt;&gt;&gt; 方法已经在 Vue 3 中废除了"></a>上面的 &gt;&gt;&gt; 方法已经在 Vue 3 中废除了</h6>
+      
+        <h6 id="网上的方法浪费时间害人不浅，玩-CSS-真还得自己去看文档摸索，去用开发者工具去看样式到底是怎样渲染的，计算样式是什么情况"   >
+          <a href="#网上的方法浪费时间害人不浅，玩-CSS-真还得自己去看文档摸索，去用开发者工具去看样式到底是怎样渲染的，计算样式是什么情况" class="heading-link"><i class="fas fa-link"></i></a><a href="#网上的方法浪费时间害人不浅，玩-CSS-真还得自己去看文档摸索，去用开发者工具去看样式到底是怎样渲染的，计算样式是什么情况" class="headerlink" title="网上的方法浪费时间害人不浅，玩 CSS 真还得自己去看文档摸索，去用开发者工具去看样式到底是怎样渲染的，计算样式是什么情况"></a>网上的方法浪费时间害人不浅，玩 CSS 真还得自己去看文档摸索，去用开发者工具去看样式到底是怎样渲染的，计算样式是什么情况</h6>
+      <p>在用 div 把我们想要修改的目标组件包起来之后</p>
+<p>我们写一个样式，这样就搞定了</p>
+<figure class="highlight css"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.inputDeep</span> :<span class="built_in">deep</span>(.el-input__wrapper) &#123;</span><br><span class="line">  background-color: <span class="number">#FFFFFF</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>其中 :<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://cn.vuejs.org/api/sfc-css-features.html#scoped-css" >deep </a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>是 Vue 3 中的深度选择器，一个伪类</p>
+<figure class="highlight css"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;style scoped&gt;</span><br><span class="line"><span class="selector-class">.a</span> :<span class="built_in">deep</span>(.b) &#123;</span><br><span class="line">  /* ... */</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>上面的代码会被编译成：</p>
+<figure class="highlight css"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.a</span><span class="selector-attr">[data-v-f3f3eg9]</span> <span class="selector-class">.b</span> &#123;</span><br><span class="line">  <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/08/18/fe-magic/">前端黑魔法</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-08-18</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-08-26</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="前端黑魔法"   >
+          <a href="#前端黑魔法" class="heading-link"><i class="fas fa-link"></i></a><a href="#前端黑魔法" class="headerlink" title="前端黑魔法"></a>前端黑魔法</h3>
+      
+        <h4 id="介绍一下我学到的前端的一些奇奇怪怪的知识"   >
+          <a href="#介绍一下我学到的前端的一些奇奇怪怪的知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#介绍一下我学到的前端的一些奇奇怪怪的知识" class="headerlink" title="介绍一下我学到的前端的一些奇奇怪怪的知识"></a>介绍一下我学到的前端的一些奇奇怪怪的知识</h4>
+      <ol>
+<li> == vs ===</li>
+</ol>
+<p>   在 js 中比较两个变量时，== 比较两个变量的值是否相等</p>
+<p>   === 不仅比较值是否相等，还+-30-1——————————————–比较两个变量的类型是否一直</p>
+<p>   a = 0, b = 0, c = ‘0’</p>
+<p>​        a == b =&gt; true,  a == c =&gt; true, b === c =&gt; false</p>
+<ol start="2">
+<li> !. 非空类型断言符 这个符号表示对象后面的属性一定不是 null 或者 undefined</li>
+</ol>
+<pre><code>https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-
+</code></pre>
+<ol start="3">
+<li><p>?. </p>
+<p>a?.b</p>
+<p>if a is not null, return a.b</p>
+<p>else return a (null or undefine)</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining" >https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>??</p>
+<p>a ?? b </p>
+<p>if a is nullish return b</p>
+<p>But if a is not null , then return a,</p>
+<p>if a is null, return b</p>
+<p>b is likely a default value.</p>
+<p>Only effective when a is null/undefined </p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator" >https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>!!</p>
+<p>a !! b     =     a!(!b)</p>
+</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/07/08/maintenance-00/">网络运维日记-7/7凌晨停电</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-07-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-07-08</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>未知原因停电跳闸，未及时断开机柜电源</p>
+<p>送电之后电涌冲烂了 NAS 的电源，其他设备电源完好</p>
+
+        <h4 id="RouterOS-v6-47-4-在开启-Bridge-and-VLAN-tag-之后，其他-Ethernet-上的-VLAN-tag-会失效"   >
+          <a href="#RouterOS-v6-47-4-在开启-Bridge-and-VLAN-tag-之后，其他-Ethernet-上的-VLAN-tag-会失效" class="heading-link"><i class="fas fa-link"></i></a><a href="#RouterOS-v6-47-4-在开启-Bridge-and-VLAN-tag-之后，其他-Ethernet-上的-VLAN-tag-会失效" class="headerlink" title="RouterOS v6.47.4 在开启 Bridge and VLAN tag 之后，其他 Ethernet 上的 VLAN tag 会失效"></a>RouterOS v6.47.4 在开启 Bridge and VLAN tag 之后，其他 Ethernet 上的 VLAN tag 会失效</h4>
+      <p>即 最好不要在当作 Router 使用的 ROS 上开启 Bridge 的功能</p>
+
+        <h4 id="TP-Link-的-AP-不支持通过交换机-access-口-AP-有线中继？"   >
+          <a href="#TP-Link-的-AP-不支持通过交换机-access-口-AP-有线中继？" class="heading-link"><i class="fas fa-link"></i></a><a href="#TP-Link-的-AP-不支持通过交换机-access-口-AP-有线中继？" class="headerlink" title="TP-Link 的 AP 不支持通过交换机 access 口 AP 有线中继？"></a>TP-Link 的 AP 不支持通过交换机 access 口 AP 有线中继？</h4>
+      <p>我的 XDR-5480 之前在 RouterOS 后接一个非网管交换机可以直接 AP 有线中继，在使用交换机 access 口后，在 RouterOS DHCP Leases 中可以看到该 AP 拿了一个 100.88.88.6 的地址，但紧跟着还有一条 status 为 offered 的100.88.88.7 的地址给该 AP 的 MAC 地址+1的地址，expired time 为 30s</p>
+<p>在 AP 的管理页面可以看到只中继成功了 2-3 s，就又中继失败了，不断循环往复，暂未找到具体原因</p>
+
+        <h6 id="相信大家一看完上面这两条就知道我干了神魔，我-bridge-了接入网的-vlan-和-RouterOS-的一个网口，然后-AP-直插-RouterOS"   >
+          <a href="#相信大家一看完上面这两条就知道我干了神魔，我-bridge-了接入网的-vlan-和-RouterOS-的一个网口，然后-AP-直插-RouterOS" class="heading-link"><i class="fas fa-link"></i></a><a href="#相信大家一看完上面这两条就知道我干了神魔，我-bridge-了接入网的-vlan-和-RouterOS-的一个网口，然后-AP-直插-RouterOS" class="headerlink" title="相信大家一看完上面这两条就知道我干了神魔，我 bridge 了接入网的 vlan 和 RouterOS 的一个网口，然后 AP 直插 RouterOS"></a>相信大家一看完上面这两条就知道我干了神魔，我 bridge 了接入网的 vlan 和 RouterOS 的一个网口，然后 AP 直插 RouterOS</h6>
+      </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/05/12/NCshift/">网络中心排班系统开发日志-Golang</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-05-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-04-14</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>2022年</p>
+<p>5.08 开始学习 Gin 框架</p>
+<p>5.11 打开项目，开始用 Golang 重构项目，思考如何从xls课表中提取出想要的信息</p>
+<p>5.12 下午五点 xls 分析功能实现完毕，实现 OT(Occupation Table) 提取功能</p>
+<p>​         晚上十一点  数据库结构设计完毕 SQL语句初步书写完毕</p>
+<p>5.13 晚上九点半 完成使用 Gorm 框架 实现 OT 表导入数据库</p>
+<p>5.14 下午五点半 实现使用Gin框架 从前端POST表单到后台，收集需要排的班次信息，可以开始写排班功能</p>
+<p>5.16 上午九点半 完成输入日期，生成排班表功能</p>
+<p>​         下午六点半 完成输入日期，查询指定日期排班表功能</p>
+<p>5.18 晚上十点半 完成 OT 表正确初始化并根据课表更新、根据 shift 表 生成 值班时长 duty 表</p>
+<p>​         实现根据当前有空的网管，左连接值班时长表，take 值班时长最少的人排上去</p>
+<p>5.19 凌晨三点 完成简单排班功能，班次排得平均得雅痞<br>6.1   凌晨一点，前端注册表单验证基本实现完毕，使用全局数据库连接</p>
+<p>6.8  中午十二点，注册和登录功能实现完毕</p>
+<p>6.14 凌晨2点40，现在我们用 cookie 保存用户登录状态 并从后端获取用户信息，在前端显示</p>
+<p>6.23 可以选择登录方式</p>
+<p>6.28 开始写后台页面，可以查看用户列表</p>
+<p>7.3 实现前端组件复用，完善路由传参</p>
+<p>TODO:</p>
+<ul>
+<li>编写测试用例</li>
+<li>前端判断选择的两个排班日期大小,结束日期晚于起始日期</li>
+<li>前端输入需要排班日期的时候，输入开始和结束日期之后，要更新下方单选列表，选择每一天的值班类型 单纯用js实现比较麻烦，不如用 Vue</li>
+<li>思考到底在哪里连接数据库好</li>
+<li>数据库默认值可以用 default 赋</li>
+<li>根据课表更新 OT 表 这一步可以使用携程，快速操作，但考虑一学期更新不到几次，这个可以考虑延缓改进</li>
+<li>initOccupation 可以一次Save 一个网管的</li>
+<li>前端开始排班之前，应该还要选择排哪些网管的班次</li>
+<li>连续登录五次失败之后需要输入验证码</li>
+<li>在 localStorage 中存储用户的选择配置</li>
+<li>数据库多一个表，存储学期开始日期，对应周数</li>
+</ul>
+<p>需要外置的环境变量参数</p>
+<p>钉钉 Appkey</p>
+<p>钉钉 AppSecret</p>
+<p>/model/database.go dsn</p>
+<p>MySQL 数据库地址 用户名 密码</p>
+<p>/jwt/generateToken secret Token过期事件</p>
+<p>需要用到的网站： </p>
+<ul>
+<li>Go 库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://pkg.go.dev/" >https://pkg.go.dev/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Gorm DAO <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://gorm.io/" >https://gorm.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>GIN web 框架 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://gin-gonic.com/" >https://gin-gonic.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 js <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://v3.cn.vuejs.org/" >https://v3.cn.vuejs.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>gormt 根据数据库自动生成 model <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/xxjwxc/gormt" >https://github.com/xxjwxc/gormt</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>element+ Vue3 组件库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://element-plus.gitee.io/zh-CN" >https://element-plus.gitee.io/zh-CN</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 ts 快速上手 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://24kcs.github.io/vue3_study" >https://24kcs.github.io/vue3_study</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>快速用 go gin 构建项目教程 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developer.okta.com/blog/2021/02/17/building-and-securing-a-go-and-gin-web-application" >https://developer.okta.com/blog/2021/02/17/building-and-securing-a-go-and-gin-web-application</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>为 Gin 框架配置跨域(暂时没用到) <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/43255082" >https://zhuanlan.zhihu.com/p/43255082</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>密码加盐加密存储及其登录验证方式 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/342051053" >https://zhuanlan.zhihu.com/p/342051053</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>axios 基于 promise 的网络请求库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://axios-http.com/zh/docs/intro" >https://axios-http.com/zh/docs/intro</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 前端教程-登录功能 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_18671803/article/details/120920955" >https://blog.csdn.net/qq_18671803/article/details/120920955</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Vue3 / Ts Router 讲解 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/Royzilong/article/details/123736090" >https://blog.csdn.net/Royzilong/article/details/123736090</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Typescript 快速上手 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.tslang.cn/" >https://www.tslang.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>axios 正确用法 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.likecs.com/ask-7991875.html" >https://www.likecs.com/ask-7991875.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>定义 gorm db 全局变量 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.h5w3.com/182882.html" >https://www.h5w3.com/182882.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端常用加密方式 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/GTH07399/article/details/123136428" >https://blog.csdn.net/GTH07399/article/details/123136428</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端加密AES、RSA、SHA256用法 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44545318/article/details/122824608" >https://blog.csdn.net/weixin_44545318/article/details/122824608</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>crypto-js <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/brix/crypto-js" >https://github.com/brix/crypto-js</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>JWT IETF docs <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html" >https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>golang-jwt <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/golang-jwt/jwt" >https://github.com/golang-jwt/jwt</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>golang-jwt介绍 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44294408/article/details/122095919" >https://blog.csdn.net/weixin_44294408/article/details/122095919</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>  </li>
+<li>jwt 介绍(阮一峰) <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html" >http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>在 gin 中使用 golang-jwt <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43987921/article/details/119639309" >https://blog.csdn.net/weixin_43987921/article/details/119639309</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>RBAC权限系统分析、设计与实现 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://shuwoom.com/?p=3041" >https://shuwoom.com/?p=3041</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>async 函数的含义和用法 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/05/async.html" >http://www.ruanyifeng.com/blog/2015/05/async.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端鉴权必须了解的 5 个兄弟：cookie、session、token、jwt、单点登录 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1710656941076243312&amp;wfr=spider&amp;for=pc" >https://baijiahao.baidu.com/s?id=1710656941076243312&amp;wfr=spider&amp;for=pc</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端鉴权的兄弟们：cookie、session、token、jwt、单点登录 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://juejin.cn/post/6898630134530752520" >https://juejin.cn/post/6898630134530752520</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>cookie <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://javascript.ruanyifeng.com/bom/cookie.html" >https://javascript.ruanyifeng.com/bom/cookie.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>前端存储-cookie <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43845090/article/details/109291316" >https://blog.csdn.net/weixin_43845090/article/details/109291316</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>JavaScript 教程 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://wangdoc.com/javascript/basic/index.html" >https://wangdoc.com/javascript/basic/index.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Argument of type ‘‘ is not assignable to parameter of type ‘never‘. <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/survivorsfyh/article/details/112184818" >https://blog.csdn.net/survivorsfyh/article/details/112184818</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>gin-vue-admin <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.dev/flipped-aurora/gin-vue-admin" >https://github.dev/flipped-aurora/gin-vue-admin</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Go 每日一库 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/darjun/go-daily-lib" >https://github.com/darjun/go-daily-lib</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Github Daily <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/GitHubDaily/GitHubDaily" >https://github.com/GitHubDaily/GitHubDaily</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>vue-router(v4) 组合式API <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/advanced/composition-api.html#%E5%9C%A8-setup-%E4%B8%AD%E8%AE%BF%E9%97%AE%E8%B7%AF%E7%94%B1%E5%92%8C%E5%BD%93%E5%89%8D%E8%B7%AF%E7%94%B1" >https://router.vuejs.org/zh/guide/advanced/composition-api.html#%E5%9C%A8-setup-%E4%B8%AD%E8%AE%BF%E9%97%AE%E8%B7%AF%E7%94%B1%E5%92%8C%E5%BD%93%E5%89%8D%E8%B7%AF%E7%94%B1</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>git commit 书写规范 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html" >https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>笔记：</p>
+<p>​    前端渲染周日程表的时候，应该的按行渲染的，即一周，一个时间段一个时间段一行过去渲染</p>
+<p>​    获取当前周 -&gt; 获取当前周排班表 -&gt;(option) 选择某一周或者+-周</p>
+<p>每个学期要分库分表吗？没必要，一学期的OT表也不超过2MiB，20个人的规模</p>
+<p>在给ref对象赋值的时候，要用.value，才能更新到值</p>
+<p>毕业设计的题目为《基于Gin、Gorm、Vue的排班OA系统的设计与实现》，提供多人在线实时挑选班次、个人空闲时间管理、调休假、自动排班、考勤统计等功能。</p>
+<p>系统后端使用 Golang 语言编写，使用 Gin 作为 http框架、 Gorm 作为对象关系映射框架，系统前端使用 Vue 和 Element UI 组件库，使用 WebSocket 来实现多端实时通讯。</p>
+<p>本项目的主要功能之一自动排班已经实现完毕，前端用户 JWT token 路由鉴权也已经测试完毕，在完善前端用户体验的同时，继续学习后端开发技巧，同时该项目借鉴大公司开发中的微服务思想，该项目落地部署以及升级都十分便利。</p>
+<p>该需求来自学校网络中心，需要给值班的网管干事排班，以往都是人力去先根据课表知道大家的空闲时间来排班，每周都需要花几个小时排班，费时费力还经常出错，调休也需要人工干预，有了这个系统之后，办公自动化带来的效率是可观的持久的。</p>
+<p>系统使用流程：</p>
+<p>配置好数据库，创建好表</p>
+<p>在每个学期开始时手动初始化该学期的 shift configuration 表，同时更新所有用户的 occupation_init_status 为 0</p>
+<p>在要排班之前根据 shift configuration 生成班次，选择开启自由选班几小时或者自动排班</p>
+<p>2023/2/13</p>
+<p>重新思考项目主要功能框架</p>
+<ul>
+<li>解析课程表可以把每一个 cell 解析为事件 类型 起始时间段 结束时间段</li>
+</ul>
+<p>2023/2/16</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/swaggo/gin-swagger" >https://github.com/swaggo/gin-swagger</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>之后swagger 可以用 oAuth，超帅和安全</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://goswagger.io/" >https://goswagger.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>TODO：</p>
+<ul>
+<li><p><input disabled="" type="checkbox">  自由实时在线挑选班次功能 By webSocket</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  Swagger 接口 API 文档</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/549252410?utm_id=0" >https://zhuanlan.zhihu.com/p/549252410?utm_id=0</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>放弃使用 swagger 来生成 API 文档，因为接口数量少，接口数量简单</p>
+</li>
+<li><p><input disabled="" type="checkbox">  后台可配置每周生成排班时间，排班生成规则</p>
+<p>用配置好的参数调用生成排班方法，发布选班通知，过时间自动补齐空闲班次，补齐后通知未能排上班的班次</p>
+<p>如果有特殊排班需求可配置 维护一个数据库表来管理每天的排班，每个时段排不排班，排几个人</p>
+<p>shift_configuration</p>
+</li>
+</ul>
+<p>2023/2/21</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/383848749" >https://zhuanlan.zhihu.com/p/383848749</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/rs/zerolog" >https://github.com/rs/zerolog</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>2023/3/2</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/211405.htm" >Golang func() init</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </p>
+<p>2023/3/7</p>
+<p>需要确认 个人的当前学期的空闲表是否有被创建</p>
+<p>Current_OccupationTable_Status 0-&gt;未创建  1-&gt;已创建</p>
+<p>在旧学期过去两周后(手动)，重置所有的user.Current_OccupationTable_Status = 0</p>
+<p>管理员功能：</p>
+<p>班次管理</p>
+<p>生成班次</p>
+<p>开启班次自选功能 指定日期的班次 + 截止选班次时间 </p>
+<p>获取某一周的shiftConfig</p>
+<p>发给前端的时间统一用 Unix</p>
+<p>前端也要有一套时间转换的工具</p>
+<p>ENV 配置项该用起来了</p>
+<p>2023/3/9</p>
+<p>在管理员审批通过注册的账号的时候，给该账号生成空闲表</p>
+<p>2023/3/16</p>
+<p>数据库user表 id 要从 1开始，id = 0 会被go视为零值</p>
+<p>注册页添加步骤条 注册-》审核》登陆</p>
+<p>可以设置不显示页尾 -&gt; 只有首页显示页尾 Footer</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://code-farmer-i.github.io/vue-markdown-editor/zh/" >https://code-farmer-i.github.io/vue-markdown-editor/zh/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>优化需求：通用用户查询接口</p>
+<ul>
+<li><p><input disabled="" type="checkbox">  将 getUserList controller 内的数据库逻辑抽象成服务</p>
+</li>
+<li><p><input disabled="" type="checkbox">  密码输错五次添加验证码模块</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  事务开始之后，只有成功或者回滚后才能return</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  设计 should bind query 的请求，number不能从0开始，不然会绑定失败</p>
+</li>
+<li><p><input disabled="" type="checkbox">  在每天值班的四个值班时间结束时间点更新数据库 shift.status -&gt; 2</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  只有自己的班次可以申请换给别人</p>
+</li>
+<li><p><input disabled="" type="checkbox">  认领没有人值班的班次接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  实时挑选班次的系统</p>
+<p>还是用数据库做持久化存储</p>
+<p>在进入排班表页面的时候，建立 websocket 连接</p>
+<p>可选：用一个结构体存下当前用户鼠标最后操作的班次，断开 websocket 连接时删除</p>
+<p>实时传输选班次和放弃班次的结果</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  更新空闲表的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  获取个人空闲表的接口 按周 </p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  管理员可获取所有人的班次表</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增换班表的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增获取换班表详情的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增获取换班表列表的接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  换班表列表的接口添加页数和页码</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增同意或拒绝换班申请的接口 同意后更新班次表</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  新增请假表接口 同意后修改班次表的状态为已请假</p>
+</li>
+<li><p><input disabled="" type="checkbox">  已请假状态别人可以再认领班次</p>
+</li>
+<li><p><input disabled="" type="checkbox">  新增干事排班</p>
+</li>
+<li><p><input disabled="" type="checkbox">  新增干事的班次类型</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  班次状态总览:   -2 干事未排班; -1 未排班; 1 已排班; 2 干事已排班  3已请假; 4干事已请假;  5旷班;  6干事旷班; 7 已值班; 8干事已值班; 9 任选阶段 10 干事任选阶段</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  给周班次上锁解锁接口</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  生成班次的时候，只有两个选项，直接排班 or 任选 x 小时，x小时后自动锁定班次</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  锁定班次接口</p>
+</li>
+<li><p><input disabled="" type="checkbox">  修改密码的接口</p>
+</li>
+<li><p><input disabled="" type="checkbox">  防止密码爆破操作</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  输出日志</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  值班时长统计</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  前端用户信息修改点击取消要重新触发表单验证</p>
+</li>
+<li><p><input disabled="" type="checkbox">  日志输出格式，信息全写在message中，使用 sprintf</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  请假</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  换班</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  班次调动</p>
+</li>
+<li><p><input disabled="" type="checkbox">  Notfound 3s 返回</p>
+</li>
+<li><p><input disabled="" type="checkbox">  重置 User_item 的接口</p>
+</li>
+</ul>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/configuration/advanced-configuration.html" >https://docs.gitlab.com/runner/configuration/advanced-configuration.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/geekqian/article/details/125942407" >https://blog.csdn.net/geekqian/article/details/125942407</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/264471.htm" >https://www.jb51.net/article/264471.htm</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>gin框架参数零值json绑定的问题 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42279809/article/details/107800081" >https://blog.csdn.net/weixin_42279809/article/details/107800081</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39618369/article/details/125991257" >https://blog.csdn.net/qq_39618369/article/details/125991257</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://devpress.csdn.net/vue/62f8fd487e6682346618b3e8.html" >https://devpress.csdn.net/vue/62f8fd487e6682346618b3e8.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/05/11/ftp/">FTP 的日常使用操作</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-05-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-05-11</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h4 id="FTP-的使用"   >
+          <a href="#FTP-的使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#FTP-的使用" class="headerlink" title="FTP 的使用"></a>FTP 的使用</h4>
+      <p><strong>连接至 FTP 服务器</strong></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ftp &lt;ftp-host&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>输入用户名密码登录</p>
+<p>目录操作和 linux 一样</p>
+<p><strong>从远端 FTP 主机中下载文件</strong></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get [remote-file] [local-file]</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>从远端接收一批文件</strong></p>
+<p>#此时每下载一个文件都会有提示，如果不要提示，可以在执行下面命令前执行 prompt off</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mget [remote-files]</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>上传文件到远程 FTP 服务器</strong></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ftp &lt;localfile&gt; [remote-file]</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>上传当前目录下中一批文件到远端主机</strong></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mput &lt;local-files&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>断开连接</strong></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bye</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>linux 查看当前硬盘使用情况</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -lh</span><br></pre></td></tr></table></div></figure>
+
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/04/11/interview-questions/">笔试面试问题总结</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-04-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="2022年找实习-运维DevOps"   >
+          <a href="#2022年找实习-运维DevOps" class="heading-link"><i class="fas fa-link"></i></a><a href="#2022年找实习-运维DevOps" class="headerlink" title="2022年找实习-运维DevOps"></a>2022年找实习-运维DevOps</h2>
+      
+        <h3 id="某-bank-笔试"   >
+          <a href="#某-bank-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#某-bank-笔试" class="headerlink" title="某 bank-笔试"></a>某 bank-笔试</h3>
+      <ol>
+<li><p>小根堆是什么？堆是什么？</p>
+<p>堆是一种经过排序的完全二叉树，其中任一非终端节点的数据值均不大于（或不小于）其左子节点和右子节点的值。<br>最大堆和最小堆是二叉堆的两种形式。<br>最大堆：根结点的键值是所有堆结点键值中最大者。<br>最小堆：根结点的键值是所有堆结点键值中最小者。<br>而最大-最小堆集结了最大堆和最小堆的优点，这也是其名字的由来。<br>最大-最小堆是最大层和最小层交替出现的二叉树，即最大层结点的儿子属于最小层，最小层结点的儿子属于最大层。<br>以最大（小）层结点为根结点的子树保有最大（小）堆性质：根结点的键值为该子树结点键值中最大（小）项。</p>
+</li>
+<li><p>在一个进程使用完它的时间片后，会进入什么状态？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/jolin678/article/details/49498127/" >进程的三种状态</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>ArrayList 的底层原理是什么？</p>
+<p>数组</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.nowcoder.com/questionTerminal/5e60ef88c480461e9fdd7ece6cf0ea46?orderByHotValue=1&mutiTagIds=639&page=1&onlyReference=false" >public class A implements A,B</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>?</p>
+<p>接口可以继承接口，不能实现接口    单继承多实现</p>
+</li>
+<li><p>使用 DP 应该满足什么性质？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/txt666999999/article/details/121076591" >DP动态规划</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>TDD 模式是什么？</p>
+<p>TDD:测试驱动开发(Test-Driven Development)</p>
+<p>测试驱动开发是敏捷开发中的一项核心实践和技术，也是一种设计方法论。TDD的原理是在开发功能代码之前，先编写单元测试用例代码,测试代码确定需要编写什么产品代码。TDD的基本思路就是通过测试来推动整个开发的进行，但测试驱动开发并不只是单纯的测试工作，而是把需求分析，设计，质量控制量化的过程。TDD首先考虑使用需求（对象、功能、过程、接口等)，主要是编写测试用例框架对功能的过程和接口进行设计，而测试框架可以持续进行验证。</p>
+</li>
+<li><p>使用线程 synchronized 有什么用？多选 </p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/Jakob_Hu/article/details/103002913" >java synchronized</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/216499.htm" >泛型</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>客户端发送 SYN = 1 之后进入什么状态？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://t.zoukankan.com/viviane-p-11713253.html" >TCP的状态</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_47664976/article/details/117430939" >图的遍历过程</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>创建新目录用什么类？File</p>
+</li>
+<li><p>下推自动机读几型文法？</p>
+<ul>
+<li><p>0 型文法</p>
+<p>G = ( VT， VN，P, S )，每一个产生式：α \alphaα ——&gt; β \betaβ ，α \alphaα ∈ \in∈ (VN ∪ \cup∪ VT)* 至少含有一个非终结符，而β \betaβ ∈ \in∈ (VN ∪ \cup∪ VT)*， 则G是一个0型文法，功能相当于图灵机，也称短语文法</p>
+</li>
+<li><p>1 型文法</p>
+<p>1型文法也叫上下文有关文法，此文法对应于线性有限自动机。它是在0型文法的基础上每一个α \alphaα ——&gt; β \betaβ ，都有 | β \betaβ | &gt;= | α \alphaα |，这里的 | β \betaβ | 指的是 β \betaβ 的长度，特例：α \alphaα ——&gt; ϵ \epsilonϵ 也是1型文法</p>
+</li>
+<li><p>2 型文法</p>
+<p>2型文法也叫上下文无关文法，通过下推自动机（PDA）识别，2型文法是在1型文法的基础上满足，每一个 α \alphaα ——&gt; β \betaβ 都有 α \alphaα 是非终结符</p>
+</li>
+<li><p>3 型文法</p>
+<p>3型文法叫做正则文法，他对应有限状态自动机。在2型文法的基础上满足，A ——&gt; a | aB(右线性) 或 A—&gt; a|B(左线性) 例子：A ——&gt; ϵ \epsilonϵ | aB , B —&gt; Ab | a，0型文法、1型文法、2型文法，不是3型文法</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>算法题</p>
+<ol>
+<li><p>十进制转 16 进制 有多少位是字母？</p>
+</li>
+<li><p>n x y</p>
+<p>10 7 8 4 5 1</p>
+<p>n 个人 如果某个人前 x 个人的精神值和后 y 个人的精神值都大于他，那么他开始卷</p>
+<p>求第一个开始卷的人</p>
+<p>可以使用线性前缀和</p>
+</li>
+<li><p>动态规划题</p>
+<p>n k</p>
+<p>230848942398</p>
+<p>n 个数，求数字串 n 的子串中，能被k整除的个数</p>
+<p>解题思路：如果一个数 abc， c可以被 k 整除，b*10可以被k整除，那么 bc 也可以被k整除； 质数筛</p>
+</li>
+</ol>
+<p>搜索过程中，建立指向其父节点的指针有什么用？</p>
+<ol>
+<li>建立了路径，可以知道某个子节点是从哪个父节点搜索过来的，便于表示路径</li>
+<li>方便回溯，深搜时可以回到父节点，再去搜索其他节点</li>
+</ol>
+
+        <h3 id="9-笔试"   >
+          <a href="#9-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#9-笔试" class="headerlink" title="***9-笔试"></a>***9-笔试</h3>
+      <p>选择题：</p>
+<ul>
+<li><p>awk 的用法 这个还得是多用才会</p>
+</li>
+<li><p>MySQL grant 一个用户查询权限：</p>
+</li>
+<li><p>ssh 允许 root 用户登录的设定 PermitRootLogin Yes</p>
+</li>
+<li><p>ssh 允许某个用户登录的设定： PermitUser? AllowUsers?  </p>
+<p>AllowUsers Sunnyrian</p>
+</li>
+</ul>
+<p>技术问答题:</p>
+<ul>
+<li>请写出 Openstack 的四种基础组件，并描述他们的功能用途</li>
+</ul>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.redhat.com/zh/topics/openstack" >https://www.redhat.com/zh/topics/openstack</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/nova" >Nova</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 是一种用于完整管理和访问 OpenStack 计算资源的工具，能够处理资源的调度、创建和删除。</p>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/neutron" >Neutron</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 在连接 OpenStack 服务之间的网络。</p>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/swift" >Swift</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 是一种高度容错的对象存储服务，使用 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.redhat.com/zh/topics/integration/whats-the-difference-between-soap-rest" >RESTful API</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 来存储和检索非结构数据对象。</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/cinder" >    Cinder</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 提供可通过自助服务 API 访问的持久块存储。</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/keystone" >    Keystone</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 负责所有 OpenStack 服务的身份验证和授权。它也是所有服务的端点目录。</p>
+<p>​    Glance 可存储和检索多个位置的虚拟机磁盘镜像。</p>
+<ul>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/205388.htm" >请写出 6 个 Linux 系统显示性能的命令</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45911701/article/details/119637511" >并说出他们的功能和参数使用</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">top</span><br><span class="line">vmstat</span><br><span class="line">iostat</span><br><span class="line">mpstat</span><br><span class="line">pidstat</span><br><span class="line">sar</span><br></pre></td></tr></table></div></figure></li>
+</ul>
+<p>程序题:</p>
+<p>写一个脚本，每 30 s ping 一次 1.1.1.1 和 2.2.2.2，如果他们挂了，那么执行一条告警命令 alert xxxxxx；告警规则有收敛，每1h告警一次</p>
+<p>问答题：</p>
+<ul>
+<li>大学期间你做过的最有成就感的事情是什么？为什么？</li>
+<li>你觉得你是一个什么样性格的人？你的什么特质会影响你的发展？</li>
+<li>如果你的一个方案被上级领导通过了，但在小组执行过程中受阻无法推进，那么你要怎么样做？</li>
+</ul>
+
+        <h3 id="某易-笔试"   >
+          <a href="#某易-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#某易-笔试" class="headerlink" title="某易-笔试"></a>某易-笔试</h3>
+      <p>4 道算法题 1 道问答题</p>
+<p><del>小红拿到了一个 n 个节点、m 条边的无向</del></p>
+<p><del>小红拿到一个数组 a，她定义一个区间的权值为区间内所有数的乘积末尾 0 的数量，求所有区间的权值之和</del></p>
+<p><del>称区间 [i, j] 的权值 f[i, j] 为区间内所有数乘积末尾0的数目</del></p>
+<p> <del>例如：一条边连接的两个点的权值是50和60，那么小红删掉这条边获得的价值为3</del></p>
+<p><del>小红想知道，在保证这张图连通的情况下，最多可以通过删边获得多少价值</del></p>
+<p><del>输入：第一行: 正整数  1 &lt;= n &lt;= 1e5</del></p>
+<p>​            <del>第二行: n 个正整数 1 &lt;= ai &lt;= 1e9</del></p>
+<p><del>样例：input: 3</del></p>
+<p>​                      <del>10 2 5</del></p>
+<p>​            <del>output: 5</del></p>
+<p><del>[1, 1]  乘积 10  权值 1</del></p>
+<p><del>[1, 2]  乘积 20  权值 1</del></p>
+<p><del>[1, 3]  乘积 100  权值 2</del></p>
+<p><del>[2, 2]  乘积 2  权值 0</del></p>
+<p><del>[2, 3]  乘积 10  权值 1</del></p>
+<p><del>[3, 3]  乘积 5  权值 0</del></p>
+<p><del>总权值为5</del></p>
+
+        <h3 id="某鹅-笔试"   >
+          <a href="#某鹅-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#某鹅-笔试" class="headerlink" title="某鹅-笔试"></a>某鹅-笔试</h3>
+      <p>36 道单选题，16 道多选题</p>
+<ul>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45548465/article/details/122625777" >网卡 bond 一共有多少种模式</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://wenku.baidu.com/view/a80ed014598102d276a20029bd64783e09127dde.html" >链路聚合</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>是模式几？7 6</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43408582/article/details/115523424" >Linux signal 系统是什么？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>n 道逻辑题</p>
+</li>
+<li><p>爬 11 个台阶楼梯，每一次爬可以选择爬一个台阶或者两个台阶，有多少种可能？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/55948878.html" >https://zhidao.baidu.com/question/55948878.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>C++ 知识      k = f( a++)   a 等于 3 的话  k 等于几？ 3</p>
+</li>
+<li><p>Docker 使用了 Linux 内核的什么特性？ Capabilities？ Secure Computing mode（Seccomp）？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=docker&spm=1001.2101.3001.7020" >docker</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34442022/article/details/116660883" >依赖于Linux的二个特性：命名空间(namespace)和控制组(cgroups)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>进程fork 输出几个p? 14</p>
+<p>for(int i = 0; i &lt; 3; i++)</p>
+<p>{</p>
+<p>​    print(“p”);</p>
+<p>​    fork();</p>
+<p>}</p>
+</li>
+<li><p>37 转 3 进制是什么？ 1101</p>
+</li>
+<li><p>NIC Network Interface Controller 网卡  Processer 处理器 Memory 内存 Hard disk 硬盘</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/xuhan2011hd68/article/details/16349641" >会话 1 对一个表上了一个共享锁，那么会话 2 还可以对这个表干嘛？ 对某一行上排他锁互斥锁？对整个表又能上什么锁？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>用什么指令在 A 服务器检测 B 服务器 HTTP 服务是否工作正常？ telnet? ping? nmap？</p>
+<p>curl (但是选项中没有) 我选了 telnet 可以 telnet 服务器 80 端口判断</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/ty_hf/article/details/54930120" >shell 知识： </a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>$x= 3 + “15%” + “$25”;</p>
+<p>​                      var_dump($x);</p>
+<p>​                      var_dump(0123==123);</p>
+<p>​                      var_dump(‘0123’==123); 问输出什么？</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://m.php.cn/article/476705.htm" >数据库事务的隔离级别？ 哪种不会脏读？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><strong>1）Read Uncommitted（读未提交）</strong></p>
+<p>一个事务在执行过程中，既可以访问其他事务未提交的新插入的数据，又可以访问未提交的修改数据。如果一个事务已经开始写数据，则另外一个事务不允许同时进行写操作，但允许其他事务读此行数据。此隔离级别可防止丢失更新。</p>
+<p><strong>2）Read Committed（读已提交）</strong></p>
+<p>一个事务在执行过程中，既可以访问其他事务成功提交的新插入的数据，又可以访问成功修改的数据。读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。此隔离级别可有效防止脏读。</p>
+<p><strong>3）Repeatable Read（可重复读取）</strong></p>
+<p>一个事务在执行过程中，可以访问其他事务成功提交的新插入的数据，但不可以访问成功修改的数据。读取数据的事务将会禁止写事务（但允许读事务），写事务则禁止任何其他事务。此隔离级别可有效防止不可重复读和脏读。</p>
+<p><strong>4）Serializable（可串行化）</strong></p>
+<p>提供严格的事务隔离。它要求事务序列化执行，事务只能一个接着一个地执行，不能并发执行。此隔离级别可有效防止脏读、不可重复读和幻读。但这个级别可能导致大量的超时现象和锁竞争，在实际应用中很少使用。</p>
+<p>一般来说，事务的隔离级别越高，越能保证数据库的完整性和一致性，但相对来说，隔离级别越高，对并发性能的影响也越大。因此，通常将数据库的隔离级别设置为 Read Committed，即读已提交数据，它既能防止脏读，又能有较好的并发性能。虽然这种隔离级别会导致不可重复读、幻读和第二类丢失更新这些并发问题，但可通过在应用程序中采用悲观锁和乐观锁加以控制。</p>
+</li>
+<li><p><strong>ACID 是什么？</strong></p>
+<ul>
+<li>Atomicity（原子性）：一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被恢复（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。</li>
+<li>Consistency（一致性）：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设规则，这包含资料的精确度、串联性以及后续数据库可以自发性地完成预定的工作。</li>
+<li>Isolation（隔离性）：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。</li>
+<li>Durability（持久性）：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。 </li>
+</ul>
+</li>
+<li><p>Redis 是非关系型数据库吗？ 是的</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42665676/article/details/111596987" >B+ 树相比 B 树的优点？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1693734480921295261&wfr=spider&for=pc" >数据库分库分表</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>GPU DNN 深度学习神经算法</p>
+</li>
+<li><p>数据库 grant 操作 quesr@localhost    只能在localhost登录？错 localhost是指本地这台机</p>
+<p>同时给的权限怎么定义？什么时候该用户可以把他的权限又 grant 给别人？</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/ipmitool/3300367?fr=aladdin" >在 OS 内下，ipmitool 命令可以干哪些事情？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.likecs.com/show-758688.html" >传统 BIOS 相比 UEFI BIOS 的不足有什么？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>UEFI BIOS和传统BIOS的一个显著区别就是UEFI是用模块化、C语言风格的参数堆栈传递方式、动态链接的形式构建的系统，比传统BIOS而言更容易于实现，容错和纠错特性更强，缩短了系统研发的时间。它运行于32位或64位模式，乃至未来增强的处理器模式下，突破传统16位代码的寻址能力，达到处理器的最大寻址。它利用加载UEFI驱动的形式，识别及操作硬件，不同于BIOS利用挂载模式中断的方式增加硬件功能。</p>
+</li>
+<li><p>MySQL 联合索引怎么做？</p>
+</li>
+<li><p>OSI 网卡工作在那几层？ 物理层 数据链路层 网络层</p>
+</li>
+<li><p>以下哪些硬件可以热拔插？ 内存 CPU 硬盘 电源</p>
+</li>
+</ul>
+
+        <h3 id="某-bank-一面"   >
+          <a href="#某-bank-一面" class="heading-link"><i class="fas fa-link"></i></a><a href="#某-bank-一面" class="headerlink" title="某 bank-一面"></a>某 bank-一面</h3>
+      <ol>
+<li><p>自我介绍：</p>
+</li>
+<li><p>为什么会选择做运维？</p>
+</li>
+<li><p>描述一下网络4层架构和OSI七层协议我更偏向于去描述一个访问qq.com的过程</p>
+<p>能把自己很熟悉的东西，简洁有力地说出来，也是一种能力</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24860273" >TCP 和 UDP 的区别</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>TCP(Transport Control Protocol) 是面向连接的协议，就是说在传输数据之前一定要先建立连接，TCP 是通过三次握手完成连接的建立的，断开连接时采用四次挥手</p>
+<p><img src="https://oss.yhsyc.club/img/ITAVJQ3ZaviHdYm.png" alt="1466805-20191021113037722-1150740308.png"></p>
+<p>UDP(User Data Protocol) 用户数据报协议</p>
+<ul>
+<li>UDP使用尽最大努力交付，即不保证可靠交付， 因此主机不需要维持复杂的链接状态表</li>
+<li>UDP是面向报文的。发送方的UDP对应用程序交下来的报文， 在添加首部后就向下交付给IP层。既不拆分，也不合并，而是保留这些报文的边界， 因此，应用程序需要选择合适的报文大小。</li>
+<li>也不算完全没有连接，WireGuard 隧道会在建立隧道时确定双方的握手间隔，以保持连接活跃，确定隧道连通</li>
+</ul>
+</li>
+<li><p>HTTP 和 HTTPS</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_49830664/article/details/122527783" >易于理解版本</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/lyhjava/article/details/51860215" >简述一下 HTTPS 的加密过程？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<ul>
+<li>客户端想要访问服务端的页面</li>
+<li>服务端向客户端发送证书</li>
+<li>客户端校验证书，检验收到的证书是否过期，是否可信任，提取出公钥</li>
+<li>客户端生成一个随机码，用公钥加密，然后发送给服务端</li>
+<li>服务端拿到加密后的随机码，用自己的私钥解密它，得到客户端生成的随机码</li>
+<li>服务端用该随机码加密要传输的页面，传输给客户端</li>
+</ul>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/37370216" >那么客户端是怎么验证这个证书的可信性呢?</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><img src="https://oss.yhsyc.club/img/Dz1qpe2borFRyCm.png" alt="微信截图_20220428163404.png"></p>
+<p>CA 颁发证书的过程</p>
+<ul>
+<li>首先 CA 把证书持有者的公钥、用途、颁发者、有效时间等信息打包，然后对这个包进行 Hash 计算，得到一个 Hash 值</li>
+<li>然后 CA 会使用自己的私钥将该 Hash 值加密，生成数字签名 Certificates Signature</li>
+<li>然后把数字签名和上面的信息，合成数字证书，就有了一张证书</li>
+</ul>
+<p>客户端校验服务端的数字证书的过程</p>
+<ul>
+<li>首先客户端会使用<strong>同样的</strong> Hash 算法 获取该证书的 Hash 值 H1</li>
+<li>然后通过操作系统或者浏览器有的 CA 的公钥信息，解密证书的数字签名，得到一个 Hash 值 H2</li>
+<li>最后比较 H1 和 H2，如果它们完全相同，那么这个证书是可信任的，否则为不可信</li>
+</ul>
+<p>一般来说，服务端的数字证书的签发者都不会是根证书，那么无法直接通过本地内置的 CA 公钥去直接校验证书，会有这么一个过程</p>
+<ul>
+<li>先通过根证书校验中间证书是否可信任</li>
+<li>如果中间证书可信任，再用中间证书的公钥去解析网站证书</li>
+</ul>
+</li>
+<li><p>Nginx 配置，对 ip 限流的配置？</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://network.51cto.com/article/603552.html" >SFTP FTP</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<ul>
+<li>SFTP 是在 22 端口建立的 SSH 连接的基础上去进行文件传输的，因此它是安全的传输，但因为要加密，会基于加密算法的类型，有性能损耗，传输效率低</li>
+<li>FTP 的 21 端口用于传输控制信息，是否使用 20 端口作为传输数据的端口与 FTP 使用的传输模式有关，如果采用主动模式，那么使用20端口，被动模式的话使用随机端口传输数据</li>
+<li>FTP 是用明文传输数据的，不对数据进行加密</li>
+</ul>
+</li>
+<li><p>平常用什么去 genkey？ssh-keygen</p>
+</li>
+<li><p>对数据库这方面了解怎么样?</p>
+</li>
+</ol>
+<p>有数据库表 </p>
+<p>客户表：cust(cust_id，cust_name)</p>
+<p>理财产品表：prod(prod_id,prod_name)</p>
+<p>客户购买理财产品表：cust_prod(cust_id,prod_id)</p>
+<ul>
+<li><p>查询所有 A 客户购买了，而 B 客户没有购买的产品名</p>
+<p>select prod_name from cust, prod, cust_prod</p>
+<p>where cust.cust_id = cust_prod.cust_id and</p>
+<p>​            prod.prod_id = cust_prod.prod_id and</p>
+<p>​            cust_name  = “A” and</p>
+<p>​            not in ( select prod_name from cust, prod, cust_prod</p>
+<p>​                         where cust.cust_id = cust_prod.cust_id and</p>
+<p>​                                     prod.prod_id = cust_prod.prod_id and</p>
+<p>​                                     ) </p>
+</li>
+<li><p>查询所有 A 客户购买了，而 B 客户也购买了的产品名</p>
+</li>
+<li><p>查询购买了客户 A 所有产品的客户名</p>
+</li>
+</ul>
+<ol start="10">
+<li><p>什么是自动化运维？和传统运维有什么区别？</p>
+<p>例如 PaaS ，开发人员需要什么，我们直接提供什么，运用 openstack、k8s、vSphere 等平台，直接提供需要的服务给开发人员，使软件部署到生产环境这一过程得到简化，实现更高效的开发和生产</p>
+<p>传统运维：告诉我你的需求，需要装什么 Linux 系统？ 需要多大的内存硬盘要多少CPU核心？网络需求是什么？</p>
+<p>自动化运维：告诉我你需要部署什么服务，我来写 Jenkins，配置好了之后，开发人员一键即部署服务到生产环境，无需管理各种生产以及开发环境的变化</p>
+</li>
+<li><p>未来三年的规划，职业生涯的规划?</p>
+</li>
+</ol>
+<p>东方**-笔试</p>
+<p>40 道 选择题 1 道 编程题</p>
+<ol>
+<li><p>w3c 制定的规范 js 处理的顺序是怎样的？ 事件捕获 事件处理 事件冒泡</p>
+</li>
+<li><p>java final 变量 父类实例化被拿去赋值给另外一个实例化，能修改吗？</p>
+</li>
+<li><p>char a = ‘8’    switch(a + 1)</p>
+</li>
+<li><p>JS 跨域请求数据使用什么？ window.name❌</p>
+</li>
+<li><p>DevOps 关键组件  持续集成 持续交付 持续测试 快速交付</p>
+</li>
+<li><p>使用 trustkit 校验 SSL 证书？</p>
+</li>
+<li><p>哪个 HTTP method 用于资源更新？ update？</p>
+</li>
+<li><p>char [][3] 有 10 个元素，第一维度最少是？ 4？</p>
+</li>
+<li><p>SQL injection （SQL注入）是针对客户端的吗？ nope</p>
+</li>
+<li><p>数组相对链表的优点？存储空间小 </p>
+</li>
+<li><p>哪种 SQL 语句不需要 COMMIT？ CREATE 和 ALTER</p>
+</li>
+<li><p>git pull  合并吗？ 可以选择 merge 或者 rebase</p>
+</li>
+<li><p>Promise 添加回调函数用什么？ .then</p>
+</li>
+<li><p>StringBuffer 和 StringBuilder</p>
+</li>
+<li><p>XMLHttpRequest sent() 前使用什么方法？ init?</p>
+</li>
+<li><p>Vue 组件参数传递 parameter</p>
+</li>
+<li><p>DDoS 破坏了 _ _ 性？ 可用性</p>
+</li>
+<li><p>Vue V-if V-show</p>
+</li>
+<li><p>ARP 属于 WEB 攻击吗？</p>
+</li>
+<li><p>编程题 给一个文件 access.log</p>
+<p>读取文件，提取每一行的浏览器访问记录 URL <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baidu.com/*&amp;^*&amp;(&amp;)^(&amp;*^)" >https://baidu.com/*&amp;^*&amp;(&amp;)^(&amp;*^)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>输出 该域名访问次数 域名   order by 次数</p>
+</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/27/k8s-configMap/">k8s 中 configMap 的日常使用</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-27</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-28</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>在和 k8s 的日常玩耍中，经常需要变更某些服务容器的配置文件的啦，Kubernetes 就提供了非常灵活的模块化方式，即 configMap </p>
+
+        <h4 id="介绍"   >
+          <a href="#介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4>
+      <p>ConfigMap 是一种 API 对象，用来将非机密性的数据保存到键值对中。使用时， Pods 可以将其用作环境变量、命令行参数或者存储卷中的配置文件。</p>
+<p>ConfigMap 将您的环境配置信息和容器镜像解耦，便于应用配置的修改。</p>
+<p>当然 ConfigMap 不保证数据的隐私性，如果有重要数据请存放在 Secret 中</p>
+
+        <h4 id="创建-ConfigMap"   >
+          <a href="#创建-ConfigMap" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建-ConfigMap" class="headerlink" title="创建 ConfigMap"></a>创建 ConfigMap</h4>
+      
+        <h5 id="使用-kubectl-create-configmap-命令"   >
+          <a href="#使用-kubectl-create-configmap-命令" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-kubectl-create-configmap-命令" class="headerlink" title="使用 kubectl create configmap 命令"></a>使用 kubectl create configmap 命令</h5>
+      <p>来基于目录、文件、或者字面值来创建 ConfigMap:</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create configmap &lt;映射名称&gt; &lt;数据源&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>其中，<code>&lt;映射名称&gt;</code> 是为 ConfigMap 指定的名称，<code>&lt;数据源&gt;</code> 是要从中提取数据的目录、 文件或者字面值。 ConfigMap 对象的名称必须是合法的 DNS 子域名</p>
+<p>在你基于文件来创建 ConfigMap 时，<code>&lt;数据源&gt;</code> 中的键名默认取自文件的基本名， 而对应的值则默认为文件的内容</p>
+<p>示例：创建 synthetic-monitoring(grafana 的一个插件)的配置文件的 configMap</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#先创建这个配置文件</span></span><br><span class="line">cat &gt;&gt; synthetic-monitoring-app-grafana.yaml &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: 1</span></span><br><span class="line"><span class="string">apps:</span></span><br><span class="line"><span class="string">  - type: grafana-synthetic-monitoring-app</span></span><br><span class="line"><span class="string">    name: grafana-synthetic-monitoring-app</span></span><br><span class="line"><span class="string">    disabled: false</span></span><br><span class="line"><span class="string">    jsonData:</span></span><br><span class="line"><span class="string">      apiHost: https://synthetic-monitoring-api.grafana.net/</span></span><br><span class="line"><span class="string">      stackId: xxxxxx</span></span><br><span class="line"><span class="string">      logs:</span></span><br><span class="line"><span class="string">        grafanaName: grafanacloud-sunnyrian-logs</span></span><br><span class="line"><span class="string">        hostedId: xxxxxx</span></span><br><span class="line"><span class="string">      metrics:</span></span><br><span class="line"><span class="string">        grafanaName: grafanacloud-sunnyrian-prom</span></span><br><span class="line"><span class="string">        hostedId: xxxxxx</span></span><br><span class="line"><span class="string">    secureJsonData:</span></span><br><span class="line"><span class="string">      publisherToken: &lt;your Token&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">datasources:</span></span><br><span class="line"><span class="string">  - name: grafanacloud-sunnyrian-logs</span></span><br><span class="line"><span class="string">    type: loki</span></span><br><span class="line"><span class="string">    access: proxy</span></span><br><span class="line"><span class="string">    url: https://logs-prod-us-central1.grafana.net</span></span><br><span class="line"><span class="string">    basicAuth: true</span></span><br><span class="line"><span class="string">    basicAuthUser: xxxxxx</span></span><br><span class="line"><span class="string">    jsonData:</span></span><br><span class="line"><span class="string">      maxLines: 1000</span></span><br><span class="line"><span class="string">    secureJsonData:</span></span><br><span class="line"><span class="string">      basicAuthPassword: &lt;your Token&gt;</span></span><br><span class="line"><span class="string">    version: 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  - name: grafanacloud-sunnyrian-prom</span></span><br><span class="line"><span class="string">    type: prometheus</span></span><br><span class="line"><span class="string">    access: proxy</span></span><br><span class="line"><span class="string">    url: https://prometheus-us-central1.grafana.net/api/prom</span></span><br><span class="line"><span class="string">    basicAuth: true</span></span><br><span class="line"><span class="string">    basicAuthUser: xxxxxx</span></span><br><span class="line"><span class="string">    jsonData:</span></span><br><span class="line"><span class="string">      timeInterval: 1s</span></span><br><span class="line"><span class="string">    secureJsonData:</span></span><br><span class="line"><span class="string">      basicAuthPassword: &lt;your Token&gt;</span></span><br><span class="line"><span class="string">    version: 1</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>然后创建 configMap</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create configmap synthetic-configmap --from-file=./synthetic-monitoring-app-grafana.yaml -n kube-system</span><br></pre></td></tr></table></div></figure>
+
+<p>(optional) 也可以同时将多个文件生成一个 configMap:  –from-env-file=file1 –from-env-file=file2</p>
+<p>其中 synthetic-configmap 为该 configMap 的名字，然后选择从文件生成，生成到 kube-system 的命名空间</p>
+<p>这里<strong>指定命名空间</strong>很重要</p>
+
+        <h5 id="基于现有-configMap-生成-yaml"   >
+          <a href="#基于现有-configMap-生成-yaml" class="heading-link"><i class="fas fa-link"></i></a><a href="#基于现有-configMap-生成-yaml" class="headerlink" title="基于现有 configMap 生成 yaml"></a>基于现有 configMap 生成 yaml</h5>
+      <p>下面的指令可以把刚刚生成的 configMap 打印成yaml格式</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get configmap synthetic-monitoring-app-grafana -o yaml -n kube-system</span><br></pre></td></tr></table></div></figure>
+
+<p>然后再导成yaml就可以啦</p>
+
+        <h5 id="直接写-configMap-yaml"   >
+          <a href="#直接写-configMap-yaml" class="heading-link"><i class="fas fa-link"></i></a><a href="#直接写-configMap-yaml" class="headerlink" title="直接写 configMap.yaml"></a>直接写 configMap.yaml</h5>
+      <p>格式参照</p>
+<figure class="highlight yaml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">creationTimestamp:</span> <span class="number">2017-12-27T18:36:28Z</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">game-config-env-file</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">resourceVersion:</span> <span class="string">&quot;809965&quot;</span></span><br><span class="line">  <span class="attr">selfLink:</span> <span class="string">/api/v1/namespaces/default/configmaps/game-config-env-file</span></span><br><span class="line">  <span class="attr">uid:</span> <span class="string">d9d1ca5b-eb34-11e7-887b-42010a8002b8</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">allowed:</span> <span class="string">&#x27;&quot;true&quot;&#x27;</span></span><br><span class="line">  <span class="attr">enemies:</span> <span class="string">aliens</span></span><br><span class="line">  <span class="attr">lives:</span> <span class="string">&quot;3&quot;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>应用 configMap</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f configMap.yaml</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="使用存储在-ConfigMap-中的数据填充卷"   >
+          <a href="#使用存储在-ConfigMap-中的数据填充卷" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用存储在-ConfigMap-中的数据填充卷" class="headerlink" title="使用存储在 ConfigMap 中的数据填充卷"></a>使用存储在 ConfigMap 中的数据填充卷</h4>
+      <figure class="highlight yaml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">dapi-test-pod</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">test-container</span></span><br><span class="line">      <span class="attr">image:</span> <span class="string">k8s.gcr.io/busybox</span></span><br><span class="line">      <span class="attr">command:</span> [ <span class="string">&quot;/bin/sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;ls /etc/config/&quot;</span> ]</span><br><span class="line">      <span class="attr">volumeMounts:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config-volume</span></span><br><span class="line">        <span class="attr">mountPath:</span> <span class="string">/etc/config</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config-volume</span></span><br><span class="line">      <span class="attr">configMap:</span></span><br><span class="line">        <span class="comment"># 提供包含要添加到容器中的文件的 ConfigMap 的名称</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">special-config</span></span><br><span class="line">        <span class="comment">#将该键放在 /etc/config/keys 下</span></span><br><span class="line">        <span class="attr">items:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">SPECIAL_LEVEL</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">keys</span></span><br><span class="line">  <span class="attr">restartPolicy:</span> <span class="string">Never</span></span><br></pre></td></tr></table></div></figure>
+
+<p>apply 之后，启动容器，就可以在相应目录看到配置文件啦</p>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="Git 的完整性       ​    Git 中的所有数据在存储前都会执行校验和计算，随后以校验和来引用对应的数据。这意味着不可能在 Git 不知情的情况下更改文件或目录的内容。这项功能根植于 Git 的最底层，是其设计理念中不可或缺的一环。只要有 Git 在，它就能检测出传输过程中丢失的信息或者受损的文件。 ​    Git所采用的校验和机制叫做 SHA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git 学习笔记">
+<meta property="og:url" content="http://yhsyc.club/2022/03/13/git-learning/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="Git 的完整性       ​    Git 中的所有数据在存储前都会执行校验和计算，随后以校验和来引用对应的数据。这意味着不可能在 Git 不知情的情况下更改文件或目录的内容。这项功能根植于 Git 的最底层，是其设计理念中不可或缺的一环。只要有 Git 在，它就能检测出传输过程中丢失的信息或者受损的文件。 ​    Git所采用的校验和机制叫做 SHA">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-12T18:17:48.000Z">
+<meta property="article:modified_time" content="2022-08-24T07:05:07.611Z">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary"><title>git 学习笔记 | Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/2022/03/13/git-learning/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">git 学习笔记</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-08-24</span></span></div></header><div class="post-body">
+        <h4 id="Git-的完整性"   >
+          <a href="#Git-的完整性" class="heading-link"><i class="fas fa-link"></i></a><a href="#Git-的完整性" class="headerlink" title="Git 的完整性"></a>Git 的完整性</h4>
+      <p>​    Git 中的所有数据在存储前都会执行校验和计算，随后以校验和来引用对应的数据。这意味着不可能在 Git 不知情的情况下更改文件或目录的内容。这项功能根植于 Git 的最底层，是其设计理念中不可或缺的一环。只要有 Git 在，它就能检测出传输过程中丢失的信息或者受损的文件。</p>
+<p>​    Git所采用的校验和机制叫做 SHA-1 散列。这是一个由 40 个十六进制字符所组成的字符串，它是根据文件内容或者 Git 的目录结构计算所得到的。一个 SHA-1 散列类似于如下的字符串</p>
+<p>​    24b9da6552252987aa493b52f8696cd6d3b00373</p>
+<p>​    由于用途极广，你在 Git 中到处都会看到这种散列值。实际上，Git 并不是通过文件名在数据库中存储信息，而是通过信息的散列值</p>
+
+        <h4 id="Git-中文件的三种状态"   >
+          <a href="#Git-中文件的三种状态" class="heading-link"><i class="fas fa-link"></i></a><a href="#Git-中文件的三种状态" class="headerlink" title="Git 中文件的三种状态"></a>Git 中文件的三种状态</h4>
+      <p>​    Committed 已提交</p>
+<p>​    Modified 已修改</p>
+<p>​    Staged 已暂存</p>
+
+        <h4 id="Git-的首次配置"   >
+          <a href="#Git-的首次配置" class="heading-link"><i class="fas fa-link"></i></a><a href="#Git-的首次配置" class="headerlink" title="Git 的首次配置"></a>Git 的首次配置</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#配置用户名</span></span><br><span class="line">git config --global user.name <span class="string">&quot;Sunnyrian&quot;</span></span><br><span class="line"><span class="comment">#配置邮箱</span></span><br><span class="line">git config --global user.email Sunnyrain233@gmail.com</span><br></pre></td></tr></table></div></figure>
+
+<p>配置自己喜欢的 editor，如果没有配置，Git 会使用默认的编辑器</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editer nano</span><br></pre></td></tr></table></div></figure>
+
+<p>在 Windows X64 中配置 editor Notepad++</p>
+<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config -<span class="literal">-global</span> core.editor <span class="string">&quot;&#x27;C:/Program Files(x86)/Notepad++/notepad++.exe&#x27; -multiInst&quot;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>检查个人配置</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="在现有目录中初始化-Git-仓库"   >
+          <a href="#在现有目录中初始化-Git-仓库" class="heading-link"><i class="fas fa-link"></i></a><a href="#在现有目录中初始化-Git-仓库" class="headerlink" title="在现有目录中初始化 Git 仓库"></a>在现有目录中初始化 Git 仓库</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></div></figure>
+
+<p>这个命令会创建一个名为 .git 的子目录。这个子目录包含了构成 Git 仓库骨架的所有必需文件。但此刻 Git 尚未开始跟踪项目中的任何文件</p>
+<p>如果要开始对现有文件进行版本控制，那么就应该开始跟踪这些文件并进行初次提交。对需要跟踪的文件执行 git add 命令，然后输入 git commit</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;initial project version&#x27;</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="克隆现有仓库"   >
+          <a href="#克隆现有仓库" class="heading-link"><i class="fas fa-link"></i></a><a href="#克隆现有仓库" class="headerlink" title="克隆现有仓库"></a>克隆现有仓库</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/Sunnyrian/Blog</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="查看当前文件状态"   >
+          <a href="#查看当前文件状态" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看当前文件状态" class="headerlink" title="查看当前文件状态"></a>查看当前文件状态</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></div></figure>
+
+<p>如果在克隆仓库后立即执行这个命令，我们可以看到</p>
+<p>On branch master</p>
+<p>nothing to commit, working directory clean</p>
+<p>如果将新的文件添加进去，我们又没有 add 过这个文件，那么就会在 status 下看到这个未被跟踪的文件</p>
+<p>如果使用 add 命令，可以将该文件放到暂存区，将会是一个 Changes to be committed 的状态</p>
+<p>如果更改了某个 git 仓库原有的文件，那么该文件会是一个 Changes not staged for commit 的状态</p>
+<p>git add 是一个多功能的命令，既可以用来跟踪新文件，也可以用来暂存文件，它还可以做其他的一些事，比如把存在合并冲突的文件标记为已解决。所以，把 git add 命令看成“添加内容到下一次提交中”而不是“把这个文件加入到项目中”，更有助于理解该命令。</p>
+<p>如果说我们在修改一个文件后，git add 它之后又修改了它，那么他的 git status 状态将会是即在 Changes to be committed 中又会在 Changes not staged for commit 中，但 Changes to be committed 中存储的是第一次 add 的文件的样子</p>
+
+        <h5 id="显示更简洁的状态信息"   >
+          <a href="#显示更简洁的状态信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#显示更简洁的状态信息" class="headerlink" title="显示更简洁的状态信息"></a>显示更简洁的状态信息</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status -s</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="忽略文件"   >
+          <a href="#忽略文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h4>
+      <p>大家很多时候，都会有希望某一类或者某几个文件不想被Git自动添加,甚至不想这些文件被显示在未跟踪的文件列表下面。</p>
+<p>那么我们可以创建一个名为 .gitignore 的文件，然后在里面写入待匹配文件的模式</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;.gitignore &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">*.[oa]</span></span><br><span class="line"><span class="string">*~</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>其中第一行告诉 Git 忽略所有以 .o 或者 .a 结尾的文件，这些一般是编译代码生产的二进制文件。第二行是告诉 Git 忽略所有以波浪号（~）结尾的文件</p>
+<p>可以写入 .gitignore 文件中的匹配模式的规则如下：</p>
+<ul>
+<li>空行或以 # 开始的行会被忽略</li>
+<li>支持标准的 glob 模式（正则表达式）</li>
+<li>以斜杠（/）开头的模式可用于禁止递归匹配</li>
+<li>以斜杠（/）结尾的模式表示目录</li>
+<li>以感叹号（！）开始的模式表示取反</li>
+</ul>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*.a		#忽略.a类型的文件</span><br><span class="line">!lib.a  #仍然跟踪lib.a，即使上一行指令要忽略 .a 类型的文件</span><br><span class="line">/TODO   #只忽略当前目录的 TODO 文件，而不忽略子目录下的 TODO</span><br><span class="line">build/  #忽略 build/ 目录下的所有文件</span><br><span class="line">doc/*.txt #忽略 doc/note.txt,而不忽略 /doc/server/arch.txt</span><br><span class="line">doc/**/*.pdf #忽略 doc/目录下的所有 .pdf文件</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="查看已暂存和未暂存的变更"   >
+          <a href="#查看已暂存和未暂存的变更" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看已暂存和未暂存的变更" class="headerlink" title="查看已暂存和未暂存的变更"></a>查看已暂存和未暂存的变更</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></div></figure>
+
+<p>查看暂存的变更与上一次提交的内容的比较</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff -staged</span><br></pre></td></tr></table></div></figure>
+
+<p>查看已暂存的更改</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="提交变更"   >
+          <a href="#提交变更" class="heading-link"><i class="fas fa-link"></i></a><a href="#提交变更" class="headerlink" title="提交变更"></a>提交变更</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit</span><br></pre></td></tr></table></div></figure>
+
+<p>会在编辑器中显示并可以编辑提交信息   -v 的话可以把这次提交的差异对比显示在文本编辑器中，可以看到更具体的的变更</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在命令行中</span></span><br><span class="line">git commit -m</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>跳过暂存区，有时候会我们不用再添加文件，而只是修改了现有文件，要提交 commit，可以直接 commit -a，不需要再执行 add指令，可以自动把已经跟踪的所有文件添加到暂存区，然后再提交，就可以省掉 git add了</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -a -m <span class="string">&#x27;added new benchmarks&#x27;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="移除文件"   >
+          <a href="#移除文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h4>
+      <p>​    要从 Git 中移除某个文件，你需要把它先从已跟踪的文件列表中移除（确切地说，是从暂存区中移除），然后再提交。git rm 可以帮我们完成这些操作，同时会在工作目录中删除该文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm &lt;file&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>​    如果我们只是简单地删掉了我们的文件，没有使用 git rm，那么在执行 git status 的时候，还是会看到该文件出现在 “Changes not staged for commit”  区域（也就是未暂存区域）    </p>
+<p>​    如果我们已经 add 添加某个文件到暂存区了，我们需要使用 -f 选项，可以防止没有被记录到快照中的数据被意外移除，因为这样的数据被意外移除后无法由 Git恢复</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm -f &lt;file&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>​    如果我们只是想让 git 不再追踪某个文件，比如说我们忘记在 .gitignore 中添加该文件而将它 add 到暂存区了，我们想在工作目录中保留该文件，那么我们可以只删除暂存区的该文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached &lt;file&gt;</span><br><span class="line"><span class="comment"># 此处的&lt;file&gt;也可以输入glob正则表达式选取文件</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="移动文件"   >
+          <a href="#移动文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git mv README.md README</span><br><span class="line"><span class="comment">#相当于执行了以下三条命令</span></span><br><span class="line">mv README.md README</span><br><span class="line">git rm README.md</span><br><span class="line">git add README</span><br></pre></td></tr></table></div></figure>
+
+<p>相当于非常方便了</p>
+
+        <h4 id="查看提交历史"   >
+          <a href="#查看提交历史" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看提交历史" class="headerlink" title="查看提交历史"></a>查看提交历史</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br><span class="line"><span class="comment">#查看最近两次提交</span></span><br><span class="line">git <span class="built_in">log</span> -p -2</span><br><span class="line"><span class="comment">#查看简要统计信息</span></span><br><span class="line">git <span class="built_in">log</span> --<span class="built_in">stat</span></span><br><span class="line"><span class="comment">#选择日志输出的默认格式 例如单行显示↓  还有 short、full、fullter 格式可以选择</span></span><br><span class="line">git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line"><span class="comment">#明确指定输出格式</span></span><br><span class="line">git <span class="built_in">log</span> --pretty=format:<span class="string">&quot;%h - %an, %ar : %s&quot;</span> </span><br><span class="line"><span class="comment">#加上简单图标来显示 Git 分支和合并历史 --graph</span></span><br><span class="line">git <span class="built_in">log</span> --pretty format: <span class="string">&quot;%h %s&quot;</span> --graph</span><br></pre></td></tr></table></div></figure>
+
+<p>git log –pretty=format 命令的一些有用的选项👇：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="center">格式选项</th>
+<th align="left">输出的格式描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">%H</td>
+<td align="left">提交对象的散列值</td>
+</tr>
+<tr>
+<td align="center">%h</td>
+<td align="left">提交对象的简短散列值</td>
+</tr>
+<tr>
+<td align="center">%T</td>
+<td align="left">树对象的散列值</td>
+</tr>
+<tr>
+<td align="center">%t</td>
+<td align="left">树对象的简短散列值</td>
+</tr>
+<tr>
+<td align="center">%P</td>
+<td align="left">父对象的散列值</td>
+</tr>
+<tr>
+<td align="center">%p</td>
+<td align="left">父对象的简短散列值</td>
+</tr>
+<tr>
+<td align="center">%an</td>
+<td align="left">作者的名字</td>
+</tr>
+<tr>
+<td align="center">%ae</td>
+<td align="left">作者的电子邮箱地址</td>
+</tr>
+<tr>
+<td align="center">%ad</td>
+<td align="left">创作日期（可使用 -date= 选项指定日期格式）</td>
+</tr>
+<tr>
+<td align="center">%ar</td>
+<td align="left">相对于当前日期的创作日期</td>
+</tr>
+<tr>
+<td align="center">%cn</td>
+<td align="left">提交者的名字</td>
+</tr>
+<tr>
+<td align="center">%ce</td>
+<td align="left">提交者的电子邮箱地址</td>
+</tr>
+<tr>
+<td align="center">%cd</td>
+<td align="left">提交日期</td>
+</tr>
+<tr>
+<td align="center">%cr</td>
+<td align="left">相对于当前日期的提交日期</td>
+</tr>
+<tr>
+<td align="center">%s</td>
+<td align="left">提交信息的主题</td>
+</tr>
+</tbody></table></div>
+<p>git log 的常用选项</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-p</td>
+<td align="left">按补丁格式显示每个提交引入的更改</td>
+</tr>
+<tr>
+<td align="left">–stat</td>
+<td align="left">显示每个提交中被更改的文件的统计信息</td>
+</tr>
+<tr>
+<td align="left">–shortstat</td>
+<td align="left">只显示上述 –state 输出中包含“已更改/新增/删除”行的统计信息</td>
+</tr>
+<tr>
+<td align="left">–name-only</td>
+<td align="left">在每个提交信息后显示被更改的文件列表</td>
+</tr>
+<tr>
+<td align="left">–name-status</td>
+<td align="left">在上一个选项输出基础上还显示出“已更改/新增/删除”统计信息</td>
+</tr>
+<tr>
+<td align="left">–abbrev-commit</td>
+<td align="left">只显示完整的 SHA-1 40 位校验和字符串中的前几个字符</td>
+</tr>
+<tr>
+<td align="left">–relative-date</td>
+<td align="left">显示相对日期（如两周前），而不是完整日期</td>
+</tr>
+<tr>
+<td align="left">–graph</td>
+<td align="left">在提交历史旁边显示 ASCII 图标，用于展示分支和合并的历史信息</td>
+</tr>
+<tr>
+<td align="left">–pretty</td>
+<td align="left">用一种可选格式显示提交。选项有 oneline、short、full、fuller、format</td>
+</tr>
+</tbody></table></div>
+<p>用于限制 git log 输出范围的选项</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-(n)</td>
+<td>只显示最新的 n 次提交</td>
+</tr>
+<tr>
+<td>–since,–after</td>
+<td>只输出指定日期之后的提交</td>
+</tr>
+<tr>
+<td>–until,–before</td>
+<td>只输出指定日期之前的提交</td>
+</tr>
+<tr>
+<td>–author</td>
+<td>只输出作者与指定字符串匹配的提交</td>
+</tr>
+<tr>
+<td>–committer</td>
+<td>只输出提交者与指定字符串匹配的提交</td>
+</tr>
+<tr>
+<td>–grep</td>
+<td>只输出提交信息包含指定字符串的提交</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>只输出包含“添加或删除指定字符串”的更改的提交</td>
+</tr>
+</tbody></table></div>
+<p>从远程仓库拉取代码库</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch &lt;repo&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>告诉 Git 去获取我们没有的数据，然后我们可以</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge [<span class="built_in">alias</span>]/[branch]</span><br></pre></td></tr></table></div></figure>
+
+<p>以上命令会将服务器上的任何更新合并到我们的当前分支</p>
+
+        <h3 id="分支管理"   >
+          <a href="#分支管理" class="heading-link"><i class="fas fa-link"></i></a><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h3>
+      
+        <h4 id="创建分支"   >
+          <a href="#创建分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="查看现有分支"   >
+          <a href="#查看现有分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看现有分支" class="headerlink" title="查看现有分支"></a>查看现有分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="切换分支"   >
+          <a href="#切换分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="删除分支"   >
+          <a href="#删除分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="合并分支到主分支"   >
+          <a href="#合并分支到主分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#合并分支到主分支" class="headerlink" title="合并分支到主分支"></a>合并分支到主分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://yhsyc.club">Sunnyrian</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://yhsyc.club/2022/03/13/git-learning/">http://yhsyc.club/2022/03/13/git-learning/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://yhsyc.club/tags/git/">git</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/03/14/raid/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">独立硬盘冗余阵列RAID的学习笔记和心得</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/03/11/k8s-prometheus-grafana/"><span class="paginator-prev__text">在 Kubernetes 集群中部署 Prometheus 来监控集群，并用 Grafana 数据可视化</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Git-%E7%9A%84%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-text">
+          Git 的完整性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git-%E4%B8%AD%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="toc-text">
+          Git 中文件的三种状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git-%E7%9A%84%E9%A6%96%E6%AC%A1%E9%85%8D%E7%BD%AE"><span class="toc-text">
+          Git 的首次配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E7%8E%B0%E6%9C%89%E7%9B%AE%E5%BD%95%E4%B8%AD%E5%88%9D%E5%A7%8B%E5%8C%96-Git-%E4%BB%93%E5%BA%93"><span class="toc-text">
+          在现有目录中初始化 Git 仓库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E7%8E%B0%E6%9C%89%E4%BB%93%E5%BA%93"><span class="toc-text">
+          克隆现有仓库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="toc-text">
+          查看当前文件状态</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%9B%B4%E7%AE%80%E6%B4%81%E7%9A%84%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF"><span class="toc-text">
+          显示更简洁的状态信息</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6"><span class="toc-text">
+          忽略文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%B7%B2%E6%9A%82%E5%AD%98%E5%92%8C%E6%9C%AA%E6%9A%82%E5%AD%98%E7%9A%84%E5%8F%98%E6%9B%B4"><span class="toc-text">
+          查看已暂存和未暂存的变更</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E5%8F%98%E6%9B%B4"><span class="toc-text">
+          提交变更</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%BB%E9%99%A4%E6%96%87%E4%BB%B6"><span class="toc-text">
+          移除文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="toc-text">
+          移动文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2"><span class="toc-text">
+          查看提交历史</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="toc-text">
+          分支管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%86%E6%94%AF"><span class="toc-text">
+          创建分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%8E%B0%E6%9C%89%E5%88%86%E6%94%AF"><span class="toc-text">
+          查看现有分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E5%88%86%E6%94%AF"><span class="toc-text">
+          切换分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%88%86%E6%94%AF"><span class="toc-text">
+          删除分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF%E5%88%B0%E4%B8%BB%E5%88%86%E6%94%AF"><span class="toc-text">
+          合并分支到主分支</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: 'd2e1ab71baa947c052fd',
+    clientSecret: '73423ad9053ae629eab405687e168307d376de34',
+    repo: 'Blog',
+    owner: 'Sunnyrian',
+    admin: ['Sunnyrian'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

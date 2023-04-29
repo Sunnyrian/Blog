@@ -1,0 +1,498 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="在 Kubernetes 集群中部署 Prometheus来 监控集群，并用 Grafana 数据可视化                           Prometheus 部署        先创建一个目录来存放管理配置文件 1mkdir prometheus  本次 prometheus 采用 nfs 挂载方式来存储数据，同时使用 configMa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 Kubernetes 集群中部署 Prometheus 来监控集群，并用 Grafana 数据可视化">
+<meta property="og:url" content="http://yhsyc.club/2022/03/11/k8s-prometheus-grafana/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="在 Kubernetes 集群中部署 Prometheus来 监控集群，并用 Grafana 数据可视化                           Prometheus 部署        先创建一个目录来存放管理配置文件 1mkdir prometheus  本次 prometheus 采用 nfs 挂载方式来存储数据，同时使用 configMa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oss.yhsyc.club/img/ZQTNcm9RqiPGkWO.png">
+<meta property="og:image" content="https://oss.yhsyc.club/img/VGuM8wx6QY5m7pj.png">
+<meta property="og:image" content="https://oss.yhsyc.club/img/haWwXrRlcd8Ykmt.png">
+<meta property="og:image" content="https://oss.yhsyc.club/img/lSL2WjXAVkqfhB8.png">
+<meta property="og:image" content="https://oss.yhsyc.club/img/7LxMah8uirzUXwf.png">
+<meta property="og:image" content="https://oss.yhsyc.club/img/ZpTuBPe7fiR5Ara.png">
+<meta property="article:published_time" content="2022-03-11T09:34:03.000Z">
+<meta property="article:modified_time" content="2022-09-02T09:31:20.368Z">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="Grafana">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content="Prometheus">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oss.yhsyc.club/img/ZQTNcm9RqiPGkWO.png"><title>在 Kubernetes 集群中部署 Prometheus 来监控集群，并用 Grafana 数据可视化 | Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/2022/03/11/k8s-prometheus-grafana/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">在 Kubernetes 集群中部署 Prometheus 来监控集群，并用 Grafana 数据可视化</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body">
+        <h3 id="在-Kubernetes-集群中部署-Prometheus来-监控集群，并用-Grafana-数据可视化"   >
+          <a href="#在-Kubernetes-集群中部署-Prometheus来-监控集群，并用-Grafana-数据可视化" class="heading-link"><i class="fas fa-link"></i></a><a href="#在-Kubernetes-集群中部署-Prometheus来-监控集群，并用-Grafana-数据可视化" class="headerlink" title="在 Kubernetes 集群中部署 Prometheus来 监控集群，并用 Grafana 数据可视化"></a>在 Kubernetes 集群中部署 Prometheus来 监控集群，并用 Grafana 数据可视化</h3>
+      
+        <h5 id="Prometheus-部署"   >
+          <a href="#Prometheus-部署" class="heading-link"><i class="fas fa-link"></i></a><a href="#Prometheus-部署" class="headerlink" title="Prometheus 部署"></a>Prometheus 部署</h5>
+      <ol>
+<li><p>先创建一个目录来存放管理配置文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir prometheus</span><br></pre></td></tr></table></div></figure>
+
+<p>本次 prometheus 采用 nfs 挂载方式来存储数据，同时使用 configMap 管理配置文件。并且我们将所有的 prometheus 存储在 <code>kube-system</code></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#生成配置文件 </span></span><br><span class="line"></span><br><span class="line">cat &gt;&gt; prometheus-configmap.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string"># Prometheus configuration format https://prometheus.io/docs/prometheus/latest/configuration/configuration/</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: ConfigMap</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus-config</span></span><br><span class="line"><span class="string">  namespace: prometheus </span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    kubernetes.io/cluster-service: &quot;true&quot;</span></span><br><span class="line"><span class="string">    addonmanager.kubernetes.io/mode: EnsureExists</span></span><br><span class="line"><span class="string">data:</span></span><br><span class="line"><span class="string">  prometheus.yml: |</span></span><br><span class="line"><span class="string">    rule_files:</span></span><br><span class="line"><span class="string">    - /etc/config/rules/*.rules</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    scrape_configs:</span></span><br><span class="line"><span class="string">    - job_name: prometheus</span></span><br><span class="line"><span class="string">      static_configs:</span></span><br><span class="line"><span class="string">      - targets:</span></span><br><span class="line"><span class="string">        - localhost:9090</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-apiservers</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: endpoints</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: default;kubernetes;https</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_name</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_endpoint_port_name</span></span><br><span class="line"><span class="string">      scheme: https</span></span><br><span class="line"><span class="string">      tls_config:</span></span><br><span class="line"><span class="string">        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt</span></span><br><span class="line"><span class="string">        insecure_skip_verify: true</span></span><br><span class="line"><span class="string">      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">    - job_name: kubernetes-nodes-kubelet</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: node</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_node_label_(.+)</span></span><br><span class="line"><span class="string">      scheme: https</span></span><br><span class="line"><span class="string">      tls_config:</span></span><br><span class="line"><span class="string">        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt</span></span><br><span class="line"><span class="string">        insecure_skip_verify: true</span></span><br><span class="line"><span class="string">      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-nodes-cadvisor</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: node</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_node_label_(.+)</span></span><br><span class="line"><span class="string">      - target_label: __metrics_path__</span></span><br><span class="line"><span class="string">        replacement: /metrics/cadvisor</span></span><br><span class="line"><span class="string">      scheme: https</span></span><br><span class="line"><span class="string">      tls_config:</span></span><br><span class="line"><span class="string">        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt</span></span><br><span class="line"><span class="string">        insecure_skip_verify: true</span></span><br><span class="line"><span class="string">      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-service-endpoints</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: endpoints</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: true</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_scrape</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: (https?)</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_scheme</span></span><br><span class="line"><span class="string">        target_label: __scheme__</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: (.+)</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_path</span></span><br><span class="line"><span class="string">        target_label: __metrics_path__</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: ([^:]+)(?::\d+)?;(\d+)</span></span><br><span class="line"><span class="string">        replacement: $1:$2</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __address__</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_port</span></span><br><span class="line"><span class="string">        target_label: __address__</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_service_label_(.+)</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        target_label: kubernetes_namespace</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_name</span></span><br><span class="line"><span class="string">        target_label: kubernetes_name</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-services</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: service</span></span><br><span class="line"><span class="string">      metrics_path: /probe</span></span><br><span class="line"><span class="string">      params:</span></span><br><span class="line"><span class="string">        module:</span></span><br><span class="line"><span class="string">        - http_2xx</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: true</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_probe</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __address__</span></span><br><span class="line"><span class="string">        target_label: __param_target</span></span><br><span class="line"><span class="string">      - replacement: blackbox</span></span><br><span class="line"><span class="string">        target_label: __address__</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __param_target</span></span><br><span class="line"><span class="string">        target_label: instance</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_service_label_(.+)</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        target_label: kubernetes_namespace</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_name</span></span><br><span class="line"><span class="string">        target_label: kubernetes_name</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-pods</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: pod</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: true</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_annotation_prometheus_io_scrape</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: (.+)</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_annotation_prometheus_io_path</span></span><br><span class="line"><span class="string">        target_label: __metrics_path__</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: ([^:]+)(?::\d+)?;(\d+)</span></span><br><span class="line"><span class="string">        replacement: $1:$2</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __address__</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_annotation_prometheus_io_port</span></span><br><span class="line"><span class="string">        target_label: __address__</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_pod_label_(.+)</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        target_label: kubernetes_namespace</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_name</span></span><br><span class="line"><span class="string">        target_label: kubernetes_pod_name</span></span><br><span class="line"><span class="string">    alerting:</span></span><br><span class="line"><span class="string">      alertmanagers:</span></span><br><span class="line"><span class="string">      - static_configs:</span></span><br><span class="line"><span class="string">          - targets: [&quot;alertmanager:80&quot;]</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>配置文件解释（这里的 configmap 实际上就是 prometheus 的配置）</p>
+<p>上面包含了 3 个模块 global、rule_files 和 scrape_configs</p>
+<ul>
+<li>其中 global 模块控制 Prometheus Server 的全局配置</li>
+<li>scrape_interval: 表示 prometheus抓取指标数据的频率，默认是 15 s，我们可以覆盖这个值</li>
+<li>evaluation_interval: 用来控制评估规则的频率，prometheus 使用规则产生新的时间序列数据或者产生警报</li>
+<li>rule_files 模块制定了规则所在的位置，prometheus 可以根据这个配置加载规则，用于生产新的时间序列数据或者报警信息，当前我们没有配置任何规则，后期会添加</li>
+<li>scrape_configs 用于控制 prometheus 监控哪些资源。由于 prometheus 通过 http 的方式来暴露它本身的监控数据，prometheus 也能够监控本身的健康情况。在默认的配置有一个单独的 job，叫做 prometheus，它采集 prometheus 服务本身的时间序列数据。这个 job 包含了一个单独的、静态配置的目标；监听 localhost 上的 9090 端口</li>
+<li>prometheus 默认会通过目标的 /metrics 路径采集 metrics。所以，默认的 job 通过 URL：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://localhost:9090/metrics" >http://localhost:9090/metrics</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 采集metrics。收集到时间序列包含 prometheus 服务本身的状态和性能。如果我们还有其他的资源需要监控，可以直接配置在该模块下即可</li>
+</ul>
+<p>监控 Prometheus</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-configmap.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>更新 Configmap</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST http://&lt;Prometheus Service IP&gt;:&lt;port&gt;/-/reload</span><br></pre></td></tr></table></div></figure>
+
+<p>检查一下有没有创建成功</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get configmaps -n kube-system |grep prometheus</span><br></pre></td></tr></table></div></figure>
+
+<p>配置文件创建完成，如果以后我们有新的资源需要被监控，我们只需要将 <code>ConfigMap</code> 对象更新即可</p>
+</li>
+<li><p>创建 prometheus 的 Pod 资源</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometheus-deploy.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: extensions/v1beta1</span></span><br><span class="line"><span class="string">kind: Deployment</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        app: prometheus</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      serviceAccountName: prometheus</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">      - image: prom/prometheus:v2.4.3</span></span><br><span class="line"><span class="string">        name: prometheus</span></span><br><span class="line"><span class="string">        command:</span></span><br><span class="line"><span class="string">        - &quot;/bin/prometheus&quot;</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">        - &quot;--config.file=/etc/prometheus/prometheus.yml&quot;</span></span><br><span class="line"><span class="string">        - &quot;--storage.tsdb.path=/prometheus&quot;</span></span><br><span class="line"><span class="string">        - &quot;--storage.tsdb.retention=30d&quot;</span></span><br><span class="line"><span class="string">        - &quot;--web.enable-admin-api&quot;  # 控制对 admin HTTP API 的访问，其中包括删除时间序列等功能</span></span><br><span class="line"><span class="string">        - &quot;--web.enable-lifecycle&quot;  # 支持热更新，直接执行 localhost:9090/-/reload 立即生效</span></span><br><span class="line"><span class="string">        ports:</span></span><br><span class="line"><span class="string">        - containerPort: 9090</span></span><br><span class="line"><span class="string">          protocol: TCP</span></span><br><span class="line"><span class="string">          name: http</span></span><br><span class="line"><span class="string">        volumeMounts:</span></span><br><span class="line"><span class="string">        - mountPath: &quot;/prometheus&quot;</span></span><br><span class="line"><span class="string">          subPath: prometheus</span></span><br><span class="line"><span class="string">          name: data</span></span><br><span class="line"><span class="string">        - mountPath: &quot;/etc/prometheus&quot;</span></span><br><span class="line"><span class="string">          name: config-volume</span></span><br><span class="line"><span class="string">        resources:</span></span><br><span class="line"><span class="string">          requests:</span></span><br><span class="line"><span class="string">            cpu: 100m</span></span><br><span class="line"><span class="string">            memory: 512Mi</span></span><br><span class="line"><span class="string">          limits:</span></span><br><span class="line"><span class="string">            cpu: 100m</span></span><br><span class="line"><span class="string">            memory: 512Mi</span></span><br><span class="line"><span class="string">      securityContext:</span></span><br><span class="line"><span class="string">        runAsUser: 0</span></span><br><span class="line"><span class="string">      volumes:</span></span><br><span class="line"><span class="string">      - name: data</span></span><br><span class="line"><span class="string">        persistentVolumeClaim:</span></span><br><span class="line"><span class="string">          claimName: prometheus</span></span><br><span class="line"><span class="string">      - configMap:</span></span><br><span class="line"><span class="string">          name: prometheus-config</span></span><br><span class="line"><span class="string">        name: config-volume</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>稍微解释一下配置参数</strong></p>
+<p>我们在启动程序的时候，除了指定 <code>prometheus.yaml</code>(configmap) 以外，还通过 <code>storage.tsdb.path</code> 指定了 TSDB 数据的存储路径、通过<code>storage.tsdb.rentention </code>设置了保留多长时间的数据，还有下面的 web.enable-admin-api 参数可以用来开启对 admin api 的访问权限，参数 <code>web.enable-lifecyle</code> 用来开启支持热更新，有了这个参数之后， <code>prometheus.yaml</code>(configmap) 文件只要更新了，通过执行<code>localhost:9090/-/reload</code>就会立即生效</p>
+<p>我们添加了一行 securityContext，其中 <code>runAsUser</code> 设置为 0，这是因为 prometheus 运行过程中使用的用户是 nobody，如果不配置可能会出现权限问题</p>
+<p>prometheus.yaml 文件对应的 ConfigMap 对象通过 volume 的形式挂载进 Pod，这样 ConfigMap 更新后，对应的 pod 也会热更新，然后我们在执行上面的 reload 请求，prometheus 配置就生效了。除此之外，对了将时间数据进行持久化，我们将数据目录和一个 pvc 对象进行了绑定，所以我们需要提前创建 pvc 对象</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometheus-volume.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: PersistentVolume</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  capacity:</span></span><br><span class="line"><span class="string">    storage: 10Gi</span></span><br><span class="line"><span class="string">  accessModes:</span></span><br><span class="line"><span class="string">  - ReadWriteOnce</span></span><br><span class="line"><span class="string">  persistentVolumeReclaimPolicy: Recycle</span></span><br><span class="line"><span class="string">  nfs:</span></span><br><span class="line"><span class="string">    server: 10.4.82.138</span></span><br><span class="line"><span class="string">    path: /data/k8s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: PersistentVolumeClaim</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  accessModes:</span></span><br><span class="line"><span class="string">  - ReadWriteOnce</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">    requests:</span></span><br><span class="line"><span class="string">      storage: 10Gi</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>修改上面的 nfs server 和 path</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-volume.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>检查一下有没有挂载好</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pvc --all-namespaces</span><br><span class="line">kubectl get pv prometheus</span><br></pre></td></tr></table></div></figure>
+
+<p>配置 rbac 认证</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometheus-rbac.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: ServiceAccount</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">apiVersion: rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="string">kind: ClusterRole</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">rules:</span></span><br><span class="line"><span class="string">- apiGroups:</span></span><br><span class="line"><span class="string">  - &quot;&quot;</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">  - nodes</span></span><br><span class="line"><span class="string">  - services</span></span><br><span class="line"><span class="string">  - endpoints</span></span><br><span class="line"><span class="string">  - pods</span></span><br><span class="line"><span class="string">  - nodes/proxy</span></span><br><span class="line"><span class="string">  verbs:</span></span><br><span class="line"><span class="string">  - get</span></span><br><span class="line"><span class="string">  - list</span></span><br><span class="line"><span class="string">  - watch</span></span><br><span class="line"><span class="string">- apiGroups:</span></span><br><span class="line"><span class="string">  - &quot;&quot;</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">  - configmaps</span></span><br><span class="line"><span class="string">  - nodes/metrics</span></span><br><span class="line"><span class="string">  verbs:</span></span><br><span class="line"><span class="string">  - get</span></span><br><span class="line"><span class="string">- nonResourceURLs:</span></span><br><span class="line"><span class="string">  - /metrics</span></span><br><span class="line"><span class="string">  verbs:</span></span><br><span class="line"><span class="string">  - get</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">apiVersion: rbac.authorization.k8s.io/v1beta1</span></span><br><span class="line"><span class="string">kind: ClusterRoleBinding</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">roleRef:</span></span><br><span class="line"><span class="string">  apiGroup: rbac.authorization.k8s.io</span></span><br><span class="line"><span class="string">  kind: ClusterRole</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">subjects:</span></span><br><span class="line"><span class="string">- kind: ServiceAccount</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>创建 rbac</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-rbac.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>创建 prometheus 服务</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-deploy.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>检查服务有没有起来</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -n kube-system |grep prometheus</span><br><span class="line"><span class="comment"># 是 running 就 ok</span></span><br></pre></td></tr></table></div></figure>
+
+<p>现在我们 prometheus 服务状态是已经正常了，但是我们还无法访问 prometheus 的 webui 服务，我们还需要创建一个 service</p>
+<p>name 是 prometheus-svc</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometeheus-svc.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus-svc</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    app: prometheus</span></span><br><span class="line"><span class="string">  type: NodePort</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">    - name: web</span></span><br><span class="line"><span class="string">      port: 9090</span></span><br><span class="line"><span class="string">      targetPort: http</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>创建这个服务</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-svc.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>看一下分配的端口，用 IP+ 端口访问</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc -n kube-system |grep prometheus</span><br></pre></td></tr></table></div></figure></li>
+<li><p>创建 grafana 配置文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;grafana.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: apps/v1 </span></span><br><span class="line"><span class="string">kind: Deployment </span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: grafana</span></span><br><span class="line"><span class="string">  namespace: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  replicas: 1</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    matchLabels:</span></span><br><span class="line"><span class="string">      app: grafana</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        app: grafana</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">      - name: grafana</span></span><br><span class="line"><span class="string">        image: grafana/grafana</span></span><br><span class="line"><span class="string">        ports:</span></span><br><span class="line"><span class="string">          - containerPort: 3000</span></span><br><span class="line"><span class="string">            protocol: TCP</span></span><br><span class="line"><span class="string">        resources:</span></span><br><span class="line"><span class="string">          limits:</span></span><br><span class="line"><span class="string">            cpu: 100m            </span></span><br><span class="line"><span class="string">            memory: 256Mi          </span></span><br><span class="line"><span class="string">          requests:</span></span><br><span class="line"><span class="string">            cpu: 100m            </span></span><br><span class="line"><span class="string">            memory: 256Mi</span></span><br><span class="line"><span class="string">        volumeMounts:</span></span><br><span class="line"><span class="string">          - name: grafana-data</span></span><br><span class="line"><span class="string">            mountPath: /var/lib/grafana</span></span><br><span class="line"><span class="string">            subPath: grafana</span></span><br><span class="line"><span class="string">      securityContext:</span></span><br><span class="line"><span class="string">        fsGroup: 472</span></span><br><span class="line"><span class="string">        runAsUser: 472</span></span><br><span class="line"><span class="string">      volumes:</span></span><br><span class="line"><span class="string">      - name: grafana-data</span></span><br><span class="line"><span class="string">        persistentVolumeClaim:</span></span><br><span class="line"><span class="string">          claimName: grafana </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: PersistentVolumeClaim</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: grafana </span></span><br><span class="line"><span class="string">  namespace: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  storageClassName: &quot;managed-nfs-storage&quot;</span></span><br><span class="line"><span class="string">  accessModes:</span></span><br><span class="line"><span class="string">    - ReadWriteMany</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">    requests:</span></span><br><span class="line"><span class="string">      storage: 5Gi</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: grafana</span></span><br><span class="line"><span class="string">  namespace: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  type: NodePort</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">  - port : 80</span></span><br><span class="line"><span class="string">    targetPort: 3000</span></span><br><span class="line"><span class="string">    nodePort: 30007</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    app: grafana</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>创建grafana-ingress.yaml</p>
+<p>#–optional可选的，没有外网访问需求可以直接跳过这一步</p>
+<p>ingress 文档： <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/services-networking/ingress/" >https://kubernetes.io/zh/docs/concepts/services-networking/ingress/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">   cat &gt;&gt;grafana-ingress.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">   apiVersion: extensions/v1beta1</span></span><br><span class="line"><span class="string">   kind: Ingress</span></span><br><span class="line"><span class="string">   metadata:</span></span><br><span class="line"><span class="string">      name: grafana</span></span><br><span class="line"><span class="string">      namespace: prometheus</span></span><br><span class="line"><span class="string">   spec:</span></span><br><span class="line"><span class="string">      rules:</span></span><br><span class="line"><span class="string">      - host: k8s.grafana</span></span><br><span class="line"><span class="string">        http:</span></span><br><span class="line"><span class="string">          paths:</span></span><br><span class="line"><span class="string">          - path: /</span></span><br><span class="line"><span class="string">            backend:</span></span><br><span class="line"><span class="string">             serviceName: grafana</span></span><br><span class="line"><span class="string">             servicePort: 80</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>应用 grafana</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f grafana.yaml -f grafana-ingress.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>可以在 KubeSphere 中查看分配到的 ip 地址和端口，配置好 Grafana，就可以导入模板看到可视化界面啦</p>
+<p>容器监控模板：315 8588 3146 8685<br>主机监控模板：8919 9276 10467 10171 9965</p>
+</li>
+</ol>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>监控类型</th>
+<th>模板ID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Kubernetes node_exporter</td>
+<td>14249、8919、10262、5228</td>
+</tr>
+<tr>
+<td>Mikrotik RouterOS</td>
+<td>10950、14933(SWOS)</td>
+</tr>
+<tr>
+<td>Synology</td>
+<td>14284、14364</td>
+</tr>
+<tr>
+<td>SNMP</td>
+<td>14857(Mikrotik)、</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>9837</td>
+</tr>
+<tr>
+<td>Proxmox PVE</td>
+<td>13307</td>
+</tr>
+<tr>
+<td>Openwrt</td>
+<td>11147</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>12633</td>
+</tr>
+<tr>
+<td>WireGuard</td>
+<td>12177</td>
+</tr>
+</tbody></table></div>
+<p>DashBoard 看起来好看但是还没调教好的：8727、9733、9916、12798、11414、12095</p>
+<p>funny DashBoard:3287(PUBG)、11993、11994（Minecraft）、12237（COVID-19)、14199（网络延迟)</p>
+<p>一些我的仪表盘的效果</p>
+<p><img src="https://oss.yhsyc.club/img/ZQTNcm9RqiPGkWO.png" alt="微信截图_20220323214600.png"></p>
+<p><img src="https://oss.yhsyc.club/img/VGuM8wx6QY5m7pj.png" alt="微信截图_20220323231243.png"></p>
+<p><img src="https://oss.yhsyc.club/img/haWwXrRlcd8Ykmt.png" alt="微信截图_20220323230620.png"></p>
+<p><img src="https://oss.yhsyc.club/img/lSL2WjXAVkqfhB8.png" alt="微信截图_20220323214702.png"></p>
+<p><img src="https://oss.yhsyc.club/img/7LxMah8uirzUXwf.png" alt="微信截图_20220324002923.png"></p>
+<p><img src="https://oss.yhsyc.club/img/ZpTuBPe7fiR5Ara.png" alt="微信截图_20220323231021.png"></p>
+
+        <h3 id="安装-Prometheus-和-Grafana（懒人版）"   >
+          <a href="#安装-Prometheus-和-Grafana（懒人版）" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装-Prometheus-和-Grafana（懒人版）" class="headerlink" title="安装 Prometheus 和 Grafana（懒人版）"></a>安装 Prometheus 和 Grafana（懒人版）</h3>
+      
+        <h6 id="别人三年前写的东西了-不建议使用"   >
+          <a href="#别人三年前写的东西了-不建议使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#别人三年前写的东西了-不建议使用" class="headerlink" title="别人三年前写的东西了,不建议使用"></a>别人三年前写的东西了,不建议使用</h6>
+      
+        <h6 id="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"   >
+          <a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="headerlink" title="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"></a>建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题</h6>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/giantswarm/prometheus" >Prometheus and Grafana</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>快速安装</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply \</span><br><span class="line">  --filename https://raw.githubusercontent.com/giantswarm/prometheus/master/manifests-all.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>不建议使用，有点 bug</p>
+<p>需要改 state-metrics image:  bitnami/kube-state-metrics:latest</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://yhsyc.club">Sunnyrian</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://yhsyc.club/2022/03/11/k8s-prometheus-grafana/">http://yhsyc.club/2022/03/11/k8s-prometheus-grafana/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://yhsyc.club/tags/Grafana/">Grafana</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://yhsyc.club/tags/Kubernetes/">Kubernetes</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://yhsyc.club/tags/Prometheus/">Prometheus</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/03/13/git-learning/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">git 学习笔记</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/03/10/linux-ntp-timezone/"><span class="paginator-prev__text">Linux时区设置以及 NTP 设置自动同步</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Kubernetes-%E9%9B%86%E7%BE%A4%E4%B8%AD%E9%83%A8%E7%BD%B2-Prometheus%E6%9D%A5-%E7%9B%91%E6%8E%A7%E9%9B%86%E7%BE%A4%EF%BC%8C%E5%B9%B6%E7%94%A8-Grafana-%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">
+          在 Kubernetes 集群中部署 Prometheus来 监控集群，并用 Grafana 数据可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Prometheus-%E9%83%A8%E7%BD%B2"><span class="toc-text">
+          Prometheus 部署</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Prometheus-%E5%92%8C-Grafana%EF%BC%88%E6%87%92%E4%BA%BA%E7%89%88%EF%BC%89"><span class="toc-text">
+          安装 Prometheus 和 Grafana（懒人版）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%AB%E4%BA%BA%E4%B8%89%E5%B9%B4%E5%89%8D%E5%86%99%E7%9A%84%E4%B8%9C%E8%A5%BF%E4%BA%86-%E4%B8%8D%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8"><span class="toc-text">
+          别人三年前写的东西了,不建议使用</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%BB%BA%E8%AE%AE%E4%B8%8D%E8%A6%81%E5%9C%A8%E5%AE%8C%E5%85%A8%E7%BF%BB%E5%A2%99%E7%9A%84%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%8E%BB%E6%8B%89%E9%95%9C%E5%83%8F%EF%BC%8C%E5%BE%88%E6%9C%89%E5%8F%AF%E8%83%BD%E6%8B%89%E4%B8%8D%E6%88%90%E5%8A%9F%EF%BC%8C%E6%9C%89%E6%97%B6%E5%80%99%E6%8B%89%E5%A4%B1%E8%B4%A5%EF%BC%8C%E8%A6%81%E8%80%83%E8%99%91%E4%B8%80%E4%B8%8B%E6%98%AF%E4%B8%8D%E6%98%AF%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">
+          建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题</span></a></li></ol></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: 'd2e1ab71baa947c052fd',
+    clientSecret: '73423ad9053ae629eab405687e168307d376de34',
+    repo: 'Blog',
+    owner: 'Sunnyrian',
+    admin: ['Sunnyrian'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

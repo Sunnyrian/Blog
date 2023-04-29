@@ -1,0 +1,699 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="2022年找实习-运维DevOps                           某 bank-笔试        小根堆是什么？堆是什么？ 堆是一种经过排序的完全二叉树，其中任一非终端节点的数据值均不大于（或不小于）其左子节点和右子节点的值。最大堆和最小堆是二叉堆的两种形式。最大堆：根结点的键值是所有堆结点键值中最大者。最小堆：根结点的键值是所有堆结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔试面试问题总结">
+<meta property="og:url" content="http://yhsyc.club/2022/04/11/interview-questions/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="2022年找实习-运维DevOps                           某 bank-笔试        小根堆是什么？堆是什么？ 堆是一种经过排序的完全二叉树，其中任一非终端节点的数据值均不大于（或不小于）其左子节点和右子节点的值。最大堆和最小堆是二叉堆的两种形式。最大堆：根结点的键值是所有堆结点键值中最大者。最小堆：根结点的键值是所有堆结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oss.yhsyc.club/img/ITAVJQ3ZaviHdYm.png">
+<meta property="og:image" content="https://oss.yhsyc.club/img/Dz1qpe2borFRyCm.png">
+<meta property="article:published_time" content="2022-04-11T13:42:34.000Z">
+<meta property="article:modified_time" content="2022-09-02T09:30:54.855Z">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="interview">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oss.yhsyc.club/img/ITAVJQ3ZaviHdYm.png"><title>笔试面试问题总结 | Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/2022/04/11/interview-questions/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">笔试面试问题总结</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-04-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body">
+        <h2 id="2022年找实习-运维DevOps"   >
+          <a href="#2022年找实习-运维DevOps" class="heading-link"><i class="fas fa-link"></i></a><a href="#2022年找实习-运维DevOps" class="headerlink" title="2022年找实习-运维DevOps"></a>2022年找实习-运维DevOps</h2>
+      
+        <h3 id="某-bank-笔试"   >
+          <a href="#某-bank-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#某-bank-笔试" class="headerlink" title="某 bank-笔试"></a>某 bank-笔试</h3>
+      <ol>
+<li><p>小根堆是什么？堆是什么？</p>
+<p>堆是一种经过排序的完全二叉树，其中任一非终端节点的数据值均不大于（或不小于）其左子节点和右子节点的值。<br>最大堆和最小堆是二叉堆的两种形式。<br>最大堆：根结点的键值是所有堆结点键值中最大者。<br>最小堆：根结点的键值是所有堆结点键值中最小者。<br>而最大-最小堆集结了最大堆和最小堆的优点，这也是其名字的由来。<br>最大-最小堆是最大层和最小层交替出现的二叉树，即最大层结点的儿子属于最小层，最小层结点的儿子属于最大层。<br>以最大（小）层结点为根结点的子树保有最大（小）堆性质：根结点的键值为该子树结点键值中最大（小）项。</p>
+</li>
+<li><p>在一个进程使用完它的时间片后，会进入什么状态？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/jolin678/article/details/49498127/" >进程的三种状态</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>ArrayList 的底层原理是什么？</p>
+<p>数组</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.nowcoder.com/questionTerminal/5e60ef88c480461e9fdd7ece6cf0ea46?orderByHotValue=1&mutiTagIds=639&page=1&onlyReference=false" >public class A implements A,B</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>?</p>
+<p>接口可以继承接口，不能实现接口    单继承多实现</p>
+</li>
+<li><p>使用 DP 应该满足什么性质？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/txt666999999/article/details/121076591" >DP动态规划</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>TDD 模式是什么？</p>
+<p>TDD:测试驱动开发(Test-Driven Development)</p>
+<p>测试驱动开发是敏捷开发中的一项核心实践和技术，也是一种设计方法论。TDD的原理是在开发功能代码之前，先编写单元测试用例代码,测试代码确定需要编写什么产品代码。TDD的基本思路就是通过测试来推动整个开发的进行，但测试驱动开发并不只是单纯的测试工作，而是把需求分析，设计，质量控制量化的过程。TDD首先考虑使用需求（对象、功能、过程、接口等)，主要是编写测试用例框架对功能的过程和接口进行设计，而测试框架可以持续进行验证。</p>
+</li>
+<li><p>使用线程 synchronized 有什么用？多选 </p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/Jakob_Hu/article/details/103002913" >java synchronized</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/216499.htm" >泛型</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>客户端发送 SYN = 1 之后进入什么状态？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://t.zoukankan.com/viviane-p-11713253.html" >TCP的状态</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_47664976/article/details/117430939" >图的遍历过程</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>创建新目录用什么类？File</p>
+</li>
+<li><p>下推自动机读几型文法？</p>
+<ul>
+<li><p>0 型文法</p>
+<p>G = ( VT， VN，P, S )，每一个产生式：α \alphaα ——&gt; β \betaβ ，α \alphaα ∈ \in∈ (VN ∪ \cup∪ VT)* 至少含有一个非终结符，而β \betaβ ∈ \in∈ (VN ∪ \cup∪ VT)*， 则G是一个0型文法，功能相当于图灵机，也称短语文法</p>
+</li>
+<li><p>1 型文法</p>
+<p>1型文法也叫上下文有关文法，此文法对应于线性有限自动机。它是在0型文法的基础上每一个α \alphaα ——&gt; β \betaβ ，都有 | β \betaβ | &gt;= | α \alphaα |，这里的 | β \betaβ | 指的是 β \betaβ 的长度，特例：α \alphaα ——&gt; ϵ \epsilonϵ 也是1型文法</p>
+</li>
+<li><p>2 型文法</p>
+<p>2型文法也叫上下文无关文法，通过下推自动机（PDA）识别，2型文法是在1型文法的基础上满足，每一个 α \alphaα ——&gt; β \betaβ 都有 α \alphaα 是非终结符</p>
+</li>
+<li><p>3 型文法</p>
+<p>3型文法叫做正则文法，他对应有限状态自动机。在2型文法的基础上满足，A ——&gt; a | aB(右线性) 或 A—&gt; a|B(左线性) 例子：A ——&gt; ϵ \epsilonϵ | aB , B —&gt; Ab | a，0型文法、1型文法、2型文法，不是3型文法</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>算法题</p>
+<ol>
+<li><p>十进制转 16 进制 有多少位是字母？</p>
+</li>
+<li><p>n x y</p>
+<p>10 7 8 4 5 1</p>
+<p>n 个人 如果某个人前 x 个人的精神值和后 y 个人的精神值都大于他，那么他开始卷</p>
+<p>求第一个开始卷的人</p>
+<p>可以使用线性前缀和</p>
+</li>
+<li><p>动态规划题</p>
+<p>n k</p>
+<p>230848942398</p>
+<p>n 个数，求数字串 n 的子串中，能被k整除的个数</p>
+<p>解题思路：如果一个数 abc， c可以被 k 整除，b*10可以被k整除，那么 bc 也可以被k整除； 质数筛</p>
+</li>
+</ol>
+<p>搜索过程中，建立指向其父节点的指针有什么用？</p>
+<ol>
+<li>建立了路径，可以知道某个子节点是从哪个父节点搜索过来的，便于表示路径</li>
+<li>方便回溯，深搜时可以回到父节点，再去搜索其他节点</li>
+</ol>
+
+        <h3 id="9-笔试"   >
+          <a href="#9-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#9-笔试" class="headerlink" title="***9-笔试"></a>***9-笔试</h3>
+      <p>选择题：</p>
+<ul>
+<li><p>awk 的用法 这个还得是多用才会</p>
+</li>
+<li><p>MySQL grant 一个用户查询权限：</p>
+</li>
+<li><p>ssh 允许 root 用户登录的设定 PermitRootLogin Yes</p>
+</li>
+<li><p>ssh 允许某个用户登录的设定： PermitUser? AllowUsers?  </p>
+<p>AllowUsers Sunnyrian</p>
+</li>
+</ul>
+<p>技术问答题:</p>
+<ul>
+<li>请写出 Openstack 的四种基础组件，并描述他们的功能用途</li>
+</ul>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.redhat.com/zh/topics/openstack" >https://www.redhat.com/zh/topics/openstack</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/nova" >Nova</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 是一种用于完整管理和访问 OpenStack 计算资源的工具，能够处理资源的调度、创建和删除。</p>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/neutron" >Neutron</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 在连接 OpenStack 服务之间的网络。</p>
+<p>​    <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/swift" >Swift</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 是一种高度容错的对象存储服务，使用 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.redhat.com/zh/topics/integration/whats-the-difference-between-soap-rest" >RESTful API</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 来存储和检索非结构数据对象。</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/cinder" >    Cinder</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 提供可通过自助服务 API 访问的持久块存储。</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.openstack.org/software/releases/ocata/components/keystone" >    Keystone</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 负责所有 OpenStack 服务的身份验证和授权。它也是所有服务的端点目录。</p>
+<p>​    Glance 可存储和检索多个位置的虚拟机磁盘镜像。</p>
+<ul>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jb51.net/article/205388.htm" >请写出 6 个 Linux 系统显示性能的命令</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45911701/article/details/119637511" >并说出他们的功能和参数使用</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">top</span><br><span class="line">vmstat</span><br><span class="line">iostat</span><br><span class="line">mpstat</span><br><span class="line">pidstat</span><br><span class="line">sar</span><br></pre></td></tr></table></div></figure></li>
+</ul>
+<p>程序题:</p>
+<p>写一个脚本，每 30 s ping 一次 1.1.1.1 和 2.2.2.2，如果他们挂了，那么执行一条告警命令 alert xxxxxx；告警规则有收敛，每1h告警一次</p>
+<p>问答题：</p>
+<ul>
+<li>大学期间你做过的最有成就感的事情是什么？为什么？</li>
+<li>你觉得你是一个什么样性格的人？你的什么特质会影响你的发展？</li>
+<li>如果你的一个方案被上级领导通过了，但在小组执行过程中受阻无法推进，那么你要怎么样做？</li>
+</ul>
+
+        <h3 id="某易-笔试"   >
+          <a href="#某易-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#某易-笔试" class="headerlink" title="某易-笔试"></a>某易-笔试</h3>
+      <p>4 道算法题 1 道问答题</p>
+<p><del>小红拿到了一个 n 个节点、m 条边的无向</del></p>
+<p><del>小红拿到一个数组 a，她定义一个区间的权值为区间内所有数的乘积末尾 0 的数量，求所有区间的权值之和</del></p>
+<p><del>称区间 [i, j] 的权值 f[i, j] 为区间内所有数乘积末尾0的数目</del></p>
+<p> <del>例如：一条边连接的两个点的权值是50和60，那么小红删掉这条边获得的价值为3</del></p>
+<p><del>小红想知道，在保证这张图连通的情况下，最多可以通过删边获得多少价值</del></p>
+<p><del>输入：第一行: 正整数  1 &lt;= n &lt;= 1e5</del></p>
+<p>​            <del>第二行: n 个正整数 1 &lt;= ai &lt;= 1e9</del></p>
+<p><del>样例：input: 3</del></p>
+<p>​                      <del>10 2 5</del></p>
+<p>​            <del>output: 5</del></p>
+<p><del>[1, 1]  乘积 10  权值 1</del></p>
+<p><del>[1, 2]  乘积 20  权值 1</del></p>
+<p><del>[1, 3]  乘积 100  权值 2</del></p>
+<p><del>[2, 2]  乘积 2  权值 0</del></p>
+<p><del>[2, 3]  乘积 10  权值 1</del></p>
+<p><del>[3, 3]  乘积 5  权值 0</del></p>
+<p><del>总权值为5</del></p>
+
+        <h3 id="某鹅-笔试"   >
+          <a href="#某鹅-笔试" class="heading-link"><i class="fas fa-link"></i></a><a href="#某鹅-笔试" class="headerlink" title="某鹅-笔试"></a>某鹅-笔试</h3>
+      <p>36 道单选题，16 道多选题</p>
+<ul>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45548465/article/details/122625777" >网卡 bond 一共有多少种模式</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://wenku.baidu.com/view/a80ed014598102d276a20029bd64783e09127dde.html" >链路聚合</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>是模式几？7 6</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43408582/article/details/115523424" >Linux signal 系统是什么？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>n 道逻辑题</p>
+</li>
+<li><p>爬 11 个台阶楼梯，每一次爬可以选择爬一个台阶或者两个台阶，有多少种可能？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/55948878.html" >https://zhidao.baidu.com/question/55948878.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>C++ 知识      k = f( a++)   a 等于 3 的话  k 等于几？ 3</p>
+</li>
+<li><p>Docker 使用了 Linux 内核的什么特性？ Capabilities？ Secure Computing mode（Seccomp）？</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=docker&spm=1001.2101.3001.7020" >docker</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34442022/article/details/116660883" >依赖于Linux的二个特性：命名空间(namespace)和控制组(cgroups)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>进程fork 输出几个p? 14</p>
+<p>for(int i = 0; i &lt; 3; i++)</p>
+<p>{</p>
+<p>​    print(“p”);</p>
+<p>​    fork();</p>
+<p>}</p>
+</li>
+<li><p>37 转 3 进制是什么？ 1101</p>
+</li>
+<li><p>NIC Network Interface Controller 网卡  Processer 处理器 Memory 内存 Hard disk 硬盘</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/xuhan2011hd68/article/details/16349641" >会话 1 对一个表上了一个共享锁，那么会话 2 还可以对这个表干嘛？ 对某一行上排他锁互斥锁？对整个表又能上什么锁？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>用什么指令在 A 服务器检测 B 服务器 HTTP 服务是否工作正常？ telnet? ping? nmap？</p>
+<p>curl (但是选项中没有) 我选了 telnet 可以 telnet 服务器 80 端口判断</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/ty_hf/article/details/54930120" >shell 知识： </a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>$x= 3 + “15%” + “$25”;</p>
+<p>​                      var_dump($x);</p>
+<p>​                      var_dump(0123==123);</p>
+<p>​                      var_dump(‘0123’==123); 问输出什么？</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://m.php.cn/article/476705.htm" >数据库事务的隔离级别？ 哪种不会脏读？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><strong>1）Read Uncommitted（读未提交）</strong></p>
+<p>一个事务在执行过程中，既可以访问其他事务未提交的新插入的数据，又可以访问未提交的修改数据。如果一个事务已经开始写数据，则另外一个事务不允许同时进行写操作，但允许其他事务读此行数据。此隔离级别可防止丢失更新。</p>
+<p><strong>2）Read Committed（读已提交）</strong></p>
+<p>一个事务在执行过程中，既可以访问其他事务成功提交的新插入的数据，又可以访问成功修改的数据。读取数据的事务允许其他事务继续访问该行数据，但是未提交的写事务将会禁止其他事务访问该行。此隔离级别可有效防止脏读。</p>
+<p><strong>3）Repeatable Read（可重复读取）</strong></p>
+<p>一个事务在执行过程中，可以访问其他事务成功提交的新插入的数据，但不可以访问成功修改的数据。读取数据的事务将会禁止写事务（但允许读事务），写事务则禁止任何其他事务。此隔离级别可有效防止不可重复读和脏读。</p>
+<p><strong>4）Serializable（可串行化）</strong></p>
+<p>提供严格的事务隔离。它要求事务序列化执行，事务只能一个接着一个地执行，不能并发执行。此隔离级别可有效防止脏读、不可重复读和幻读。但这个级别可能导致大量的超时现象和锁竞争，在实际应用中很少使用。</p>
+<p>一般来说，事务的隔离级别越高，越能保证数据库的完整性和一致性，但相对来说，隔离级别越高，对并发性能的影响也越大。因此，通常将数据库的隔离级别设置为 Read Committed，即读已提交数据，它既能防止脏读，又能有较好的并发性能。虽然这种隔离级别会导致不可重复读、幻读和第二类丢失更新这些并发问题，但可通过在应用程序中采用悲观锁和乐观锁加以控制。</p>
+</li>
+<li><p><strong>ACID 是什么？</strong></p>
+<ul>
+<li>Atomicity（原子性）：一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被恢复（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。</li>
+<li>Consistency（一致性）：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设规则，这包含资料的精确度、串联性以及后续数据库可以自发性地完成预定的工作。</li>
+<li>Isolation（隔离性）：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。事务隔离分为不同级别，包括读未提交（Read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（Serializable）。</li>
+<li>Durability（持久性）：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。 </li>
+</ul>
+</li>
+<li><p>Redis 是非关系型数据库吗？ 是的</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42665676/article/details/111596987" >B+ 树相比 B 树的优点？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1693734480921295261&wfr=spider&for=pc" >数据库分库分表</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>GPU DNN 深度学习神经算法</p>
+</li>
+<li><p>数据库 grant 操作 quesr@localhost    只能在localhost登录？错 localhost是指本地这台机</p>
+<p>同时给的权限怎么定义？什么时候该用户可以把他的权限又 grant 给别人？</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/ipmitool/3300367?fr=aladdin" >在 OS 内下，ipmitool 命令可以干哪些事情？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.likecs.com/show-758688.html" >传统 BIOS 相比 UEFI BIOS 的不足有什么？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>UEFI BIOS和传统BIOS的一个显著区别就是UEFI是用模块化、C语言风格的参数堆栈传递方式、动态链接的形式构建的系统，比传统BIOS而言更容易于实现，容错和纠错特性更强，缩短了系统研发的时间。它运行于32位或64位模式，乃至未来增强的处理器模式下，突破传统16位代码的寻址能力，达到处理器的最大寻址。它利用加载UEFI驱动的形式，识别及操作硬件，不同于BIOS利用挂载模式中断的方式增加硬件功能。</p>
+</li>
+<li><p>MySQL 联合索引怎么做？</p>
+</li>
+<li><p>OSI 网卡工作在那几层？ 物理层 数据链路层 网络层</p>
+</li>
+<li><p>以下哪些硬件可以热拔插？ 内存 CPU 硬盘 电源</p>
+</li>
+</ul>
+
+        <h3 id="某-bank-一面"   >
+          <a href="#某-bank-一面" class="heading-link"><i class="fas fa-link"></i></a><a href="#某-bank-一面" class="headerlink" title="某 bank-一面"></a>某 bank-一面</h3>
+      <ol>
+<li><p>自我介绍：</p>
+</li>
+<li><p>为什么会选择做运维？</p>
+</li>
+<li><p>描述一下网络4层架构和OSI七层协议我更偏向于去描述一个访问qq.com的过程</p>
+<p>能把自己很熟悉的东西，简洁有力地说出来，也是一种能力</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24860273" >TCP 和 UDP 的区别</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>TCP(Transport Control Protocol) 是面向连接的协议，就是说在传输数据之前一定要先建立连接，TCP 是通过三次握手完成连接的建立的，断开连接时采用四次挥手</p>
+<p><img src="https://oss.yhsyc.club/img/ITAVJQ3ZaviHdYm.png" alt="1466805-20191021113037722-1150740308.png"></p>
+<p>UDP(User Data Protocol) 用户数据报协议</p>
+<ul>
+<li>UDP使用尽最大努力交付，即不保证可靠交付， 因此主机不需要维持复杂的链接状态表</li>
+<li>UDP是面向报文的。发送方的UDP对应用程序交下来的报文， 在添加首部后就向下交付给IP层。既不拆分，也不合并，而是保留这些报文的边界， 因此，应用程序需要选择合适的报文大小。</li>
+<li>也不算完全没有连接，WireGuard 隧道会在建立隧道时确定双方的握手间隔，以保持连接活跃，确定隧道连通</li>
+</ul>
+</li>
+<li><p>HTTP 和 HTTPS</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_49830664/article/details/122527783" >易于理解版本</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/lyhjava/article/details/51860215" >简述一下 HTTPS 的加密过程？</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<ul>
+<li>客户端想要访问服务端的页面</li>
+<li>服务端向客户端发送证书</li>
+<li>客户端校验证书，检验收到的证书是否过期，是否可信任，提取出公钥</li>
+<li>客户端生成一个随机码，用公钥加密，然后发送给服务端</li>
+<li>服务端拿到加密后的随机码，用自己的私钥解密它，得到客户端生成的随机码</li>
+<li>服务端用该随机码加密要传输的页面，传输给客户端</li>
+</ul>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/37370216" >那么客户端是怎么验证这个证书的可信性呢?</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><img src="https://oss.yhsyc.club/img/Dz1qpe2borFRyCm.png" alt="微信截图_20220428163404.png"></p>
+<p>CA 颁发证书的过程</p>
+<ul>
+<li>首先 CA 把证书持有者的公钥、用途、颁发者、有效时间等信息打包，然后对这个包进行 Hash 计算，得到一个 Hash 值</li>
+<li>然后 CA 会使用自己的私钥将该 Hash 值加密，生成数字签名 Certificates Signature</li>
+<li>然后把数字签名和上面的信息，合成数字证书，就有了一张证书</li>
+</ul>
+<p>客户端校验服务端的数字证书的过程</p>
+<ul>
+<li>首先客户端会使用<strong>同样的</strong> Hash 算法 获取该证书的 Hash 值 H1</li>
+<li>然后通过操作系统或者浏览器有的 CA 的公钥信息，解密证书的数字签名，得到一个 Hash 值 H2</li>
+<li>最后比较 H1 和 H2，如果它们完全相同，那么这个证书是可信任的，否则为不可信</li>
+</ul>
+<p>一般来说，服务端的数字证书的签发者都不会是根证书，那么无法直接通过本地内置的 CA 公钥去直接校验证书，会有这么一个过程</p>
+<ul>
+<li>先通过根证书校验中间证书是否可信任</li>
+<li>如果中间证书可信任，再用中间证书的公钥去解析网站证书</li>
+</ul>
+</li>
+<li><p>Nginx 配置，对 ip 限流的配置？</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://network.51cto.com/article/603552.html" >SFTP FTP</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<ul>
+<li>SFTP 是在 22 端口建立的 SSH 连接的基础上去进行文件传输的，因此它是安全的传输，但因为要加密，会基于加密算法的类型，有性能损耗，传输效率低</li>
+<li>FTP 的 21 端口用于传输控制信息，是否使用 20 端口作为传输数据的端口与 FTP 使用的传输模式有关，如果采用主动模式，那么使用20端口，被动模式的话使用随机端口传输数据</li>
+<li>FTP 是用明文传输数据的，不对数据进行加密</li>
+</ul>
+</li>
+<li><p>平常用什么去 genkey？ssh-keygen</p>
+</li>
+<li><p>对数据库这方面了解怎么样?</p>
+</li>
+</ol>
+<p>有数据库表 </p>
+<p>客户表：cust(cust_id，cust_name)</p>
+<p>理财产品表：prod(prod_id,prod_name)</p>
+<p>客户购买理财产品表：cust_prod(cust_id,prod_id)</p>
+<ul>
+<li><p>查询所有 A 客户购买了，而 B 客户没有购买的产品名</p>
+<p>select prod_name from cust, prod, cust_prod</p>
+<p>where cust.cust_id = cust_prod.cust_id and</p>
+<p>​            prod.prod_id = cust_prod.prod_id and</p>
+<p>​            cust_name  = “A” and</p>
+<p>​            not in ( select prod_name from cust, prod, cust_prod</p>
+<p>​                         where cust.cust_id = cust_prod.cust_id and</p>
+<p>​                                     prod.prod_id = cust_prod.prod_id and</p>
+<p>​                                     ) </p>
+</li>
+<li><p>查询所有 A 客户购买了，而 B 客户也购买了的产品名</p>
+</li>
+<li><p>查询购买了客户 A 所有产品的客户名</p>
+</li>
+</ul>
+<ol start="10">
+<li><p>什么是自动化运维？和传统运维有什么区别？</p>
+<p>例如 PaaS ，开发人员需要什么，我们直接提供什么，运用 openstack、k8s、vSphere 等平台，直接提供需要的服务给开发人员，使软件部署到生产环境这一过程得到简化，实现更高效的开发和生产</p>
+<p>传统运维：告诉我你的需求，需要装什么 Linux 系统？ 需要多大的内存硬盘要多少CPU核心？网络需求是什么？</p>
+<p>自动化运维：告诉我你需要部署什么服务，我来写 Jenkins，配置好了之后，开发人员一键即部署服务到生产环境，无需管理各种生产以及开发环境的变化</p>
+</li>
+<li><p>未来三年的规划，职业生涯的规划?</p>
+</li>
+</ol>
+<p>东方**-笔试</p>
+<p>40 道 选择题 1 道 编程题</p>
+<ol>
+<li><p>w3c 制定的规范 js 处理的顺序是怎样的？ 事件捕获 事件处理 事件冒泡</p>
+</li>
+<li><p>java final 变量 父类实例化被拿去赋值给另外一个实例化，能修改吗？</p>
+</li>
+<li><p>char a = ‘8’    switch(a + 1)</p>
+</li>
+<li><p>JS 跨域请求数据使用什么？ window.name❌</p>
+</li>
+<li><p>DevOps 关键组件  持续集成 持续交付 持续测试 快速交付</p>
+</li>
+<li><p>使用 trustkit 校验 SSL 证书？</p>
+</li>
+<li><p>哪个 HTTP method 用于资源更新？ update？</p>
+</li>
+<li><p>char [][3] 有 10 个元素，第一维度最少是？ 4？</p>
+</li>
+<li><p>SQL injection （SQL注入）是针对客户端的吗？ nope</p>
+</li>
+<li><p>数组相对链表的优点？存储空间小 </p>
+</li>
+<li><p>哪种 SQL 语句不需要 COMMIT？ CREATE 和 ALTER</p>
+</li>
+<li><p>git pull  合并吗？ 可以选择 merge 或者 rebase</p>
+</li>
+<li><p>Promise 添加回调函数用什么？ .then</p>
+</li>
+<li><p>StringBuffer 和 StringBuilder</p>
+</li>
+<li><p>XMLHttpRequest sent() 前使用什么方法？ init?</p>
+</li>
+<li><p>Vue 组件参数传递 parameter</p>
+</li>
+<li><p>DDoS 破坏了 _ _ 性？ 可用性</p>
+</li>
+<li><p>Vue V-if V-show</p>
+</li>
+<li><p>ARP 属于 WEB 攻击吗？</p>
+</li>
+<li><p>编程题 给一个文件 access.log</p>
+<p>读取文件，提取每一行的浏览器访问记录 URL <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baidu.com/*&amp;^*&amp;(&amp;)^(&amp;*^)" >https://baidu.com/*&amp;^*&amp;(&amp;)^(&amp;*^)</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>输出 该域名访问次数 域名   order by 次数</p>
+</li>
+</ol>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://yhsyc.club">Sunnyrian</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://yhsyc.club/2022/04/11/interview-questions/">http://yhsyc.club/2022/04/11/interview-questions/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="http://yhsyc.club/tags/interview/">interview</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/05/11/ftp/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">FTP 的日常使用操作</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/03/27/k8s-configMap/"><span class="paginator-prev__text">k8s 中 configMap 的日常使用</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2022%E5%B9%B4%E6%89%BE%E5%AE%9E%E4%B9%A0-%E8%BF%90%E7%BB%B4DevOps"><span class="toc-text">
+          2022年找实习-运维DevOps</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%90-bank-%E7%AC%94%E8%AF%95"><span class="toc-text">
+          某 bank-笔试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E7%AC%94%E8%AF%95"><span class="toc-text">
+          ***9-笔试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%90%E6%98%93-%E7%AC%94%E8%AF%95"><span class="toc-text">
+          某易-笔试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%90%E9%B9%85-%E7%AC%94%E8%AF%95"><span class="toc-text">
+          某鹅-笔试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%90-bank-%E4%B8%80%E9%9D%A2"><span class="toc-text">
+          某 bank-一面</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: 'd2e1ab71baa947c052fd',
+    clientSecret: '73423ad9053ae629eab405687e168307d376de34',
+    repo: 'Blog',
+    owner: 'Sunnyrian',
+    admin: ['Sunnyrian'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

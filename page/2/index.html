@@ -1,0 +1,1475 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="Information Technology Sharing">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sunnyrian&#39;s Blog">
+<meta property="og:url" content="http://yhsyc.club/page/2/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="Information Technology Sharing">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="Network Linux Maintenance Programming">
+<meta name="twitter:card" content="summary"><title>Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/page/2/index.html"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/27/alertmanager/">Alertmanager 部署指南</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-27</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>介绍一下，Altermanager 一般在 Grafana 中是外置告警器，在 Grafana 中配置好它之后，触发了 Alerting 规则之后，就会让 Altermanager 根据它的配置，用某种方式向接收方发送告警信息</p>
+<p>本文示例为配置 Altermanager k8s 服务通过 SMTP 发送告警</p>
+
+        <h4 id="准备配置文件"   >
+          <a href="#准备配置文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#准备配置文件" class="headerlink" title="准备配置文件"></a>准备配置文件</h4>
+      <ol>
+<li><p>configMap</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; Altermanager-configMap.yaml &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: ConfigMap</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: alertmanager-config</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    kubernetes.io/cluster-service: &quot;true&quot;</span></span><br><span class="line"><span class="string">    addonmanager.kubernetes.io/mode: EnsureExists</span></span><br><span class="line"><span class="string">data:</span></span><br><span class="line"><span class="string">  alertmanager.yml: |</span></span><br><span class="line"><span class="string">    global:</span></span><br><span class="line"><span class="string">      resolve_timeout: 5m</span></span><br><span class="line"><span class="string">      smtp_smarthost: &#x27;smtp.163.com:25&#x27;</span></span><br><span class="line"><span class="string">      smtp_from: &#x27;Sunnyrain233@163.com&#x27;</span></span><br><span class="line"><span class="string">      smtp_auth_username: &#x27;Sunnyrain233@163.com&#x27;</span></span><br><span class="line"><span class="string">      smtp_auth_password: &#x27;xxxxxx&#x27;</span></span><br><span class="line"><span class="string">      smtp_require_tls: true</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    receivers:</span></span><br><span class="line"><span class="string">    - name: default-receiver</span></span><br><span class="line"><span class="string">      email_configs:</span></span><br><span class="line"><span class="string">      - to: &quot;Sunnyrain233@163.com&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    route:</span></span><br><span class="line"><span class="string">      group_interval: 1m</span></span><br><span class="line"><span class="string">      group_wait: 10s</span></span><br><span class="line"><span class="string">      receiver: default-receiver</span></span><br><span class="line"><span class="string">      repeat_interval: 1m</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://prometheus.io/docs/alerting/latest/configuration/" >详细配置文档</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>deployment</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; Altermanager-deployment.yaml &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: apps/v1</span></span><br><span class="line"><span class="string">kind: Deployment</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: alertmanager</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    k8s-app: alertmanager</span></span><br><span class="line"><span class="string">    kubernetes.io/cluster-service: &quot;true&quot;</span></span><br><span class="line"><span class="string">    addonmanager.kubernetes.io/mode: Reconcile</span></span><br><span class="line"><span class="string">    version: latest</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  replicas: 1</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    matchLabels:</span></span><br><span class="line"><span class="string">      k8s-app: alertmanager</span></span><br><span class="line"><span class="string">      version: latest</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        k8s-app: alertmanager</span></span><br><span class="line"><span class="string">        version: latest</span></span><br><span class="line"><span class="string">      annotations:</span></span><br><span class="line"><span class="string">        scheduler.alpha.kubernetes.io/critical-pod: &#x27;&#x27;</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      priorityClassName: system-cluster-critical</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">        - name: prometheus-alertmanager</span></span><br><span class="line"><span class="string">          image: &quot;prom/alertmanager&quot;</span></span><br><span class="line"><span class="string">          imagePullPolicy: &quot;IfNotPresent&quot;</span></span><br><span class="line"><span class="string">          args:</span></span><br><span class="line"><span class="string">            - --config.file=/etc/config/alertmanager.yml</span></span><br><span class="line"><span class="string">            - --storage.path=/data</span></span><br><span class="line"><span class="string">        #    - --web.external-url=/</span></span><br><span class="line"><span class="string">          ports:</span></span><br><span class="line"><span class="string">            - containerPort: 9093</span></span><br><span class="line"><span class="string">          readinessProbe:</span></span><br><span class="line"><span class="string">            httpGet:</span></span><br><span class="line"><span class="string">              path: /#/status</span></span><br><span class="line"><span class="string">              port: 9093</span></span><br><span class="line"><span class="string">            initialDelaySeconds: 30</span></span><br><span class="line"><span class="string">            timeoutSeconds: 30</span></span><br><span class="line"><span class="string">          volumeMounts:</span></span><br><span class="line"><span class="string">            - name: config-volume</span></span><br><span class="line"><span class="string">              mountPath: /etc/config</span></span><br><span class="line"><span class="string">            - name: storage-volume</span></span><br><span class="line"><span class="string">              mountPath: &quot;/data&quot;</span></span><br><span class="line"><span class="string">              subPath: &quot;&quot;</span></span><br><span class="line"><span class="string">          resources:</span></span><br><span class="line"><span class="string">            limits:</span></span><br><span class="line"><span class="string">              cpu: 10m</span></span><br><span class="line"><span class="string">              memory: 50Mi</span></span><br><span class="line"><span class="string">            requests:</span></span><br><span class="line"><span class="string">              cpu: 10m</span></span><br><span class="line"><span class="string">              memory: 50Mi</span></span><br><span class="line"><span class="string">        - name: prometheus-alertmanager-configmap-reload</span></span><br><span class="line"><span class="string">          image: &quot;jimmidyson/configmap-reload:v0.1&quot;</span></span><br><span class="line"><span class="string">          imagePullPolicy: &quot;IfNotPresent&quot;</span></span><br><span class="line"><span class="string">          args:</span></span><br><span class="line"><span class="string">            - --volume-dir=/etc/config</span></span><br><span class="line"><span class="string">            - --webhook-url=http://localhost:9093/-/reload</span></span><br><span class="line"><span class="string">          volumeMounts:</span></span><br><span class="line"><span class="string">            - name: config-volume</span></span><br><span class="line"><span class="string">              mountPath: /etc/config</span></span><br><span class="line"><span class="string">              readOnly: true</span></span><br><span class="line"><span class="string">          resources:</span></span><br><span class="line"><span class="string">            limits:</span></span><br><span class="line"><span class="string">              cpu: 10m</span></span><br><span class="line"><span class="string">              memory: 10Mi</span></span><br><span class="line"><span class="string">            requests:</span></span><br><span class="line"><span class="string">              cpu: 10m</span></span><br><span class="line"><span class="string">              memory: 10Mi</span></span><br><span class="line"><span class="string">      volumes:</span></span><br><span class="line"><span class="string">        - name: config-volume</span></span><br><span class="line"><span class="string">          configMap:</span></span><br><span class="line"><span class="string">            name: alertmanager-config</span></span><br><span class="line"><span class="string">        - name: storage-volume</span></span><br><span class="line"><span class="string">          persistentVolumeClaim:</span></span><br><span class="line"><span class="string">            claimName: alertmanager</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://hub.docker.com/r/prom/alertmanager" >DockerHub</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>PVC(PersistentVolumeClaim)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; Altermanager-pvc.yaml &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: PersistentVolumeClaim</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: alertmanager</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    kubernetes.io/cluster-service: &quot;true&quot;</span></span><br><span class="line"><span class="string">    addonmanager.kubernetes.io/mode: EnsureExists</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  storageClassName: managed-nfs-storage</span></span><br><span class="line"><span class="string">  accessModes:</span></span><br><span class="line"><span class="string">    - ReadWriteOnce</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">    requests:</span></span><br><span class="line"><span class="string">      storage: &quot;2Gi&quot;</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure></li>
+<li><p>Service </p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; Altermanager-service.yaml &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: alertmanager</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    kubernetes.io/cluster-service: &quot;true&quot;</span></span><br><span class="line"><span class="string">    addonmanager.kubernetes.io/mode: Reconcile</span></span><br><span class="line"><span class="string">    kubernetes.io/name: &quot;Alertmanager&quot;</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">    - name: http</span></span><br><span class="line"><span class="string">      port: 80</span></span><br><span class="line"><span class="string">      protocol: TCP</span></span><br><span class="line"><span class="string">      targetPort: 9093</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    k8s-app: alertmanager</span></span><br><span class="line"><span class="string">  type: &quot;ClusterIP&quot;</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h4 id="应用配置"   >
+          <a href="#应用配置" class="heading-link"><i class="fas fa-link"></i></a><a href="#应用配置" class="headerlink" title="应用配置"></a>应用配置</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f Altermanager-deployment.yaml</span><br><span class="line">kubectl apply -f Altermanager-configMap.yaml</span><br><span class="line">kubectl apply -f Altermanager-pvc.yaml</span><br><span class="line">kubectl apply -f Altermanager-service.yaml</span><br><span class="line">kubectl get svc -n kube-system | grep alertmanager</span><br></pre></td></tr></table></div></figure>
+
+<p>等容器运行正常后，在 Grafana 中 Alerting 的 Admin 点击 Add AlertManager</p>
+<p><img src="https://oss.yhsyc.club/img/mhgHedCM3SOVWTc.png" alt="微信截图_20220327162701.png"></p>
+
+        <h6 id="查看-alertManager-Pod-的-IP-address"   >
+          <a href="#查看-alertManager-Pod-的-IP-address" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看-alertManager-Pod-的-IP-address" class="headerlink" title="查看 alertManager Pod 的 IP address"></a>查看 alertManager Pod 的 IP address</h6>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod $(kubectl get pod -n kube-system | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | grep alert) -n kube-system | grep IP</span><br></pre></td></tr></table></div></figure>
+
+<p>添加你的 AltermanagerURL 到 Grafana <code>http://&lt; pod-IP &gt;:9093</code></p>
+<p>然后在 Grafana 中添加 Alert rules 触发告警至 firing 之后，就会发邮件到你的收件邮箱啦</p>
+<p><img src="https://oss.yhsyc.club/img/RyHaqZN4JxBLKCe.png" alt="微信截图_20220327162217.png"></p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/23/when-to-NAT/">什么时候才需要进行 NAT？</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-23</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>NAT(Network Address Translate) 在我们日常网络中太常见了，今天重新仔细审视 NAT，我想到了一些东西</p>
+<p>什么时候要进行 NAT？-&gt; 下面的话取反，则是需要 NAT 的时候 /doge</p>
+<p>当需要通信的双方路由器之间，互相完全掌握所有的主机地址的路由的时候，NAT 是不必要的</p>
+<p>如果两个 Router 之间用 BGP 建邻了，那么大部分内网地址的路由，双方都是知道的，在两个路由器之后的主机相互通信，并不需要进行 NAT，直接 src.address 填源主机地址，通信没有障碍。</p>
+<p>但是有些时候，我们的 Router A 有一个 VPN 接口，但这个接口的地址和对端用来通信的地址，Router B 都是不知道的，那么这个时候，没有进行 NAT 的话，在 Router B 想要回包的时候，因为找不到对应的路由，并不能回复这个包，于是 drop 了，网络不可达:(</p>
+<p>那么对于以上情况我们有两种处理方法：</p>
+<ol>
+<li>在 Router A 上添加 srcNAT, masquerade 这个 VPN 接口，那么在发送 VPN 客户端主机想要发送报文给 Router B 后的主机时，会把 src.address 替换成 Router A 的地址 (Router B 认识的那个)，这样的话 Router B 就可以回包给 Router A，在 Router A 重新收到这个包的时候，把 dst.address 换回客户端主机的地址，网络就可达了✌</li>
+<li>在 Router A 上添加 BGP 的 network ，添加 VPN 网络，那么不需要 NAT 也行，或者直接在 Router B 上加静态路由</li>
+</ol>
+<p><img src="https://oss.yhsyc.club/img/Xad6SCPfIY2HKE9.png" alt="未命名绘图.drawio.png"></p>
+<p>NAT 带来了很多好处：</p>
+<ol>
+<li>节省了 IP 地址空间，大家都可以用 <code>RFC</code> 中规定的保留地址，在和外部网络交流的时候 NAT 成外部 IP</li>
+<li>增强了网络的安全性和隐私性，我们可以把网络中的主机藏在防火墙的 NAT 之后</li>
+</ol>
+<p>也有缺点：</p>
+<ol>
+<li>在需要 NAT 时增加了转发报文的开销，需要对报文首部进行处理</li>
+<li>在没有 UPNP 的情况下，NAT 会很怪</li>
+<li>需要维护</li>
+</ol>
+<p>在我遇到的问题中，Openwrt 有时候并没有和 RouterA (那个管理隧道的 Router )在同一网段，也没有建立 BGP ，没有直连路由，所以我的方法是，直接在 Linux Host 中添加了内网路由，路由到 RouterA 上。</p>
+<p>CentOS7 添加路由</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip route add x.x.x.x/x via &lt;gateway&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>重启之后上面这条会失效，所以，要加个开机之后会运行的脚本</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysconfig/network-scripts/route-eth0</span><br><span class="line">x.x.x.x/x via &lt;gateway&gt;</span><br><span class="line">:wq</span><br></pre></td></tr></table></div></figure>
+
+<p>百度</p>
+<p>今天被朋友推了一个规则 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/sparanoid/chinese-copywriting-guidelines" >中文文案排版指北</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>然后我就开始改我的博客了</p>
+<p>是可以用正则匹配替换的，但是确实还有一定难度 /doge</p>
+<p>所以我就直接手工替换，养成好习惯，同时还能审查一遍</p>
+<p>有了 k8s 之后….</p>
+<p><img src="https://oss.yhsyc.club/img/z63xfFZTilvVCDB.png" alt="微信截图_20220323020847.png"></p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/20/mikrotik-exporter/">为什么不试试用 Mikrotik_exporter 来监控你的 RouterOS 呢？</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>为了更方便我监控 RouterOS，嘿嘿嘿，我找到了这个，<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/nshttpd/mikrotik-exporter" >mikrotik-exporter</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="配置-Mikrotik"   >
+          <a href="#配置-Mikrotik" class="heading-link"><i class="fas fa-link"></i></a><a href="#配置-Mikrotik" class="headerlink" title="配置 Mikrotik"></a>配置 Mikrotik</h3>
+      <p>添加 Prometheus 用户</p>
+<p>创建有 api 且 read only 的用户组</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/user group add name=prometheus policy=api,<span class="built_in">read</span>,winbox</span><br></pre></td></tr></table></div></figure>
+
+<p>（optional）如果有 lte 的话要再加一个 test</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/user group add name=prometheus policy=api,<span class="built_in">read</span>,winbox,<span class="built_in">test</span></span><br></pre></td></tr></table></div></figure>
+
+<p>创建用户，记得改密码</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/user add name=prometheus group=prometheus password=changeme</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="监控单台设备"   >
+          <a href="#监控单台设备" class="heading-link"><i class="fas fa-link"></i></a><a href="#监控单台设备" class="headerlink" title="监控单台设备"></a>监控单台设备</h3>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mikrotik-exporter -address 10.10.0.1 -device my_router -password changeme -user prometheus</span><br></pre></td></tr></table></div></figure>
+
+<p>-address 后是你 RouterOS 的地址，-device 后是给它起的标签名，后面是密码和用户名</p>
+
+        <h3 id="监控多台设备"   >
+          <a href="#监控多台设备" class="heading-link"><i class="fas fa-link"></i></a><a href="#监控多台设备" class="headerlink" title="监控多台设备"></a>监控多台设备</h3>
+      <p>使用配置文件启动</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mikrotik-exporter -config-file config.yml</span><br></pre></td></tr></table></div></figure>
+
+<p>样例 config.yml</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">devices:</span><br><span class="line">  - name: my_router</span><br><span class="line">    address: 10.10.0.1</span><br><span class="line">    user: prometheus</span><br><span class="line">    password: changeme</span><br><span class="line">  - name: my_second_router</span><br><span class="line">    address: 10.10.0.2</span><br><span class="line">    port: 8999</span><br><span class="line">    user: prometheus2</span><br><span class="line">    password: password_to_second_router</span><br><span class="line">  - name: routers_srv_dns</span><br><span class="line">    srv:</span><br><span class="line">      record: _mikrotik._udp.example.com</span><br><span class="line">    user: prometheus</span><br><span class="line">    password: password_to_all_dns_routers</span><br><span class="line">  - name: routers_srv_custom_dns</span><br><span class="line">    srv:</span><br><span class="line">      record: _mikrotik2._udp.example.com</span><br><span class="line">      dns:</span><br><span class="line">        address: 1.1.1.1</span><br><span class="line">        port: 53</span><br><span class="line">    user: prometheus</span><br><span class="line">    password: password_to_all_dns_routers</span><br><span class="line"></span><br><span class="line">features:</span><br><span class="line">  bgp: <span class="literal">true</span></span><br><span class="line">  dhcp: <span class="literal">true</span></span><br><span class="line">  dhcpv6: <span class="literal">false</span></span><br><span class="line">  dhcpl: <span class="literal">true</span></span><br><span class="line">  routes: <span class="literal">true</span></span><br><span class="line">  pools: <span class="literal">true</span></span><br><span class="line">  optics: <span class="literal">true</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>然后配置 Prometheus</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi Prometheus-configmap.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>在 scrape_configs 后面加上</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- job_name: <span class="string">&#x27;RouterOS_exporter&#x27;</span></span><br><span class="line">   static_configs:</span><br><span class="line">     - targets: [<span class="string">&#x27;127.0.0.1:9436&#x27;</span>]</span><br><span class="line">       labels:</span><br><span class="line">         instance: <span class="string">&#x27;RouterOS&#x27;</span></span><br><span class="line">         env: <span class="string">&#x27;Prodction&#x27;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>targets 后面加上 mikrotik_exporter 运行的机子的 ip</p>
+<p>热加载更新:   <port>  为 Prometheus 服务的端口</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST http://&lt;your-address&gt;:&lt;port&gt;/-/reload</span><br></pre></td></tr></table></div></figure>
+
+<p>在 Prometheus 的 Target 中看到它没什么问题的话</p>
+<p>就可以在 Grafana 中添加仪表盘啦</p>
+<p>Mikrotik Exporter 仪表盘代码：10950</p>
+<p>Synology 群晖推荐 Dashboard: 14284</p>
+
+        <h3 id="可能发生的问题"   >
+          <a href="#可能发生的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#可能发生的问题" class="headerlink" title="可能发生的问题"></a>可能发生的问题</h3>
+      <p>http 500 error 或者 UTF-8 invaild</p>
+<p>在我遇到的情况，多半是 RouterOS 中的接口的 comment 有中文备注且混杂不是 UTF-8 的编码，只需要去把 RouterOS 上的中文去掉或者改成英文就 ok 了</p>
+<p>同时要保证网络通畅</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/20/snmp-exporter/">用 snmp-exporter 在 Grafana 中监控 RouterOS</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>在有了 Grafana 之后，总得监控些什么吧，那就让我们来监控 RouterOS 吧</p>
+
+        <h3 id="配置-snmp-exporter"   >
+          <a href="#配置-snmp-exporter" class="heading-link"><i class="fas fa-link"></i></a><a href="#配置-snmp-exporter" class="headerlink" title="配置 snmp-exporter"></a>配置 snmp-exporter</h3>
+      <p>我刚开始被指点的就是使用 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/prometheus/snmp_exporter" >snmp_exporter</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> ,让我们看看具体怎么做来监控一些支持 SNMP 协议的设备</p>
+<p>可以下载该仓库 releases 中的最新版对应你机器类型的包，放在工作目录中来运行，有很多方式，比如直接在 Linux 环境中运行，用 docker 运行，在 k8s 中运行，都可以</p>
+<p>然后就是配置 Prometheus 了</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /prometheus-configmap.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>在 scrape_configs 后面加上   其中 <your-address> 为你运行 snmp-exporter 的机器IP地址</p>
+<p>targets 后面加上你要监控的主机地址</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">scrape_configs:</span><br><span class="line">    - job_name: <span class="string">&#x27;snmp&#x27;</span></span><br><span class="line">      static_configs:</span><br><span class="line">       - targets:</span><br><span class="line">         - 192.168.1.100 <span class="comment">#SNMP device</span></span><br><span class="line">      metrics_path: /snmp</span><br><span class="line">      params:</span><br><span class="line">        module: [mikrotik]</span><br><span class="line">      relabel_configs:</span><br><span class="line">        - source_labels: [__address__]</span><br><span class="line">          target_label: __param_target</span><br><span class="line">        - source_labels: [__param_target]</span><br><span class="line">          target_label: instance</span><br><span class="line">        - target_label: __address__</span><br><span class="line">          replacement: &lt;your-address&gt;:9116  <span class="comment"># The SNMP exporter&#x27;s real hostname:port.</span></span><br></pre></td></tr></table></div></figure>
+
+<p>注意这里 module 是 mikrotik，是用来监控 mikrotik 家的 ROS 的，如果需要监控别的东西，可以再加一条 job，配置 module 为其他的类型例如 synology（只要snmp.yaml 中有这个类型就可以)</p>
+<p>完事之后更新一下 prometheus-configmap 就可以了</p>
+<p>热加载:   <port> 为 Prometheus 服务的端口</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST http://&lt;your-address&gt;:&lt;port&gt;/-/reload</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>加载完之后就可以在 Prometheus 的 targets 中看到 snmp 了</p>
+<p>然后就可以在 Grafana 中配置仪表盘了</p>
+<p>当然我得先会写 PromQL 才行</p>
+
+        <h3 id="我们也可以自己生成-snmp-yml"   >
+          <a href="#我们也可以自己生成-snmp-yml" class="heading-link"><i class="fas fa-link"></i></a><a href="#我们也可以自己生成-snmp-yml" class="headerlink" title="我们也可以自己生成 snmp.yml"></a>我们也可以自己生成 snmp.yml</h3>
+      <p>这里安利大家使用 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://ssh.cloud.google.com/cloudshell" >CloudShell</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 进行编译，比较方便，当然自己有环境更好啦</p>
+<p>安装环境和依赖</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install unzip build-essential libsnmp-dev p7zip-full -y</span><br></pre></td></tr></table></div></figure>
+
+<p>装上 gcc-g++</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install golang-go -y</span><br></pre></td></tr></table></div></figure>
+
+<p>检查一下装上 go 了没有</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go version</span><br></pre></td></tr></table></div></figure>
+
+<p>下载 snmp_exporter</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/prometheus/snmp_exporter/generator</span><br></pre></td></tr></table></div></figure>
+
+<p>cd 到该库的目录下</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$&#123;GOPATH-$HOME/go&#125;</span>/src/github.com/prometheus/snmp_exporter/generator</span><br></pre></td></tr></table></div></figure>
+
+<p>看看对不对</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -lh</span><br></pre></td></tr></table></div></figure>
+
+<p>没问题就编译它</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build</span><br></pre></td></tr></table></div></figure>
+
+<p>然后下载各种厂商的 mibs</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make mibs</span><br></pre></td></tr></table></div></figure>
+
+<p>导出 mibs 文件夹的目录以便于程序指向它</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> MIBDIRS=mibs</span><br></pre></td></tr></table></div></figure>
+
+<p>可以开始生成 snmp.yml 了</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./generator generate</span><br></pre></td></tr></table></div></figure>
+
+<p>然后就生成出来了</p>
+<p>然后想办法传到你要运行 snmp_exporter 的机子上，放在相同目录下替换掉原来的就 ok</p>
+<p>可能遇到的问题</p>
+<p>=&gt; Prometheus 的服务容器没有连通要监控的路由器，那么在我们需要 prometheus-deploy.yaml 中加上这条：hostNetwork: true</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">      kind: Deployment</span><br><span class="line">      metadata:</span><br><span class="line">        name: prometheus</span><br><span class="line">        namespace: kube-system</span><br><span class="line">        labels:</span><br><span class="line">          app: prometheus</span><br><span class="line">      spec:</span><br><span class="line">        selector:</span><br><span class="line">          matchLabels:</span><br><span class="line">            app: prometheus</span><br><span class="line">        template:</span><br><span class="line">          metadata:</span><br><span class="line">            labels:</span><br><span class="line">              app: prometheus</span><br><span class="line">          spec:</span><br><span class="line">          <span class="comment">#就下面这一行</span></span><br><span class="line">            hostNetwork: <span class="literal">true</span></span><br><span class="line">            serviceAccountName: prometheus</span><br><span class="line">            containers:</span><br><span class="line">            - image: prom/prometheus:v2.4.3</span><br></pre></td></tr></table></div></figure>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/14/raid/">独立硬盘冗余阵列RAID的学习笔记和心得</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-14</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="基本介绍"   >
+          <a href="#基本介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h3>
+      <p><strong>独立硬盘冗余阵列</strong>（<strong>RAID</strong>, <strong>R</strong>edundant <strong>A</strong>rray of <strong>I</strong>ndependent <strong>D</strong>isks），旧称<strong>廉价磁盘冗余阵列</strong>（<strong>R</strong>edundant <strong>A</strong>rray of <strong>I</strong>nexpensive <strong>D</strong>isks），简称<strong>磁盘阵列</strong>。利用虚拟化存储技术把多个硬盘组合起来，成为一个或多个硬盘阵列组，目的为提升性能或减少冗余，或是两者同时提升。</p>
+<p>在运作中，取决于 RAID 层级不同，资料会以多种模式分散于各个硬盘，RAID 层级的命名会以 RAID 开头并带数字，例如：RAID 0、RAID 1、RAID 5、RAID 6、RAID 7、RAID 01、RAID 10、RAID 50、RAID 60。每种等级都有其理论上的优缺点，不同的等级在两个目标间获取平衡，分别是增加资料可靠性以及增加存储器（群）读写性能。</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="center">RAID</th>
+<th align="center">最少硬盘</th>
+<th align="center">最大容错</th>
+<th align="center">可用容量</th>
+<th align="center">读取性能</th>
+<th align="center">写入性能</th>
+<th align="center">安全性</th>
+<th>目的</th>
+<th>应用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">UNRAID</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">无</td>
+<td></td>
+<td>到处都有</td>
+</tr>
+<tr>
+<td align="center">JBOD</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">n</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">无</td>
+<td>单纯增加容量</td>
+<td>个人</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">n</td>
+<td align="center">n</td>
+<td align="center">n</td>
+<td align="center">一个硬盘寄了就全寄了</td>
+<td>追求快</td>
+<td>缓存</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">n-1</td>
+<td align="center">1</td>
+<td align="center">n</td>
+<td align="center">1</td>
+<td align="center">高，一块硬盘正常即可</td>
+<td>追求稳</td>
+<td>个人、企业备份</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">n-1</td>
+<td align="center">n-1</td>
+<td align="center">n-1</td>
+<td align="center">低，不能坏超过一块</td>
+<td>追求快稳便宜</td>
+<td>个人、小型企业备份</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">4</td>
+<td align="center">2</td>
+<td align="center">n-2</td>
+<td align="center">n-2</td>
+<td align="center">n-2</td>
+<td align="center">比RAID5高，不能坏超过两块</td>
+<td>追求快加更稳</td>
+<td>个人、企业备份</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td>又稳又快</td>
+<td>大型数据库、服务器</td>
+</tr>
+<tr>
+<td align="center">50</td>
+<td align="center">6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td>又稳又快但起步价小贵</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">60</td>
+<td align="center">8</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td>又稳又快但起步价贵</td>
+<td></td>
+</tr>
+</tbody></table></div>
+<ol>
+<li>n 代表硬盘总数</li>
+<li>JBOD（Just a Bunch Of Disk) 指将数个物理硬盘，在操作系统中合并成一个逻辑硬盘，直接增加容量</li>
+<li>10、50、60、依照组成公式不同，容量和性能也不同</li>
+</ol>
+
+        <h3 id="RAID-0"   >
+          <a href="#RAID-0" class="heading-link"><i class="fas fa-link"></i></a><a href="#RAID-0" class="headerlink" title="RAID 0"></a>RAID 0</h3>
+      <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:RAID_0.svg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/RAID_0.svg/130px-RAID_0.svg.png" alt="RAID 0"></a></p>
+<p>RAID 0 亦称为带区集。它将两个以上的磁盘并联起来，成为一个大容量的磁盘。在存放数据时，分段后分散存储在这些磁盘中，因为读写时都可以并行处理，所以在所有的级别中，RAID 0 的速度是最快的。但是 RAID 0 既没有冗余功能，也不具备容错能力，如果一个磁盘（物理）损坏，所有数据都会丢失，危险程度与JBOD相当。</p>
+
+        <h3 id="RAID-1"   >
+          <a href="#RAID-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#RAID-1" class="headerlink" title="RAID 1"></a>RAID 1</h3>
+      <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:RAID_1.svg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/RAID_1.svg/130px-RAID_1.svg.png" alt="RAID 1"></a></p>
+<p>两组以上的 N 个磁盘相互作镜像，在一些多线程操作系统中能有很好的读取速度，理论上读取速度等于硬盘数量的倍数，与 RAID 0 相同。另外写入速度有微小的降低。只要一个磁盘正常即可维持运作，可靠性最高。其原理为在主硬盘上存放数据的同时也在镜像硬盘上写一样的数据。当主硬盘（物理）损坏时，镜像硬盘则代替主硬盘的工作。因为有镜像硬盘做数据备份，所以 RAID 1 的数据安全性在所有的 RAID 级别上来说是最好的。但无论用多少磁盘做 RAID 1，仅算一个磁盘的容量，是所有 RAID 中磁盘利用率最低的一个级别。</p>
+<p>如果用两个不同大小的磁盘建 RAID 1，可用空间为较小的那个磁盘，较大的磁盘多出来的空间也可以分割成一个区来使用，不会造成浪费。</p>
+<p><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6867f6a249439731691a79a7b582943cd11166d0" alt="{\begin{aligned}Size&amp;=\min \left(S_{1},S_{2},S_{3}\dots \right)\end{aligned}}"></p>
+<p>RAID 1 没有校验机制。如果用两个磁盘组成 RAID 1 阵列，如果两个硬盘上的数据不知怎么的变得不一致，RAID 1 不知道应该相信哪一个硬盘，这就是大脑分裂的情况。事实上，RAID 1 的磁盘数量越多，越有可能其中某个磁盘的数据变得不一致（但仍然工作），RAID 1 只会从第一个工作的硬盘里提供数据，没有办法检测到底哪个硬盘的数据不对。</p>
+<p>RAID1：发生 bit 反转才会寄，一般机械硬盘平均每读写 10^15 个比特才有可能反转一个 bit，否则只要有一块硬盘正常，就可以恢复数据</p>
+
+        <h3 id="RAID-5"   >
+          <a href="#RAID-5" class="heading-link"><i class="fas fa-link"></i></a><a href="#RAID-5" class="headerlink" title="RAID 5"></a>RAID 5</h3>
+      <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:RAID_5.svg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/RAID_5.svg/220px-RAID_5.svg.png" alt="RAID 5"></a></p>
+<p>RAID Level 5 是一种储存性能、数据安全和存储成本兼顾的存储解决方案。它使用的是 Disk Striping（硬盘分割）技术。</p>
+<p>RAID 5 至少需要三个硬盘，RAID 5 不是对存储的数据进行备份，而是把数据和相对应的奇偶校验信息存储到组成 RAID 5 的各个磁盘上，并且奇偶校验信息和相对应的数据分别存储于不同的磁盘上。当 RAID 5 的一个磁盘数据发生损坏后，可以利用剩下的数据和相应的奇偶校验信息去恢复被损坏的数据。RAID 5 可以理解为是 RAID 0 和 RAID 1 的折衷方案。RAID 5 可以为系统提供数据安全保障，但保障程度要比镜像低而磁盘空间利用率要比镜像高。RAID 5 具有和 RAID 0 相近似的数据读取速度，只是因为多了一个奇偶校验信息，</p>
+<p>写入数据的速度相对单独写入一块硬盘的速度略慢，若使用“回写缓存”可以让性能改善不少。同时由于多个数据对应一个奇偶校验信息，RAID 5 的磁盘空间利用率要比 RAID 1 高，存储成本相对较便宜。</p>
+
+        <h3 id="RAID-6"   >
+          <a href="#RAID-6" class="heading-link"><i class="fas fa-link"></i></a><a href="#RAID-6" class="headerlink" title="RAID 6"></a>RAID 6</h3>
+      <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:RAID_6.svg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/RAID_6.svg/270px-RAID_6.svg.png" alt="RAID 6"></a></p>
+<p>与 RAID 5 相比，RAID 6 增加第二个独立的奇偶校验信息块。两个独立的奇偶系统使用不同的算法，数据的可靠性非常高，任意两块磁盘同时失效时不会影响数据完整性。RAID 6 需要分配给奇偶校验信息更大的磁盘空间和额外的校验计算，相对于 RAID 5 有更大的 IO 操作量和计算量，其“写性能”强烈取决于具体的实现方案，因此 RAID 6 通常不会通过软件方式来实现，而更可能通过硬件方式实现。</p>
+<p>同一数组中最多容许两个磁盘损坏。更换新磁盘后，资料将会重新算出并写入新的磁盘中。</p>
+<p>依照设计理论，RAID 6 必须具备四个以上的磁盘才能生效。可使用的容量为硬盘总数减去 2 的差，乘以最小容量，公式为：</p>
+<p>同理，数据保护区域容量则为最小容量乘以 2。</p>
+<p>RAID 6 在硬件磁盘阵列卡的功能中，也是最常见的磁盘阵列等级。</p>
+
+        <h4 id="实现"   >
+          <a href="#实现" class="heading-link"><i class="fas fa-link"></i></a><a href="#实现" class="headerlink" title="实现"></a>实现</h4>
+      <p>Storage Networking Industry Association (SNIA) 对于 RAID 6 的定义是：”在任意两块磁盘同时失效的情况下，仍然能够对RAID中的所有虚拟磁盘执行读写操作的RAID实现。迄今已经有：奇偶 和 里德-所罗门 双校验、正交双奇偶校验和对角奇偶校验等若干方法用于实现 RAID 6。”</p>
+<p>为了达到容忍任意两块磁盘失效的目的，需要计算两种不同的综合解码。其中之一是 P，可以像 RAID 5 那样经过简单的异或计算获得，而另一个不同的综合编码则比较复杂，需要利用[域论]来解决。</p>
+<p>反正就非常复杂</p>
+<p>软件方式实现的 RAID 6 对于系统性能会有明显的影响，而硬件方案则相对复杂。</p>
+
+        <h3 id="RAID-10-01"   >
+          <a href="#RAID-10-01" class="heading-link"><i class="fas fa-link"></i></a><a href="#RAID-10-01" class="headerlink" title="RAID 10/01"></a>RAID 10/01</h3>
+      <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:RAID_10.svg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/RAID_10.svg/220px-RAID_10.svg.png" alt="RAID 1+0"></a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:RAID_01.svg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RAID_01.svg/220px-RAID_01.svg.png" alt="RAID 0+1"></a></p>
+<p>RAID 10 是先分割资料再镜像，再将所有硬盘分为两组，视为以 RAID 1 作为最低组合，然后将每组 RAID 1 视为一个“硬盘”组合为 RAID 0 运作。</p>
+<p>RAID 01 则是跟 RAID 10 的程序相反，是先镜像再将资料到分割两组硬盘。它将所有的硬盘分为两组，每组各自构成为 RAID 0 作为最低组合，而将两组硬盘组合为 RAID 1 运作。</p>
+<p>当 RAID 10 有一个硬盘受损，其余硬盘会继续运作。RAID 01 只要有一个硬盘受损，同组 RAID 0 的所有硬盘都会停止运作，只剩下其他组的硬盘运作，可靠性较低。如果以六个硬盘建 RAID 01，镜像再用三个建 RAID 0，那么坏一个硬盘便会有三个硬盘离线。因此，RAID 10 远较 RAID 01 常用，零售主板绝大部分支持RAID 0/1/5/10，但不支持 RAID 01。</p>
+
+        <h3 id="RAID-50"   >
+          <a href="#RAID-50" class="heading-link"><i class="fas fa-link"></i></a><a href="#RAID-50" class="headerlink" title="RAID 50"></a>RAID 50</h3>
+      <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:RAID_50.png"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/RAID_50.png/500px-RAID_50.png" alt="RAID 50"></a></p>
+<p>RAID 5 与 RAID 0 的组合，先作 RAID 5，再作 RAID 0，也就是对多组 RAID 5 彼此构成 Stripe 访问。由于 RAID 50 是以 RAID 5 为基础，而 RAID 5 至少需要 3 颗硬盘，因此要以多组 RAID 5 构成 RAID 50，至少需要 6 颗硬盘。以 RAID 50 最小的 6 颗硬盘配置为例，先把 6 颗硬盘分为 2 组，每组 3 颗构成 RAID 5，如此就得到两组 RAID 5，然后再把两组 RAID 5 构成 RAID 0。</p>
+<p>RAID 50 在底层的任一组或多组 RAID 5 中出现 1 颗硬盘损坏时，仍能维持运作，不过如果任一组 RAID 5 中出现 2 颗或 2 颗以上硬盘损毁，整组 RAID 50 就会失效。</p>
+<p>RAID 50 由于在上层把多组 RAID 5 构成 Stripe，性能比起单纯的 RAID 5 高，容量利用率比 RAID5 要低。比如同样使用 9 颗硬盘，由各 3 颗 RAID 5 再组成 RAID 0 的 RAID 50，每组 RAID 5 浪费一颗硬盘，利用率为 (1-3/9)，RAID 5 则为 (1-1/9)。</p>
+
+        <h3 id="RAID-60"   >
+          <a href="#RAID-60" class="heading-link"><i class="fas fa-link"></i></a><a href="#RAID-60" class="headerlink" title="RAID 60"></a>RAID 60</h3>
+      <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:Raid_60.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Raid_60.jpg/300px-Raid_60.jpg" alt="raid 60"></a></p>
+<p>RAID 6 与 RAID 0 的组合：先作 RAID 6，再作 RAID 0。换句话说，就是对两组以上的 RAID 6 作 Stripe 访问。RAID 6 至少需具备 4 颗硬盘，所以 RAID 60 的最小需求是 8 颗硬盘。</p>
+<p>由于底层是以 RAID 6 组成，所以 RAID 60 可以容许任一组 RAID 6 中损毁最多 2 颗硬盘，而系统仍能维持运作；不过只要底层任一组 RAID 6 中损毁 3 颗硬盘，整组 RAID 60 就会失效，当然这种情况的概率相当低。</p>
+<p>比起单纯的 RAID 6，RAID 60 的上层透过结合多组 RAID 6 构成 Stripe 访问，因此性能较高。不过使用门槛高，而且容量利用率低是较大的问题。</p>
+<p>由八块相同硬盘组成 RAID 60 的话，每组 RAID6 使用两块硬盘来存奇偶校验信息，硬盘利用率是 50%</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/13/git-learning/">git 学习笔记</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-08-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h4 id="Git-的完整性"   >
+          <a href="#Git-的完整性" class="heading-link"><i class="fas fa-link"></i></a><a href="#Git-的完整性" class="headerlink" title="Git 的完整性"></a>Git 的完整性</h4>
+      <p>​    Git 中的所有数据在存储前都会执行校验和计算，随后以校验和来引用对应的数据。这意味着不可能在 Git 不知情的情况下更改文件或目录的内容。这项功能根植于 Git 的最底层，是其设计理念中不可或缺的一环。只要有 Git 在，它就能检测出传输过程中丢失的信息或者受损的文件。</p>
+<p>​    Git所采用的校验和机制叫做 SHA-1 散列。这是一个由 40 个十六进制字符所组成的字符串，它是根据文件内容或者 Git 的目录结构计算所得到的。一个 SHA-1 散列类似于如下的字符串</p>
+<p>​    24b9da6552252987aa493b52f8696cd6d3b00373</p>
+<p>​    由于用途极广，你在 Git 中到处都会看到这种散列值。实际上，Git 并不是通过文件名在数据库中存储信息，而是通过信息的散列值</p>
+
+        <h4 id="Git-中文件的三种状态"   >
+          <a href="#Git-中文件的三种状态" class="heading-link"><i class="fas fa-link"></i></a><a href="#Git-中文件的三种状态" class="headerlink" title="Git 中文件的三种状态"></a>Git 中文件的三种状态</h4>
+      <p>​    Committed 已提交</p>
+<p>​    Modified 已修改</p>
+<p>​    Staged 已暂存</p>
+
+        <h4 id="Git-的首次配置"   >
+          <a href="#Git-的首次配置" class="heading-link"><i class="fas fa-link"></i></a><a href="#Git-的首次配置" class="headerlink" title="Git 的首次配置"></a>Git 的首次配置</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#配置用户名</span></span><br><span class="line">git config --global user.name <span class="string">&quot;Sunnyrian&quot;</span></span><br><span class="line"><span class="comment">#配置邮箱</span></span><br><span class="line">git config --global user.email Sunnyrain233@gmail.com</span><br></pre></td></tr></table></div></figure>
+
+<p>配置自己喜欢的 editor，如果没有配置，Git 会使用默认的编辑器</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editer nano</span><br></pre></td></tr></table></div></figure>
+
+<p>在 Windows X64 中配置 editor Notepad++</p>
+<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config -<span class="literal">-global</span> core.editor <span class="string">&quot;&#x27;C:/Program Files(x86)/Notepad++/notepad++.exe&#x27; -multiInst&quot;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>检查个人配置</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="在现有目录中初始化-Git-仓库"   >
+          <a href="#在现有目录中初始化-Git-仓库" class="heading-link"><i class="fas fa-link"></i></a><a href="#在现有目录中初始化-Git-仓库" class="headerlink" title="在现有目录中初始化 Git 仓库"></a>在现有目录中初始化 Git 仓库</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></div></figure>
+
+<p>这个命令会创建一个名为 .git 的子目录。这个子目录包含了构成 Git 仓库骨架的所有必需文件。但此刻 Git 尚未开始跟踪项目中的任何文件</p>
+<p>如果要开始对现有文件进行版本控制，那么就应该开始跟踪这些文件并进行初次提交。对需要跟踪的文件执行 git add 命令，然后输入 git commit</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;initial project version&#x27;</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="克隆现有仓库"   >
+          <a href="#克隆现有仓库" class="heading-link"><i class="fas fa-link"></i></a><a href="#克隆现有仓库" class="headerlink" title="克隆现有仓库"></a>克隆现有仓库</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/Sunnyrian/Blog</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="查看当前文件状态"   >
+          <a href="#查看当前文件状态" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看当前文件状态" class="headerlink" title="查看当前文件状态"></a>查看当前文件状态</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></div></figure>
+
+<p>如果在克隆仓库后立即执行这个命令，我们可以看到</p>
+<p>On branch master</p>
+<p>nothing to commit, working directory clean</p>
+<p>如果将新的文件添加进去，我们又没有 add 过这个文件，那么就会在 status 下看到这个未被跟踪的文件</p>
+<p>如果使用 add 命令，可以将该文件放到暂存区，将会是一个 Changes to be committed 的状态</p>
+<p>如果更改了某个 git 仓库原有的文件，那么该文件会是一个 Changes not staged for commit 的状态</p>
+<p>git add 是一个多功能的命令，既可以用来跟踪新文件，也可以用来暂存文件，它还可以做其他的一些事，比如把存在合并冲突的文件标记为已解决。所以，把 git add 命令看成“添加内容到下一次提交中”而不是“把这个文件加入到项目中”，更有助于理解该命令。</p>
+<p>如果说我们在修改一个文件后，git add 它之后又修改了它，那么他的 git status 状态将会是即在 Changes to be committed 中又会在 Changes not staged for commit 中，但 Changes to be committed 中存储的是第一次 add 的文件的样子</p>
+
+        <h5 id="显示更简洁的状态信息"   >
+          <a href="#显示更简洁的状态信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#显示更简洁的状态信息" class="headerlink" title="显示更简洁的状态信息"></a>显示更简洁的状态信息</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status -s</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="忽略文件"   >
+          <a href="#忽略文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h4>
+      <p>大家很多时候，都会有希望某一类或者某几个文件不想被Git自动添加,甚至不想这些文件被显示在未跟踪的文件列表下面。</p>
+<p>那么我们可以创建一个名为 .gitignore 的文件，然后在里面写入待匹配文件的模式</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;.gitignore &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">*.[oa]</span></span><br><span class="line"><span class="string">*~</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>其中第一行告诉 Git 忽略所有以 .o 或者 .a 结尾的文件，这些一般是编译代码生产的二进制文件。第二行是告诉 Git 忽略所有以波浪号（~）结尾的文件</p>
+<p>可以写入 .gitignore 文件中的匹配模式的规则如下：</p>
+<ul>
+<li>空行或以 # 开始的行会被忽略</li>
+<li>支持标准的 glob 模式（正则表达式）</li>
+<li>以斜杠（/）开头的模式可用于禁止递归匹配</li>
+<li>以斜杠（/）结尾的模式表示目录</li>
+<li>以感叹号（！）开始的模式表示取反</li>
+</ul>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*.a		#忽略.a类型的文件</span><br><span class="line">!lib.a  #仍然跟踪lib.a，即使上一行指令要忽略 .a 类型的文件</span><br><span class="line">/TODO   #只忽略当前目录的 TODO 文件，而不忽略子目录下的 TODO</span><br><span class="line">build/  #忽略 build/ 目录下的所有文件</span><br><span class="line">doc/*.txt #忽略 doc/note.txt,而不忽略 /doc/server/arch.txt</span><br><span class="line">doc/**/*.pdf #忽略 doc/目录下的所有 .pdf文件</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="查看已暂存和未暂存的变更"   >
+          <a href="#查看已暂存和未暂存的变更" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看已暂存和未暂存的变更" class="headerlink" title="查看已暂存和未暂存的变更"></a>查看已暂存和未暂存的变更</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></div></figure>
+
+<p>查看暂存的变更与上一次提交的内容的比较</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff -staged</span><br></pre></td></tr></table></div></figure>
+
+<p>查看已暂存的更改</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="提交变更"   >
+          <a href="#提交变更" class="heading-link"><i class="fas fa-link"></i></a><a href="#提交变更" class="headerlink" title="提交变更"></a>提交变更</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit</span><br></pre></td></tr></table></div></figure>
+
+<p>会在编辑器中显示并可以编辑提交信息   -v 的话可以把这次提交的差异对比显示在文本编辑器中，可以看到更具体的的变更</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在命令行中</span></span><br><span class="line">git commit -m</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>跳过暂存区，有时候会我们不用再添加文件，而只是修改了现有文件，要提交 commit，可以直接 commit -a，不需要再执行 add指令，可以自动把已经跟踪的所有文件添加到暂存区，然后再提交，就可以省掉 git add了</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -a -m <span class="string">&#x27;added new benchmarks&#x27;</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="移除文件"   >
+          <a href="#移除文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h4>
+      <p>​    要从 Git 中移除某个文件，你需要把它先从已跟踪的文件列表中移除（确切地说，是从暂存区中移除），然后再提交。git rm 可以帮我们完成这些操作，同时会在工作目录中删除该文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm &lt;file&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>​    如果我们只是简单地删掉了我们的文件，没有使用 git rm，那么在执行 git status 的时候，还是会看到该文件出现在 “Changes not staged for commit”  区域（也就是未暂存区域）    </p>
+<p>​    如果我们已经 add 添加某个文件到暂存区了，我们需要使用 -f 选项，可以防止没有被记录到快照中的数据被意外移除，因为这样的数据被意外移除后无法由 Git恢复</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm -f &lt;file&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>​    如果我们只是想让 git 不再追踪某个文件，比如说我们忘记在 .gitignore 中添加该文件而将它 add 到暂存区了，我们想在工作目录中保留该文件，那么我们可以只删除暂存区的该文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached &lt;file&gt;</span><br><span class="line"><span class="comment"># 此处的&lt;file&gt;也可以输入glob正则表达式选取文件</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="移动文件"   >
+          <a href="#移动文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git mv README.md README</span><br><span class="line"><span class="comment">#相当于执行了以下三条命令</span></span><br><span class="line">mv README.md README</span><br><span class="line">git rm README.md</span><br><span class="line">git add README</span><br></pre></td></tr></table></div></figure>
+
+<p>相当于非常方便了</p>
+
+        <h4 id="查看提交历史"   >
+          <a href="#查看提交历史" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看提交历史" class="headerlink" title="查看提交历史"></a>查看提交历史</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br><span class="line"><span class="comment">#查看最近两次提交</span></span><br><span class="line">git <span class="built_in">log</span> -p -2</span><br><span class="line"><span class="comment">#查看简要统计信息</span></span><br><span class="line">git <span class="built_in">log</span> --<span class="built_in">stat</span></span><br><span class="line"><span class="comment">#选择日志输出的默认格式 例如单行显示↓  还有 short、full、fullter 格式可以选择</span></span><br><span class="line">git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line"><span class="comment">#明确指定输出格式</span></span><br><span class="line">git <span class="built_in">log</span> --pretty=format:<span class="string">&quot;%h - %an, %ar : %s&quot;</span> </span><br><span class="line"><span class="comment">#加上简单图标来显示 Git 分支和合并历史 --graph</span></span><br><span class="line">git <span class="built_in">log</span> --pretty format: <span class="string">&quot;%h %s&quot;</span> --graph</span><br></pre></td></tr></table></div></figure>
+
+<p>git log –pretty=format 命令的一些有用的选项👇：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="center">格式选项</th>
+<th align="left">输出的格式描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">%H</td>
+<td align="left">提交对象的散列值</td>
+</tr>
+<tr>
+<td align="center">%h</td>
+<td align="left">提交对象的简短散列值</td>
+</tr>
+<tr>
+<td align="center">%T</td>
+<td align="left">树对象的散列值</td>
+</tr>
+<tr>
+<td align="center">%t</td>
+<td align="left">树对象的简短散列值</td>
+</tr>
+<tr>
+<td align="center">%P</td>
+<td align="left">父对象的散列值</td>
+</tr>
+<tr>
+<td align="center">%p</td>
+<td align="left">父对象的简短散列值</td>
+</tr>
+<tr>
+<td align="center">%an</td>
+<td align="left">作者的名字</td>
+</tr>
+<tr>
+<td align="center">%ae</td>
+<td align="left">作者的电子邮箱地址</td>
+</tr>
+<tr>
+<td align="center">%ad</td>
+<td align="left">创作日期（可使用 -date= 选项指定日期格式）</td>
+</tr>
+<tr>
+<td align="center">%ar</td>
+<td align="left">相对于当前日期的创作日期</td>
+</tr>
+<tr>
+<td align="center">%cn</td>
+<td align="left">提交者的名字</td>
+</tr>
+<tr>
+<td align="center">%ce</td>
+<td align="left">提交者的电子邮箱地址</td>
+</tr>
+<tr>
+<td align="center">%cd</td>
+<td align="left">提交日期</td>
+</tr>
+<tr>
+<td align="center">%cr</td>
+<td align="left">相对于当前日期的提交日期</td>
+</tr>
+<tr>
+<td align="center">%s</td>
+<td align="left">提交信息的主题</td>
+</tr>
+</tbody></table></div>
+<p>git log 的常用选项</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-p</td>
+<td align="left">按补丁格式显示每个提交引入的更改</td>
+</tr>
+<tr>
+<td align="left">–stat</td>
+<td align="left">显示每个提交中被更改的文件的统计信息</td>
+</tr>
+<tr>
+<td align="left">–shortstat</td>
+<td align="left">只显示上述 –state 输出中包含“已更改/新增/删除”行的统计信息</td>
+</tr>
+<tr>
+<td align="left">–name-only</td>
+<td align="left">在每个提交信息后显示被更改的文件列表</td>
+</tr>
+<tr>
+<td align="left">–name-status</td>
+<td align="left">在上一个选项输出基础上还显示出“已更改/新增/删除”统计信息</td>
+</tr>
+<tr>
+<td align="left">–abbrev-commit</td>
+<td align="left">只显示完整的 SHA-1 40 位校验和字符串中的前几个字符</td>
+</tr>
+<tr>
+<td align="left">–relative-date</td>
+<td align="left">显示相对日期（如两周前），而不是完整日期</td>
+</tr>
+<tr>
+<td align="left">–graph</td>
+<td align="left">在提交历史旁边显示 ASCII 图标，用于展示分支和合并的历史信息</td>
+</tr>
+<tr>
+<td align="left">–pretty</td>
+<td align="left">用一种可选格式显示提交。选项有 oneline、short、full、fuller、format</td>
+</tr>
+</tbody></table></div>
+<p>用于限制 git log 输出范围的选项</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-(n)</td>
+<td>只显示最新的 n 次提交</td>
+</tr>
+<tr>
+<td>–since,–after</td>
+<td>只输出指定日期之后的提交</td>
+</tr>
+<tr>
+<td>–until,–before</td>
+<td>只输出指定日期之前的提交</td>
+</tr>
+<tr>
+<td>–author</td>
+<td>只输出作者与指定字符串匹配的提交</td>
+</tr>
+<tr>
+<td>–committer</td>
+<td>只输出提交者与指定字符串匹配的提交</td>
+</tr>
+<tr>
+<td>–grep</td>
+<td>只输出提交信息包含指定字符串的提交</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>只输出包含“添加或删除指定字符串”的更改的提交</td>
+</tr>
+</tbody></table></div>
+<p>从远程仓库拉取代码库</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch &lt;repo&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>告诉 Git 去获取我们没有的数据，然后我们可以</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge [<span class="built_in">alias</span>]/[branch]</span><br></pre></td></tr></table></div></figure>
+
+<p>以上命令会将服务器上的任何更新合并到我们的当前分支</p>
+
+        <h3 id="分支管理"   >
+          <a href="#分支管理" class="heading-link"><i class="fas fa-link"></i></a><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h3>
+      
+        <h4 id="创建分支"   >
+          <a href="#创建分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="查看现有分支"   >
+          <a href="#查看现有分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看现有分支" class="headerlink" title="查看现有分支"></a>查看现有分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="切换分支"   >
+          <a href="#切换分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="删除分支"   >
+          <a href="#删除分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="合并分支到主分支"   >
+          <a href="#合并分支到主分支" class="heading-link"><i class="fas fa-link"></i></a><a href="#合并分支到主分支" class="headerlink" title="合并分支到主分支"></a>合并分支到主分支</h4>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></div></figure>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/11/k8s-prometheus-grafana/">在 Kubernetes 集群中部署 Prometheus 来监控集群，并用 Grafana 数据可视化</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="在-Kubernetes-集群中部署-Prometheus来-监控集群，并用-Grafana-数据可视化"   >
+          <a href="#在-Kubernetes-集群中部署-Prometheus来-监控集群，并用-Grafana-数据可视化" class="heading-link"><i class="fas fa-link"></i></a><a href="#在-Kubernetes-集群中部署-Prometheus来-监控集群，并用-Grafana-数据可视化" class="headerlink" title="在 Kubernetes 集群中部署 Prometheus来 监控集群，并用 Grafana 数据可视化"></a>在 Kubernetes 集群中部署 Prometheus来 监控集群，并用 Grafana 数据可视化</h3>
+      
+        <h5 id="Prometheus-部署"   >
+          <a href="#Prometheus-部署" class="heading-link"><i class="fas fa-link"></i></a><a href="#Prometheus-部署" class="headerlink" title="Prometheus 部署"></a>Prometheus 部署</h5>
+      <ol>
+<li><p>先创建一个目录来存放管理配置文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir prometheus</span><br></pre></td></tr></table></div></figure>
+
+<p>本次 prometheus 采用 nfs 挂载方式来存储数据，同时使用 configMap 管理配置文件。并且我们将所有的 prometheus 存储在 <code>kube-system</code></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#生成配置文件 </span></span><br><span class="line"></span><br><span class="line">cat &gt;&gt; prometheus-configmap.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string"># Prometheus configuration format https://prometheus.io/docs/prometheus/latest/configuration/configuration/</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: ConfigMap</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus-config</span></span><br><span class="line"><span class="string">  namespace: prometheus </span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    kubernetes.io/cluster-service: &quot;true&quot;</span></span><br><span class="line"><span class="string">    addonmanager.kubernetes.io/mode: EnsureExists</span></span><br><span class="line"><span class="string">data:</span></span><br><span class="line"><span class="string">  prometheus.yml: |</span></span><br><span class="line"><span class="string">    rule_files:</span></span><br><span class="line"><span class="string">    - /etc/config/rules/*.rules</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    scrape_configs:</span></span><br><span class="line"><span class="string">    - job_name: prometheus</span></span><br><span class="line"><span class="string">      static_configs:</span></span><br><span class="line"><span class="string">      - targets:</span></span><br><span class="line"><span class="string">        - localhost:9090</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-apiservers</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: endpoints</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: default;kubernetes;https</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_name</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_endpoint_port_name</span></span><br><span class="line"><span class="string">      scheme: https</span></span><br><span class="line"><span class="string">      tls_config:</span></span><br><span class="line"><span class="string">        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt</span></span><br><span class="line"><span class="string">        insecure_skip_verify: true</span></span><br><span class="line"><span class="string">      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">    - job_name: kubernetes-nodes-kubelet</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: node</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_node_label_(.+)</span></span><br><span class="line"><span class="string">      scheme: https</span></span><br><span class="line"><span class="string">      tls_config:</span></span><br><span class="line"><span class="string">        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt</span></span><br><span class="line"><span class="string">        insecure_skip_verify: true</span></span><br><span class="line"><span class="string">      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-nodes-cadvisor</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: node</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_node_label_(.+)</span></span><br><span class="line"><span class="string">      - target_label: __metrics_path__</span></span><br><span class="line"><span class="string">        replacement: /metrics/cadvisor</span></span><br><span class="line"><span class="string">      scheme: https</span></span><br><span class="line"><span class="string">      tls_config:</span></span><br><span class="line"><span class="string">        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt</span></span><br><span class="line"><span class="string">        insecure_skip_verify: true</span></span><br><span class="line"><span class="string">      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-service-endpoints</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: endpoints</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: true</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_scrape</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: (https?)</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_scheme</span></span><br><span class="line"><span class="string">        target_label: __scheme__</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: (.+)</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_path</span></span><br><span class="line"><span class="string">        target_label: __metrics_path__</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: ([^:]+)(?::\d+)?;(\d+)</span></span><br><span class="line"><span class="string">        replacement: $1:$2</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __address__</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_port</span></span><br><span class="line"><span class="string">        target_label: __address__</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_service_label_(.+)</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        target_label: kubernetes_namespace</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_name</span></span><br><span class="line"><span class="string">        target_label: kubernetes_name</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-services</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: service</span></span><br><span class="line"><span class="string">      metrics_path: /probe</span></span><br><span class="line"><span class="string">      params:</span></span><br><span class="line"><span class="string">        module:</span></span><br><span class="line"><span class="string">        - http_2xx</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: true</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_annotation_prometheus_io_probe</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __address__</span></span><br><span class="line"><span class="string">        target_label: __param_target</span></span><br><span class="line"><span class="string">      - replacement: blackbox</span></span><br><span class="line"><span class="string">        target_label: __address__</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __param_target</span></span><br><span class="line"><span class="string">        target_label: instance</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_service_label_(.+)</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        target_label: kubernetes_namespace</span></span><br><span class="line"><span class="string">      - source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_service_name</span></span><br><span class="line"><span class="string">        target_label: kubernetes_name</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - job_name: kubernetes-pods</span></span><br><span class="line"><span class="string">      kubernetes_sd_configs:</span></span><br><span class="line"><span class="string">      - role: pod</span></span><br><span class="line"><span class="string">      relabel_configs:</span></span><br><span class="line"><span class="string">      - action: keep</span></span><br><span class="line"><span class="string">        regex: true</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_annotation_prometheus_io_scrape</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: (.+)</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_annotation_prometheus_io_path</span></span><br><span class="line"><span class="string">        target_label: __metrics_path__</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        regex: ([^:]+)(?::\d+)?;(\d+)</span></span><br><span class="line"><span class="string">        replacement: $1:$2</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __address__</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_annotation_prometheus_io_port</span></span><br><span class="line"><span class="string">        target_label: __address__</span></span><br><span class="line"><span class="string">      - action: labelmap</span></span><br><span class="line"><span class="string">        regex: __meta_kubernetes_pod_label_(.+)</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_namespace</span></span><br><span class="line"><span class="string">        target_label: kubernetes_namespace</span></span><br><span class="line"><span class="string">      - action: replace</span></span><br><span class="line"><span class="string">        source_labels:</span></span><br><span class="line"><span class="string">        - __meta_kubernetes_pod_name</span></span><br><span class="line"><span class="string">        target_label: kubernetes_pod_name</span></span><br><span class="line"><span class="string">    alerting:</span></span><br><span class="line"><span class="string">      alertmanagers:</span></span><br><span class="line"><span class="string">      - static_configs:</span></span><br><span class="line"><span class="string">          - targets: [&quot;alertmanager:80&quot;]</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>配置文件解释（这里的 configmap 实际上就是 prometheus 的配置）</p>
+<p>上面包含了 3 个模块 global、rule_files 和 scrape_configs</p>
+<ul>
+<li>其中 global 模块控制 Prometheus Server 的全局配置</li>
+<li>scrape_interval: 表示 prometheus抓取指标数据的频率，默认是 15 s，我们可以覆盖这个值</li>
+<li>evaluation_interval: 用来控制评估规则的频率，prometheus 使用规则产生新的时间序列数据或者产生警报</li>
+<li>rule_files 模块制定了规则所在的位置，prometheus 可以根据这个配置加载规则，用于生产新的时间序列数据或者报警信息，当前我们没有配置任何规则，后期会添加</li>
+<li>scrape_configs 用于控制 prometheus 监控哪些资源。由于 prometheus 通过 http 的方式来暴露它本身的监控数据，prometheus 也能够监控本身的健康情况。在默认的配置有一个单独的 job，叫做 prometheus，它采集 prometheus 服务本身的时间序列数据。这个 job 包含了一个单独的、静态配置的目标；监听 localhost 上的 9090 端口</li>
+<li>prometheus 默认会通过目标的 /metrics 路径采集 metrics。所以，默认的 job 通过 URL：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://localhost:9090/metrics" >http://localhost:9090/metrics</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 采集metrics。收集到时间序列包含 prometheus 服务本身的状态和性能。如果我们还有其他的资源需要监控，可以直接配置在该模块下即可</li>
+</ul>
+<p>监控 Prometheus</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-configmap.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>更新 Configmap</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST http://&lt;Prometheus Service IP&gt;:&lt;port&gt;/-/reload</span><br></pre></td></tr></table></div></figure>
+
+<p>检查一下有没有创建成功</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get configmaps -n kube-system |grep prometheus</span><br></pre></td></tr></table></div></figure>
+
+<p>配置文件创建完成，如果以后我们有新的资源需要被监控，我们只需要将 <code>ConfigMap</code> 对象更新即可</p>
+</li>
+<li><p>创建 prometheus 的 Pod 资源</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometheus-deploy.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: extensions/v1beta1</span></span><br><span class="line"><span class="string">kind: Deployment</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        app: prometheus</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      serviceAccountName: prometheus</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">      - image: prom/prometheus:v2.4.3</span></span><br><span class="line"><span class="string">        name: prometheus</span></span><br><span class="line"><span class="string">        command:</span></span><br><span class="line"><span class="string">        - &quot;/bin/prometheus&quot;</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">        - &quot;--config.file=/etc/prometheus/prometheus.yml&quot;</span></span><br><span class="line"><span class="string">        - &quot;--storage.tsdb.path=/prometheus&quot;</span></span><br><span class="line"><span class="string">        - &quot;--storage.tsdb.retention=30d&quot;</span></span><br><span class="line"><span class="string">        - &quot;--web.enable-admin-api&quot;  # 控制对 admin HTTP API 的访问，其中包括删除时间序列等功能</span></span><br><span class="line"><span class="string">        - &quot;--web.enable-lifecycle&quot;  # 支持热更新，直接执行 localhost:9090/-/reload 立即生效</span></span><br><span class="line"><span class="string">        ports:</span></span><br><span class="line"><span class="string">        - containerPort: 9090</span></span><br><span class="line"><span class="string">          protocol: TCP</span></span><br><span class="line"><span class="string">          name: http</span></span><br><span class="line"><span class="string">        volumeMounts:</span></span><br><span class="line"><span class="string">        - mountPath: &quot;/prometheus&quot;</span></span><br><span class="line"><span class="string">          subPath: prometheus</span></span><br><span class="line"><span class="string">          name: data</span></span><br><span class="line"><span class="string">        - mountPath: &quot;/etc/prometheus&quot;</span></span><br><span class="line"><span class="string">          name: config-volume</span></span><br><span class="line"><span class="string">        resources:</span></span><br><span class="line"><span class="string">          requests:</span></span><br><span class="line"><span class="string">            cpu: 100m</span></span><br><span class="line"><span class="string">            memory: 512Mi</span></span><br><span class="line"><span class="string">          limits:</span></span><br><span class="line"><span class="string">            cpu: 100m</span></span><br><span class="line"><span class="string">            memory: 512Mi</span></span><br><span class="line"><span class="string">      securityContext:</span></span><br><span class="line"><span class="string">        runAsUser: 0</span></span><br><span class="line"><span class="string">      volumes:</span></span><br><span class="line"><span class="string">      - name: data</span></span><br><span class="line"><span class="string">        persistentVolumeClaim:</span></span><br><span class="line"><span class="string">          claimName: prometheus</span></span><br><span class="line"><span class="string">      - configMap:</span></span><br><span class="line"><span class="string">          name: prometheus-config</span></span><br><span class="line"><span class="string">        name: config-volume</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>稍微解释一下配置参数</strong></p>
+<p>我们在启动程序的时候，除了指定 <code>prometheus.yaml</code>(configmap) 以外，还通过 <code>storage.tsdb.path</code> 指定了 TSDB 数据的存储路径、通过<code>storage.tsdb.rentention </code>设置了保留多长时间的数据，还有下面的 web.enable-admin-api 参数可以用来开启对 admin api 的访问权限，参数 <code>web.enable-lifecyle</code> 用来开启支持热更新，有了这个参数之后， <code>prometheus.yaml</code>(configmap) 文件只要更新了，通过执行<code>localhost:9090/-/reload</code>就会立即生效</p>
+<p>我们添加了一行 securityContext，其中 <code>runAsUser</code> 设置为 0，这是因为 prometheus 运行过程中使用的用户是 nobody，如果不配置可能会出现权限问题</p>
+<p>prometheus.yaml 文件对应的 ConfigMap 对象通过 volume 的形式挂载进 Pod，这样 ConfigMap 更新后，对应的 pod 也会热更新，然后我们在执行上面的 reload 请求，prometheus 配置就生效了。除此之外，对了将时间数据进行持久化，我们将数据目录和一个 pvc 对象进行了绑定，所以我们需要提前创建 pvc 对象</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometheus-volume.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: PersistentVolume</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  capacity:</span></span><br><span class="line"><span class="string">    storage: 10Gi</span></span><br><span class="line"><span class="string">  accessModes:</span></span><br><span class="line"><span class="string">  - ReadWriteOnce</span></span><br><span class="line"><span class="string">  persistentVolumeReclaimPolicy: Recycle</span></span><br><span class="line"><span class="string">  nfs:</span></span><br><span class="line"><span class="string">    server: 10.4.82.138</span></span><br><span class="line"><span class="string">    path: /data/k8s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: PersistentVolumeClaim</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  accessModes:</span></span><br><span class="line"><span class="string">  - ReadWriteOnce</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">    requests:</span></span><br><span class="line"><span class="string">      storage: 10Gi</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>修改上面的 nfs server 和 path</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-volume.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>检查一下有没有挂载好</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pvc --all-namespaces</span><br><span class="line">kubectl get pv prometheus</span><br></pre></td></tr></table></div></figure>
+
+<p>配置 rbac 认证</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometheus-rbac.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: ServiceAccount</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">apiVersion: rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="string">kind: ClusterRole</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">rules:</span></span><br><span class="line"><span class="string">- apiGroups:</span></span><br><span class="line"><span class="string">  - &quot;&quot;</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">  - nodes</span></span><br><span class="line"><span class="string">  - services</span></span><br><span class="line"><span class="string">  - endpoints</span></span><br><span class="line"><span class="string">  - pods</span></span><br><span class="line"><span class="string">  - nodes/proxy</span></span><br><span class="line"><span class="string">  verbs:</span></span><br><span class="line"><span class="string">  - get</span></span><br><span class="line"><span class="string">  - list</span></span><br><span class="line"><span class="string">  - watch</span></span><br><span class="line"><span class="string">- apiGroups:</span></span><br><span class="line"><span class="string">  - &quot;&quot;</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">  - configmaps</span></span><br><span class="line"><span class="string">  - nodes/metrics</span></span><br><span class="line"><span class="string">  verbs:</span></span><br><span class="line"><span class="string">  - get</span></span><br><span class="line"><span class="string">- nonResourceURLs:</span></span><br><span class="line"><span class="string">  - /metrics</span></span><br><span class="line"><span class="string">  verbs:</span></span><br><span class="line"><span class="string">  - get</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">apiVersion: rbac.authorization.k8s.io/v1beta1</span></span><br><span class="line"><span class="string">kind: ClusterRoleBinding</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">roleRef:</span></span><br><span class="line"><span class="string">  apiGroup: rbac.authorization.k8s.io</span></span><br><span class="line"><span class="string">  kind: ClusterRole</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">subjects:</span></span><br><span class="line"><span class="string">- kind: ServiceAccount</span></span><br><span class="line"><span class="string">  name: prometheus</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>创建 rbac</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-rbac.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>创建 prometheus 服务</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-deploy.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>检查服务有没有起来</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -n kube-system |grep prometheus</span><br><span class="line"><span class="comment"># 是 running 就 ok</span></span><br></pre></td></tr></table></div></figure>
+
+<p>现在我们 prometheus 服务状态是已经正常了，但是我们还无法访问 prometheus 的 webui 服务，我们还需要创建一个 service</p>
+<p>name 是 prometheus-svc</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;prometeheus-svc.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: prometheus-svc</span></span><br><span class="line"><span class="string">  namespace: kube-system</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    app: prometheus</span></span><br><span class="line"><span class="string">  type: NodePort</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">    - name: web</span></span><br><span class="line"><span class="string">      port: 9090</span></span><br><span class="line"><span class="string">      targetPort: http</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>创建这个服务</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f prometheus-svc.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>看一下分配的端口，用 IP+ 端口访问</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc -n kube-system |grep prometheus</span><br></pre></td></tr></table></div></figure></li>
+<li><p>创建 grafana 配置文件</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt;grafana.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">apiVersion: apps/v1 </span></span><br><span class="line"><span class="string">kind: Deployment </span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: grafana</span></span><br><span class="line"><span class="string">  namespace: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  replicas: 1</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    matchLabels:</span></span><br><span class="line"><span class="string">      app: grafana</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        app: grafana</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">      - name: grafana</span></span><br><span class="line"><span class="string">        image: grafana/grafana</span></span><br><span class="line"><span class="string">        ports:</span></span><br><span class="line"><span class="string">          - containerPort: 3000</span></span><br><span class="line"><span class="string">            protocol: TCP</span></span><br><span class="line"><span class="string">        resources:</span></span><br><span class="line"><span class="string">          limits:</span></span><br><span class="line"><span class="string">            cpu: 100m            </span></span><br><span class="line"><span class="string">            memory: 256Mi          </span></span><br><span class="line"><span class="string">          requests:</span></span><br><span class="line"><span class="string">            cpu: 100m            </span></span><br><span class="line"><span class="string">            memory: 256Mi</span></span><br><span class="line"><span class="string">        volumeMounts:</span></span><br><span class="line"><span class="string">          - name: grafana-data</span></span><br><span class="line"><span class="string">            mountPath: /var/lib/grafana</span></span><br><span class="line"><span class="string">            subPath: grafana</span></span><br><span class="line"><span class="string">      securityContext:</span></span><br><span class="line"><span class="string">        fsGroup: 472</span></span><br><span class="line"><span class="string">        runAsUser: 472</span></span><br><span class="line"><span class="string">      volumes:</span></span><br><span class="line"><span class="string">      - name: grafana-data</span></span><br><span class="line"><span class="string">        persistentVolumeClaim:</span></span><br><span class="line"><span class="string">          claimName: grafana </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: PersistentVolumeClaim</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: grafana </span></span><br><span class="line"><span class="string">  namespace: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  storageClassName: &quot;managed-nfs-storage&quot;</span></span><br><span class="line"><span class="string">  accessModes:</span></span><br><span class="line"><span class="string">    - ReadWriteMany</span></span><br><span class="line"><span class="string">  resources:</span></span><br><span class="line"><span class="string">    requests:</span></span><br><span class="line"><span class="string">      storage: 5Gi</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">apiVersion: v1</span></span><br><span class="line"><span class="string">kind: Service</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  name: grafana</span></span><br><span class="line"><span class="string">  namespace: prometheus</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  type: NodePort</span></span><br><span class="line"><span class="string">  ports:</span></span><br><span class="line"><span class="string">  - port : 80</span></span><br><span class="line"><span class="string">    targetPort: 3000</span></span><br><span class="line"><span class="string">    nodePort: 30007</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    app: grafana</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>创建grafana-ingress.yaml</p>
+<p>#–optional可选的，没有外网访问需求可以直接跳过这一步</p>
+<p>ingress 文档： <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/services-networking/ingress/" >https://kubernetes.io/zh/docs/concepts/services-networking/ingress/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">   cat &gt;&gt;grafana-ingress.yaml &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">   apiVersion: extensions/v1beta1</span></span><br><span class="line"><span class="string">   kind: Ingress</span></span><br><span class="line"><span class="string">   metadata:</span></span><br><span class="line"><span class="string">      name: grafana</span></span><br><span class="line"><span class="string">      namespace: prometheus</span></span><br><span class="line"><span class="string">   spec:</span></span><br><span class="line"><span class="string">      rules:</span></span><br><span class="line"><span class="string">      - host: k8s.grafana</span></span><br><span class="line"><span class="string">        http:</span></span><br><span class="line"><span class="string">          paths:</span></span><br><span class="line"><span class="string">          - path: /</span></span><br><span class="line"><span class="string">            backend:</span></span><br><span class="line"><span class="string">             serviceName: grafana</span></span><br><span class="line"><span class="string">             servicePort: 80</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<p>应用 grafana</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f grafana.yaml -f grafana-ingress.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>可以在 KubeSphere 中查看分配到的 ip 地址和端口，配置好 Grafana，就可以导入模板看到可视化界面啦</p>
+<p>容器监控模板：315 8588 3146 8685<br>主机监控模板：8919 9276 10467 10171 9965</p>
+</li>
+</ol>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>监控类型</th>
+<th>模板ID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Kubernetes node_exporter</td>
+<td>14249、8919、10262、5228</td>
+</tr>
+<tr>
+<td>Mikrotik RouterOS</td>
+<td>10950、14933(SWOS)</td>
+</tr>
+<tr>
+<td>Synology</td>
+<td>14284、14364</td>
+</tr>
+<tr>
+<td>SNMP</td>
+<td>14857(Mikrotik)、</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>9837</td>
+</tr>
+<tr>
+<td>Proxmox PVE</td>
+<td>13307</td>
+</tr>
+<tr>
+<td>Openwrt</td>
+<td>11147</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>12633</td>
+</tr>
+<tr>
+<td>WireGuard</td>
+<td>12177</td>
+</tr>
+</tbody></table></div>
+<p>DashBoard 看起来好看但是还没调教好的：8727、9733、9916、12798、11414、12095</p>
+<p>funny DashBoard:3287(PUBG)、11993、11994（Minecraft）、12237（COVID-19)、14199（网络延迟)</p>
+<p>一些我的仪表盘的效果</p>
+<p><img src="https://oss.yhsyc.club/img/ZQTNcm9RqiPGkWO.png" alt="微信截图_20220323214600.png"></p>
+<p><img src="https://oss.yhsyc.club/img/VGuM8wx6QY5m7pj.png" alt="微信截图_20220323231243.png"></p>
+<p><img src="https://oss.yhsyc.club/img/haWwXrRlcd8Ykmt.png" alt="微信截图_20220323230620.png"></p>
+<p><img src="https://oss.yhsyc.club/img/lSL2WjXAVkqfhB8.png" alt="微信截图_20220323214702.png"></p>
+<p><img src="https://oss.yhsyc.club/img/7LxMah8uirzUXwf.png" alt="微信截图_20220324002923.png"></p>
+<p><img src="https://oss.yhsyc.club/img/ZpTuBPe7fiR5Ara.png" alt="微信截图_20220323231021.png"></p>
+
+        <h3 id="安装-Prometheus-和-Grafana（懒人版）"   >
+          <a href="#安装-Prometheus-和-Grafana（懒人版）" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装-Prometheus-和-Grafana（懒人版）" class="headerlink" title="安装 Prometheus 和 Grafana（懒人版）"></a>安装 Prometheus 和 Grafana（懒人版）</h3>
+      
+        <h6 id="别人三年前写的东西了-不建议使用"   >
+          <a href="#别人三年前写的东西了-不建议使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#别人三年前写的东西了-不建议使用" class="headerlink" title="别人三年前写的东西了,不建议使用"></a>别人三年前写的东西了,不建议使用</h6>
+      
+        <h6 id="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"   >
+          <a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="headerlink" title="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"></a>建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题</h6>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/giantswarm/prometheus" >Prometheus and Grafana</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>快速安装</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply \</span><br><span class="line">  --filename https://raw.githubusercontent.com/giantswarm/prometheus/master/manifests-all.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>不建议使用，有点 bug</p>
+<p>需要改 state-metrics image:  bitnami/kube-state-metrics:latest</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/10/linux-ntp-timezone/">Linux时区设置以及 NTP 设置自动同步</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-10</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-23</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>查看当前时区</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date -R</span><br></pre></td></tr></table></div></figure>
+
+<p>检查一下有没有 ntp 服务</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status ntp</span><br></pre></td></tr></table></div></figure>
+
+<p>如果没有则安装 ntp 服务，安装了就直接下一步</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ntp</span><br><span class="line">systemctl <span class="built_in">enable</span> ntpd</span><br><span class="line">systemctl start ntpd</span><br></pre></td></tr></table></div></figure>
+
+<p>更改时区</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#先备份一下当前时区文件 然后把正确的时区文件链接过来</span></span><br><span class="line">mv /etc/localtime /etc/localtime.old</span><br><span class="line">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></div></figure>
+
+<p>同步硬件时间：<br>在 /etc/sysconfig/ntpd 最后一行加<br>SYNC_HWCLOCK=yes</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/09/linux-kernel-upgrade/">Linux 内核升级指南</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-09</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-23</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h5 id="显示当前-Linux-系统内核"   >
+          <a href="#显示当前-Linux-系统内核" class="heading-link"><i class="fas fa-link"></i></a><a href="#显示当前-Linux-系统内核" class="headerlink" title="显示当前 Linux 系统内核"></a>显示当前 Linux 系统内核</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -sr</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="在-CentOS-7-上升级内核"   >
+          <a href="#在-CentOS-7-上升级内核" class="heading-link"><i class="fas fa-link"></i></a><a href="#在-CentOS-7-上升级内核" class="headerlink" title="在 CentOS 7 上升级内核"></a>在 CentOS 7 上升级内核</h4>
+      
+        <h5 id="启用-ELRepo-仓库"   >
+          <a href="#启用-ELRepo-仓库" class="heading-link"><i class="fas fa-link"></i></a><a href="#启用-ELRepo-仓库" class="headerlink" title="启用 ELRepo 仓库"></a>启用 ELRepo 仓库</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</span><br><span class="line">rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="列出可以使用的内核相关包"   >
+          <a href="#列出可以使用的内核相关包" class="heading-link"><i class="fas fa-link"></i></a><a href="#列出可以使用的内核相关包" class="headerlink" title="列出可以使用的内核相关包"></a>列出可以使用的内核相关包</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum --disablerepo=<span class="string">&quot;*&quot;</span> --enablerepo=<span class="string">&quot;elrepo-kernel&quot;</span> list available</span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="安装最新的主线稳定内核"   >
+          <a href="#安装最新的主线稳定内核" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装最新的主线稳定内核" class="headerlink" title="安装最新的主线稳定内核"></a>安装最新的主线稳定内核</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum --enablerepo=elrepo-kernel install kernel-ml</span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="设置-GRUB-默认启动的内核版本"   >
+          <a href="#设置-GRUB-默认启动的内核版本" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置-GRUB-默认启动的内核版本" class="headerlink" title="设置 GRUB 默认启动的内核版本"></a>设置 GRUB 默认启动的内核版本</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/default/grub</span><br><span class="line"><span class="comment">#设置 GRUB_DEFAULT=0</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="重新创建内核配置"   >
+          <a href="#重新创建内核配置" class="heading-link"><i class="fas fa-link"></i></a><a href="#重新创建内核配置" class="headerlink" title="重新创建内核配置"></a>重新创建内核配置</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></div></figure>
+
+<p>这样重启之后就是新内核的系统了，记得改 hostname，关闭 selinux</p>
+<p>有时候部署东西经常出问题，不如试试看更新一下 LinuxKernel，说不定是有内核版本要求呢？</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/07/k8s-learning/">Kubernetes 学习笔记以及 Kubernetes 集群 +KubeSphere 部署指南</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="kubernetes-学习笔记"   >
+          <a href="#kubernetes-学习笔记" class="heading-link"><i class="fas fa-link"></i></a><a href="#kubernetes-学习笔记" class="headerlink" title="kubernetes 学习笔记"></a>kubernetes 学习笔记</h1>
+      
+        <h3 id="Kubernetes-中的各种东西介绍"   >
+          <a href="#Kubernetes-中的各种东西介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-中的各种东西介绍" class="headerlink" title="Kubernetes 中的各种东西介绍"></a>Kubernetes 中的各种东西介绍</h3>
+      <ol>
+<li>
+        <h5 id="Kubernetes-API-Server"   >
+          <a href="#Kubernetes-API-Server" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-API-Server" class="headerlink" title="Kubernetes API Server"></a>Kubernetes API Server</h5>
+      <p>提供 Kubernetes 各类资源对象的增删改查的 HTTP Rset 接口，是整个系统的数据总线和数据中心，提供了集群管理的 REST API 接口，包括认证授权、数据校验以及集群状态变更、提供了其他模块之间的数据交互和通信的枢纽，是资源配额控制的入口，拥有完备的安全机制</p>
+</li>
+<li>
+        <h5 id="Kubernetes-Controller-Manager"   >
+          <a href="#Kubernetes-Controller-Manager" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-Controller-Manager" class="headerlink" title="Kubernetes Controller Manager"></a>Kubernetes Controller Manager</h5>
+      <p>作为集群内部的管理控制中心，负责集群内的 Node 节点，Pod 副本、服务端点（Endpoint）、命名空间（NameSpace）、服务账号（ServiceAccount）、资源配额（ResourceQuota）的管理。当某个 Node 意外宕机时，Controller 会及时发现并执行自动化修复流程，确保集群始终处于预期的工作状态</p>
+</li>
+<li>
+        <h5 id="Kubernetes-Scheduler（调度器）"   >
+          <a href="#Kubernetes-Scheduler（调度器）" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubernetes-Scheduler（调度器）" class="headerlink" title="Kubernetes Scheduler（调度器）"></a>Kubernetes Scheduler（调度器）</h5>
+      <p>Kubernetes Scheduler 的作用是根据特定的调度算法把 Pod 调度到指定的工作节点（Node）上，这一过程也叫绑定（Bind）。Scheduler 的输入为需要调度的 Pod 和可以被调度的节点的信息，输出为调度算法选择的 Node 节点，并将该 Pod 绑定到这个 Node 节点</p>
+</li>
+<li>
+        <h5 id="Etcd"   >
+          <a href="#Etcd" class="heading-link"><i class="fas fa-link"></i></a><a href="#Etcd" class="headerlink" title="Etcd"></a>Etcd</h5>
+      <p>是 Kubernetes 集群中的一个十分重要的组件，用于保存集群中所有的网络配置和对象的状态信息</p>
+</li>
+<li>
+        <h5 id="Kubelet"   >
+          <a href="#Kubelet" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kubelet" class="headerlink" title="Kubelet"></a>Kubelet</h5>
+      <p>在 Kubunetes 集群中，每个 Node 节点都会启动 kubelet 进程，用来处理 Master 节点下发到本节点的任务，管理 Pod 和其中的容器。kubelet 会在 API Server 上注册节点信息，定期向 Master 汇报节点资源的使用情况，并通过 cAdvisor 监控容器和节点资源。可以把 kubelet 理解成是一个代理进程，是 Node节点上的 Pod 管家</p>
+<p>是一个 Kubernetes 的客户端工具，通常会在 Kubernetes 的 Master 节点的安装过程中被一同安装，在任意环境安装，只要能连接 Master 节点，就可以通过它来管理 Kubernetes 集群</p>
+</li>
+<li>
+        <h5 id="Kube-proxy"   >
+          <a href="#Kube-proxy" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kube-proxy" class="headerlink" title="Kube-proxy"></a>Kube-proxy</h5>
+      <p>它运行在所有的 Node 节点上，监听每个节点上 Kubernetes API 中定义的服务变化情况，并创建路由规则来进行服务负载均衡</p>
+</li>
+<li>
+        <h5 id="Pod"   >
+          <a href="#Pod" class="heading-link"><i class="fas fa-link"></i></a><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h5>
+      <p>是 Kubernetes 最基本的操作单元，一个 Pod 中可以包含一个或多个紧密相关的容器，一个 Pod 可以被一个容器化的环境看作应用层的逻辑宿主机。每个Pod 中运行着一个特殊的被称之为 Pause 的容器，其他容器则称为业务容器，业务容器共享 Pause 容器的网络栈和 Volume 挂载卷</p>
+</li>
+<li>
+        <h5 id="Service（服务）"   >
+          <a href="#Service（服务）" class="heading-link"><i class="fas fa-link"></i></a><a href="#Service（服务）" class="headerlink" title="Service（服务）"></a>Service（服务）</h5>
+      <p>通常由一组 Pod 组成一个集群来提供服务，服务的特点：</p>
+<ul>
+<li>拥有一个指定的名字,比如 mysql-server</li>
+<li>拥有一个虚拟 IP 地址和端口号，销毁之前不会改变，只能内网访问</li>
+<li>能够提供某种远程服务能力</li>
+<li>被映射到了提供这种服务能力的一组容器应用上</li>
+</ul>
+</li>
+<li>
+        <h5 id="CoreDNS"   >
+          <a href="#CoreDNS" class="heading-link"><i class="fas fa-link"></i></a><a href="#CoreDNS" class="headerlink" title="CoreDNS"></a>CoreDNS</h5>
+      </li>
+</ol>
+<p>   CoreDNS 是模块化且可插拔的 DNS 服务器，每个插件都为 CoreDNS 添加了新功能。 可以通过维护 Corefile，即 CoreDNS 配置文件， 来定制其行为。 集群管理员可以修改 CoreDNS Corefile 的 ConfigMap，以更改服务发现的工作方式</p>
+<ol start="11">
+<li>
+        <h5 id="Cilium"   >
+          <a href="#Cilium" class="heading-link"><i class="fas fa-link"></i></a><a href="#Cilium" class="headerlink" title="Cilium"></a>Cilium</h5>
+      <p>Cilium 是一款开源软件，用于透明地保护使用 Linux 容器管理平台（如 Docker 和 Kubernetes）部署的应用程序服务之间的网络连接</p>
+<p>Cilium 的基础是一种名为 eBPF 的新 Linux 内核技术，它支持在 Linux 本身内动态插入强大的安全可见性和控制逻辑。由于 eBPF 在 Linux 内核中运行，因此可以应用和更新 Cilium 安全策略，而无需对应用程序代码或容器配置进行任何更改</p>
+</li>
+<li>
+        <h5 id="kube-proxy"   >
+          <a href="#kube-proxy" class="heading-link"><i class="fas fa-link"></i></a><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h5>
+      <p>Kubernetes 网络代理在每个节点上运行。网络代理反映了每个节点上 Kubernetes API 中定义的服务，并且可以执行简单的 TCP、UDP 和 SCTP 流转发，或者在一组后端进行 循环 TCP、UDP 和 SCTP 转发。 当前可通过 Docker-links-compatible 环境变量找到服务集群 IP 和端口， 这些环境变量指定了服务代理打开的端口。 有一个可选的插件，可以为这些集群 IP 提供集群 DNS。 用户必须使用 apiserver API 创建服务才能配置代理。</p>
+</li>
+<li>
+        <h5 id="kube-state-metrics"   >
+          <a href="#kube-state-metrics" class="heading-link"><i class="fas fa-link"></i></a><a href="#kube-state-metrics" class="headerlink" title="kube-state-metrics"></a>kube-state-metrics</h5>
+      <p>kube-state-metrics是 Kubernetes 组织下的一个项目，根据 Kubernetes 原生资源的当前状态生成 Prometheus 格式的指标。它通过侦听 Kubernetes API 并收集有关资源和对象的信息来做到这一点，例如 Deployment、Pod、Service 和 StatefulSet。kube-state-metrics的<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/kubernetes/kube-state-metrics/tree/master/docs" >文档</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>中提供了完整的资源列表。</p>
+</li>
+</ol>
+
+        <h3 id="使用-Kubeadm-安装-Kubernetes-集群"   >
+          <a href="#使用-Kubeadm-安装-Kubernetes-集群" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-Kubeadm-安装-Kubernetes-集群" class="headerlink" title="使用 Kubeadm 安装 Kubernetes 集群"></a>使用 Kubeadm 安装 Kubernetes 集群</h3>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/install-kubeadm/" >Kubeadm 官方教程</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<ol>
+<li>
+        <h5 id="前期准备-所有节点"   >
+          <a href="#前期准备-所有节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#前期准备-所有节点" class="headerlink" title="前期准备(所有节点)"></a>前期准备(所有节点)</h5>
+      <p>安装 docker</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></div></figure>
+
+<p>禁用 SELinux</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/SELINUX=permissive/SELINUX=disabled&#x27;</span> /etc/sysconfig/selinux</span><br><span class="line">setenforce 0</span><br></pre></td></tr></table></div></figure>
+
+<p>安装 kubelet</p>
+<p>添加镜像 repo</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="string">EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span></span><br><span class="line"><span class="string">[kubernetes]</span></span><br><span class="line"><span class="string">name=Kubernetes</span></span><br><span class="line"><span class="string">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch</span></span><br><span class="line"><span class="string">enabled=1</span></span><br><span class="line"><span class="string">gpgcheck=1</span></span><br><span class="line"><span class="string">repo_gpgcheck=1</span></span><br><span class="line"><span class="string">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg</span></span><br><span class="line"><span class="string">exclude=kubelet kubeadm kubectl</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes</span><br><span class="line">systemctl <span class="built_in">enable</span> kubelet</span><br><span class="line">systemctl start kubelet</span><br></pre></td></tr></table></div></figure>
+
+<p>禁用交换分区</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a</span><br><span class="line">vim /etc/fstab</span><br><span class="line"><span class="comment">#修改/etc/fstab文件，注释掉下面该行</span></span><br><span class="line"><span class="comment">#/dev/mapper/centos-swap swap swap default 0 0</span></span><br></pre></td></tr></table></div></figure>
+
+<p>修改防火墙规则</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -P FORWARD ACCEPT </span><br><span class="line">iptables-save</span><br></pre></td></tr></table></div></figure>
+
+<p>配置转发</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="string">EOF | sudo tee /etc/modules-load.d/k8s.conf</span></span><br><span class="line"><span class="string">br_netfilter</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line">cat &lt;&lt;<span class="string">EOF | sudo tee /etc/sysctl.d/k8s.conf</span></span><br><span class="line"><span class="string">net.bridge.bridge-nf-call-ip6tables = 1</span></span><br><span class="line"><span class="string">net.bridge.bridge-nf-call-iptables = 1</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">sudo sysctl --system</span><br></pre></td></tr></table></div></figure>
+
+<p>设置域名解析（否则后期 API-SERVER 会报错,也可以在 DNS 服务器上添加解析记录）</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; /etc/hosts &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># K8S Cluster</span></span><br><span class="line"><span class="string">100.x.x.x m.x.yhsyc.club</span></span><br><span class="line"><span class="string">100.x.x.x s1.x.yhsyc.club</span></span><br><span class="line"><span class="string">100.x.x.x s2.x.yhsyc.club</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="部署-Master-节点"   >
+          <a href="#部署-Master-节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署-Master-节点" class="headerlink" title="部署 Master 节点"></a>部署 Master 节点</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --apiserver-advertise-address 100.88.1.99 --control-plane-endpoint m.x.yhsyc.club --pod-network-cidr 192.168.0.0/17 --service-cidr 192.168.128.0/18 --service-dns-domain x.yhsyc.club --node-name m.yhsyc.club</span><br></pre></td></tr></table></div></figure>
+
+<p>这个过程中，kubeadm 完成了以下几个主要步骤：</p>
+<ul>
+<li>检查初始化节点所需要的先决条件，如果不满足，就给出错误提示</li>
+<li>生成 Kubernetes 集群的令牌</li>
+<li>生成自签名的 CA 和客户端证书</li>
+<li>自动创建 kubeconfig 配置文件，该文件是提供给 kubelet 连接 API Server 时使用的</li>
+<li>配置基于角色的访问控制，并且设置 Master 节点只允许控制组件服务</li>
+<li>创建其他的相关服务，例如 kube-proxy 和 kube-dns 等</li>
+</ul>
+<p><strong>要注意init完成之后的提示信息</strong>，有操作指引，可以复制之后的指令直接加入 master</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) <span class="variable">$HOME</span>/.kube/config</span><br><span class="line"><span class="comment">#如果不导入，那么会报证书问题</span></span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="下载网络插件-Cilium"   >
+          <a href="#下载网络插件-Cilium" class="heading-link"><i class="fas fa-link"></i></a><a href="#下载网络插件-Cilium" class="headerlink" title="下载网络插件 Cilium"></a>下载网络插件 Cilium</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz&#123;,.sha256sum&#125;</span><br><span class="line">sha256sum --check cilium-linux-amd64.tar.gz.sha256sum</span><br><span class="line">sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/<span class="built_in">local</span>/bin</span><br><span class="line">rm cilium-linux-amd64.tar.gz&#123;,.sha256sum&#125; -rf</span><br></pre></td></tr></table></div></figure>
+
+<p>安装 Cilium</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cilium install</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/JiMxcPgwdruIO8m.png" alt="微信截图_20220309193213.png"></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apply 安装 flannel 作为网络插件 </span></span><br><span class="line"><span class="comment"># 这里我试了 flannel，网络容器起不起来，之后转用 cilium，发现是我内核版本太低导致装不上，但不确定 flannel 是不是也是</span></span><br><span class="line"><span class="comment">#kubectl apply -f https://raw.githubusercontent.com/flannel-#io/flannel/master/Documentation/kube-flannel.yml</span></span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="部署-Node-节点"   >
+          <a href="#部署-Node-节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署-Node-节点" class="headerlink" title="部署 Node 节点"></a>部署 Node 节点</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">token=$(kubeadm token list | grep authentication,signing | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">kubeadm join --token <span class="variable">$token</span> &lt;ip-address&gt;</span><br><span class="line">--node-name s1.x.yhsyc.club  <span class="comment"># &lt;&lt; 加这一行</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#示例</span></span><br><span class="line">kubeadm join m.x.yhsyc.club:6443 --token mdd3oz.l3ld96hi07nvfqyr --discovery-token-ca-cert-hash sha256:ed8f89b489a70a515a68182bf5b30ec2aaaf8cf336d1f2d8dfa2a307f0c40522 --node-name s1.x.yhsyc.club</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/iDTb9vNosHxguza.png" alt="微信截图_20220311092742.png"></p>
+</li>
+<li>
+        <h5 id="如果部署过程中有什么不对的，可以重新部署-init"   >
+          <a href="#如果部署过程中有什么不对的，可以重新部署-init" class="heading-link"><i class="fas fa-link"></i></a><a href="#如果部署过程中有什么不对的，可以重新部署-init" class="headerlink" title="如果部署过程中有什么不对的，可以重新部署 init"></a>如果部署过程中有什么不对的，可以重新部署 init</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm reset</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="部署完成后可以通过下面指令来显示节点信息"   >
+          <a href="#部署完成后可以通过下面指令来显示节点信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署完成后可以通过下面指令来显示节点信息" class="headerlink" title="部署完成后可以通过下面指令来显示节点信息"></a>部署完成后可以通过下面指令来显示节点信息</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/2alYt96sZhxu1n5.png" alt="微信截图_20220311092917.png"></p>
+</li>
+<li>
+        <h5 id="可以看一下-pod-服务都有什么，有没有状态不对的-pod"   >
+          <a href="#可以看一下-pod-服务都有什么，有没有状态不对的-pod" class="heading-link"><i class="fas fa-link"></i></a><a href="#可以看一下-pod-服务都有什么，有没有状态不对的-pod" class="headerlink" title="可以看一下 pod 服务都有什么，有没有状态不对的 pod"></a>可以看一下 pod 服务都有什么，有没有状态不对的 pod</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -A</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>到这里的话 K8S 集群就是可以开始工作的了</p>
+</li>
+</ol>
+
+        <h3 id="使用-NFS-作为-K8S-集群的存储"   >
+          <a href="#使用-NFS-作为-K8S-集群的存储" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用-NFS-作为-K8S-集群的存储" class="headerlink" title="使用 NFS 作为 K8S 集群的存储"></a>使用 NFS 作为 K8S 集群的存储</h3>
+      <ol>
+<li>
+        <h5 id="安装-NFS-服务器"   >
+          <a href="#安装-NFS-服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装-NFS-服务器" class="headerlink" title="安装 NFS 服务器"></a>安装 NFS 服务器</h5>
+      <p>这里我用了一台 200 G SSD 的 Alpine 来作为 NFS 服务器</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apk add nfs-utils</span><br></pre></td></tr></table></div></figure>
+
+<p>安装完成之后在 /etc/exports 中加一行配置</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/exports</span><br><span class="line">/data 100.x.x.0/24(rw,async,no_subtree_check,no_wdelay,crossmnt,no_root_squash,insecure_locks,sec=sys,anonuid=0,anongid=0)</span><br></pre></td></tr></table></div></figure>
+
+<p>设置NFS服务开机自启并重启服务器</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-update add nfs &amp;&amp; reboot</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="在所有节点安装-nfs-客户端"   >
+          <a href="#在所有节点安装-nfs-客户端" class="heading-link"><i class="fas fa-link"></i></a><a href="#在所有节点安装-nfs-客户端" class="headerlink" title="在所有节点安装 nfs 客户端"></a>在所有节点安装 nfs 客户端</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install nfs-utils</span><br><span class="line">systemctl start nfs &amp;&amp; systemctl <span class="built_in">enable</span> nfs</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="添加-SelfLink"   >
+          <a href="#添加-SelfLink" class="heading-link"><i class="fas fa-link"></i></a><a href="#添加-SelfLink" class="headerlink" title="添加 SelfLink"></a>添加 SelfLink</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/kubernetes/manifests/kube-apiserver.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加- --feature-gates=RemoveSelfLink=false</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">...</span><br><span class="line">  - <span class="built_in">command</span>:</span><br><span class="line">    - kube-apiserver</span><br><span class="line">    - --advertise-address=192.168.5.11</span><br><span class="line">    - --allow-privileged=<span class="literal">true</span></span><br><span class="line">    - --feature-gates=RemoveSelfLink=<span class="literal">false</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">#</span></span><br></pre></td></tr></table></div></figure>
+
+<p>保存退出，kubernetes 会自动重建 apiserver，如果没有这一步的话后面创建 pod 会一直 pending，挂载失败</p>
+</li>
+<li>
+        <h5 id="部署-nfs-client-provisioner（master"   >
+          <a href="#部署-nfs-client-provisioner（master" class="heading-link"><i class="fas fa-link"></i></a><a href="#部署-nfs-client-provisioner（master" class="headerlink" title="部署 nfs-client-provisioner（master)"></a>部署 nfs-client-provisioner（master)</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#从github上clone yaml</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/kubernetes-incubator/external-storage.git</span><br><span class="line">cp -R external-storage/nfs-client/deploy/ <span class="variable">$HOME</span></span><br><span class="line"><span class="built_in">cd</span> deploy</span><br></pre></td></tr></table></div></figure>
+
+<p>创建权限 rbac.yaml</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Set the subject of the RBAC objects to the current namespace where the provisioner is being deployed</span></span><br><span class="line">NS=$(kubectl config get-contexts|grep -e <span class="string">&quot;^\*&quot;</span> |awk <span class="string">&#x27;&#123;print $5&#125;&#x27;</span>)</span><br><span class="line">NAMESPACE=<span class="variable">$&#123;NS:-default&#125;</span></span><br><span class="line">sed -i<span class="string">&#x27;&#x27;</span> <span class="string">&quot;s/namespace:.*/namespace: <span class="variable">$NAMESPACE</span>/g&quot;</span> ./deploy/rbac.yaml ./deploy/deployment.yaml</span><br><span class="line">kubectl create -f deploy/rbac.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>配置 deploy/class.yaml</p>
+<figure class="highlight yaml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">storage.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StorageClass</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">managed-nfs-storage</span></span><br><span class="line"><span class="attr">provisioner:</span> <span class="string">fuseim.pri/ifs</span> <span class="comment"># or choose another name, must match deployment&#x27;s env PROVISIONER_NAME&#x27;</span></span><br><span class="line"><span class="attr">parameters:</span></span><br><span class="line">  <span class="attr">archiveOnDelete:</span> <span class="string">&quot;false&quot;</span> <span class="comment"># When set to &quot;false&quot; your PVs will not be archived</span></span><br><span class="line">                           <span class="comment"># by the provisioner upon deletion of the PVC.</span></span><br></pre></td></tr></table></div></figure>
+
+<p>修改 deployment.yaml 文件<br>这里修改的参数包括 NFS 服务器所在的 IP 地址（192.168.5.11），以及 NFS 服务器共享的路径（/nfs/data/pv002），两处都需要修改为你实际的 NFS 服务器和共享目录</p>
+<figure class="highlight yaml"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">root@master</span> <span class="string">deploy</span>]<span class="comment"># cat deployment.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">Recreate</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">serviceAccountName:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nfs-client-provisioner</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">quay.io/external_storage/nfs-client-provisioner:latest</span></span><br><span class="line">          <span class="attr">volumeMounts:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nfs-client-root</span></span><br><span class="line">              <span class="attr">mountPath:</span> <span class="string">/persistentvolumes</span></span><br><span class="line">          <span class="attr">env:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">PROVISIONER_NAME</span></span><br><span class="line">              <span class="attr">value:</span> <span class="string">fuseim.pri/ifs</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">NFS_SERVER</span></span><br><span class="line">              <span class="attr">value:</span> <span class="number">100.88</span><span class="number">.1</span><span class="number">.96</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">NFS_PATH</span></span><br><span class="line">              <span class="attr">value:</span> <span class="string">/data</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nfs-client-root</span></span><br><span class="line">          <span class="attr">nfs:</span></span><br><span class="line">            <span class="attr">server:</span> <span class="number">100.88</span><span class="number">.1</span><span class="number">.96</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/data</span></span><br></pre></td></tr></table></div></figure>
+
+<p>应用 nfs</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f deploy/deployment.yaml -f deploy/class.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/TfXUuaJovhKdYFQ.png" alt="微信截图_20220310163620.png"></p>
+</li>
+<li>
+        <h5 id="测试环境"   >
+          <a href="#测试环境" class="heading-link"><i class="fas fa-link"></i></a><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h5>
+      <p>部署测试 pod</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f deploy/test-claim.yaml -f deploy/test-pod.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>查看 pvc，pv 状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pvc,pv</span><br></pre></td></tr></table></div></figure>
+
+<p>能看到下面就说明成了</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@master]<span class="comment"># kubectl get pvc,pv</span></span><br><span class="line">NAME                                           STATUS   VOLUME                                                              CAPACITY   ACCESS MODES   STORAGECLASS          AGE</span><br><span class="line">persistentvolumeclaim/test-claim               Bound    ingress-nginx-test-claim-pvc-efd702ba-102d-4d61-9a5f-6fc4805f12c0   1Mi        RWX            managed-nfs-storage   25m</span><br><span class="line"></span><br><span class="line">NAME                                                                                 CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                  STORAGECLASS          REASON   AGE</span><br><span class="line">persistentvolume/ingress-nginx-test-claim-pvc-efd702ba-102d-4d61-9a5f-6fc4805f12c0   1Mi        RWX            Delete           Bound    ingress-nginx/test-claim               managed-nfs-storage            19m</span><br></pre></td></tr></table></div></figure>
+
+<p>删除测试 pod</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f deploy/test-pod.yaml -f deploy/test-claim.yaml</span><br></pre></td></tr></table></div></figure></li>
+<li>
+        <h5 id="设置默认-StorageClass-master-节点"   >
+          <a href="#设置默认-StorageClass-master-节点" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置默认-StorageClass-master-节点" class="headerlink" title="设置默认 StorageClass(master 节点)"></a>设置默认 StorageClass(master 节点)</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl patch storageclass managed-nfs-storage -p <span class="string">&#x27;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io/is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#x27;</span></span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h3 id="安装-Prometheus-和-Grafana"   >
+          <a href="#安装-Prometheus-和-Grafana" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装-Prometheus-和-Grafana" class="headerlink" title="安装 Prometheus 和 Grafana"></a>安装 Prometheus 和 Grafana</h3>
+      
+        <h6 id="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"   >
+          <a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题" class="headerlink" title="建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题"></a>建议不要在完全翻墙的环境下去拉镜像，很有可能拉不成功，有时候拉失败，要考虑一下是不是网络环境的问题</h6>
+      <p>GitHub link : <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/giantswarm/prometheus" >Prometheus and Grafana</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>快速安装</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply \</span><br><span class="line">  --filename https://raw.githubusercontent.com/giantswarm/prometheus/master/manifests-all.yaml</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="安装KubeSphere"   >
+          <a href="#安装KubeSphere" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装KubeSphere" class="headerlink" title="安装KubeSphere"></a>安装KubeSphere</h3>
+      <p>GitHub link : <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/kubesphere/ks-installer/blob/master/README_zh.md" >KubeSphere</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h5 id="最小化快速部署"   >
+          <a href="#最小化快速部署" class="heading-link"><i class="fas fa-link"></i></a><a href="#最小化快速部署" class="headerlink" title="最小化快速部署"></a>最小化快速部署</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/kubesphere-installer.yaml</span><br><span class="line">kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/cluster-configuration.yaml</span><br></pre></td></tr></table></div></figure>
+
+
+        <h5 id="查看部署进度及日志"   >
+          <a href="#查看部署进度及日志" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看部署进度及日志" class="headerlink" title="查看部署进度及日志"></a>查看部署进度及日志</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l app=ks-install -o jsonpath=<span class="string">&#x27;&#123;.items[0].metadata.name&#125;&#x27;</span>) -f</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/EsC9lnmbINfKojc.png" alt="微信截图_20220310201916.png"></p>
+<p>部署完成后可执行如下命令查看控制台的服务端口，使用  <code>IP:consolePort(default: 30880)</code> 访问 KubeSphere UI 界面，默认的集群管理员账号为 <code>admin/P@88w0rd</code>。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc/ks-console -n kubesphere-system</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/YjyzMN4mO1HotZE.png" alt="微信截图_20220323214439.png"></p>
+
+        <h3 id="在安装前或者安装后开启插件"   >
+          <a href="#在安装前或者安装后开启插件" class="heading-link"><i class="fas fa-link"></i></a><a href="#在安装前或者安装后开启插件" class="headerlink" title="在安装前或者安装后开启插件"></a>在安装前或者安装后开启插件</h3>
+      <ol>
+<li>编辑你的 cluster-configuration.yaml</li>
+<li>找到你要启用的插件 将 enable 后的 false 改为 true，保存退出</li>
+<li>重新应用一下该文件，搞定</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vi cluster-configuration.yaml</span><br><span class="line">/openpitrix <span class="comment">#搜索openpitrix插件</span></span><br><span class="line"></span><br><span class="line">openpitrix:</span><br><span class="line">  store:</span><br><span class="line">    enabled: <span class="literal">true</span> <span class="comment"># 将“false”更改为“true”</span></span><br><span class="line">   </span><br><span class="line">:wq  <span class="comment">#保存退出</span></span><br><span class="line">kubectl apply -f cluster-configuration.yaml</span><br></pre></td></tr></table></div></figure>
+
+<p>可以查看安装进度</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l app=ks-install -o jsonpath=<span class="string">&#x27;&#123;.items[0].metadata.name&#125;&#x27;</span>) -f</span><br></pre></td></tr></table></div></figure>
+
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

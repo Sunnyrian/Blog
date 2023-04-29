@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://yhsyc.club/2023/04/29/install-portainer-in-K8S/</loc>
+    
+    <lastmod>2023-04-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/05/12/NCshift/</loc>
+    
+    <lastmod>2023-04-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/09/07/golang-map/</loc>
+    
+    <lastmod>2022-09-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/09/07/MySQL-varchar/</loc>
+    
+    <lastmod>2022-09-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/01/28/tmux/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/22/pve-import-ROS/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/13/manjaro-experience/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/28/linux-jdk/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/28/linux-docker-install/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/11/k8s-prometheus-grafana/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/07/k8s-learning/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/04/11/interview-questions/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/01/20/dpkg/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/07/diversion/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/07/crontab/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/01/18/checksum/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/23/when-to-NAT/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/01/22/alpine-instructions/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/27/alertmanager/</loc>
+    
+    <lastmod>2022-09-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/08/18/fe-magic/</loc>
+    
+    <lastmod>2022-08-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/13/git-learning/</loc>
+    
+    <lastmod>2022-08-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/08/22/remove-element-ui-input-border/</loc>
+    
+    <lastmod>2022-08-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/07/08/maintenance-00/</loc>
+    
+    <lastmod>2022-07-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/02/golang-learning/</loc>
+    
+    <lastmod>2022-05-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/05/11/ftp/</loc>
+    
+    <lastmod>2022-05-11</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/27/k8s-configMap/</loc>
+    
+    <lastmod>2022-03-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/20/snmp-exporter/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/20/mikrotik-exporter/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/22/bitwarden/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/02/28/centos-firewall-state/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/04/alpine-openssh/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/14/raid/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/10/linux-ntp-timezone/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/03/09/linux-kernel-upgrade/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/01/22/kms/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/index.html</loc>
+    
+    <lastmod>2022-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/2022/01/17/fledgling/</loc>
+    
+    <lastmod>2022-03-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  <url>
+    <loc>http://yhsyc.club/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>http://yhsyc.club/tags/MySQL/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/varchar/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Golang/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Gin/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Network/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Alpine/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Linux/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/tools/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/kubernetes/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Alertmanager/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Grafana/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/CentOS/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Firewall/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Debian/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Http-Cache/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/sha256/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/OpenWrt/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/crontab/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/bitwarden/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/password/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/deb/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Diversion/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/RouterOS/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Fontend/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/ftp/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/git/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Go/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Map/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/if/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/interview/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/configMap/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Kubernetes/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Kube/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/KubeSphere/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Prometheus/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/kms/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Windows/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/docker/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/CentOS7/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Java/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/jdk/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/NTP/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/maintenance/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Mikrotik/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Manjaro/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/PVE/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/RAID/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/NAT/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/FrontEnd/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/CSS/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/ElementUI/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/tmux/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/SNMP/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yhsyc.club/tags/Portainer/</loc>
+    <lastmod>2023-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
+  
+</urlset>

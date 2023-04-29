@@ -1,0 +1,598 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="Information Technology Sharing">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sunnyrian&#39;s Blog">
+<meta property="og:url" content="http://yhsyc.club/page/3/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="Information Technology Sharing">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="Network Linux Maintenance Programming">
+<meta name="twitter:card" content="summary"><title>Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/page/3/index.html"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/04/alpine-openssh/">Openssh 配置 root 账号登录</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-04</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>alpine-iso 启动虚拟机后</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setup-alpine</span><br></pre></td></tr></table></div></figure>
+
+<p>配置 alpine 并将 alpine 系统写入到选择的磁盘中</p>
+<p>官方镜像默认 openssh 不让用 root 账号登陆，需要修改配置文件并重启 sshd</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/PermitRootLogin</span><br><span class="line">A</span><br><span class="line">将<span class="comment">#PermitRootLogin prohibit-password</span></span><br><span class="line">改为PermitRootLogin yes</span><br><span class="line">:wq</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-service sshd restart</span><br></pre></td></tr></table></div></figure>
+
+<p>这样就可以用root账号密码通过ssh登录了</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/03/02/golang-learning/">Go 学习笔记</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-05-12</span></span></div></header><div class="post-body"><div class="post-excerpt"><ol>
+<li><p>Go 代码在发布之前，要 go fmt 转化成标准化代码格式，而避免了大家为了各种标准格式产生争议</p>
+</li>
+<li><p>一个 go 程序有一个 main 包</p>
+</li>
+<li><p>左大括号 <strong>{</strong> 必须和方法声明放在同一行，这是编译器的强制规定</p>
+</li>
+<li><p>GO 语言中不存在类型继承</p>
+</li>
+<li><p>函数也可以是一个确定的类型，就是以函数作为返回类型。这种类型的声明要写在函数名和可选的参数列表之后，例如：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FunctionName</span> <span class="params">(a typea, b typeb)</span> <span class="title">typeFunc</span></span></span><br></pre></td></tr></table></div></figure></li>
+<li><p>一个函数可以拥有多返回值，返回类型之间需要使用逗号分割，并使用小括号 <code>()</code> 将它们括起来，如：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FunctionName</span> <span class="params">(a typea, b typeb)</span> <span class="params">(t1 type1, t2 type2)</span></span></span><br></pre></td></tr></table></div></figure></li>
+<li><p>由于 Go 语言不存在隐式类型转换，因此所有的转换都必须显式说明，就像调用一个函数一样（类型在这里的作用可以看作是一种函数）：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">valueOfTypeB = typeB(valueOfTypeA)</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>类型 B 的值 = 类型 B(类型 A 的值)</strong></p>
+<p>示例：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="number">5.0</span></span><br><span class="line">b := <span class="keyword">int</span>(a)</span><br></pre></td></tr></table></div></figure>
+
+<p>但这只能在定义正确的情况下转换成功，例如从一个取值范围较小的类型转换到一个取值范围较大的类型（例如将 int16 转换为 int32）。当从一个取值范围较大的转换到取值范围较小的类型时（例如将 int32 转换为 int16 或将 float32 转换为 int），会发生精度丢失（截断）的情况。当编译器捕捉到非法的类型转换时会引发编译时错误，否则将引发运行时错误。</p>
+<p>具有相同底层类型的变量之间可以相互转换：</p>
+<figure class="highlight go"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a IZ = <span class="number">5</span></span><br><span class="line">c := <span class="keyword">int</span>(a)</span><br><span class="line">d := IZ(c)</span><br></pre></td></tr></table></div></figure>
+
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40876291/article/details/86688670" >golang中printf的用法</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/centos-firewall-state/">CentOS 的防火墙控制及指令</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="CentOS-7-关闭-SELinux-以及防火墙指令"   >
+          <a href="#CentOS-7-关闭-SELinux-以及防火墙指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#CentOS-7-关闭-SELinux-以及防火墙指令" class="headerlink" title="CentOS 7 关闭 SELinux 以及防火墙指令"></a>CentOS 7 关闭 SELinux 以及防火墙指令</h3>
+      <p>暂时禁用 SELinux</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0</span><br></pre></td></tr></table></div></figure>
+
+<p>彻底禁用 SELinux</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/selinux/config</span><br><span class="line"><span class="comment">#将其中的 SELINUX=enforcing</span></span><br><span class="line"><span class="comment">#修改为 SELINUX=disabled</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></div></figure>
+
+<ol>
+<li><p>查看已开放端口</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --list-ports</span><br></pre></td></tr></table></div></figure></li>
+<li><p>开放单个端口(开放后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=8080/tcp --permanent</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>（–permanent 为永久生效，不加为单次有效（重启失效））</strong></p>
+</li>
+<li><p>开放多个端口(开放后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=30000-59999/tcp --permanent</span><br></pre></td></tr></table></div></figure></li>
+<li><p>关闭端口(关闭后需要重启防火墙以生效)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --remove-port=8080/tcp --permanent</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看端口是否打开</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone= public --query-port=80/tcp</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看防火墙状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">systemctl status firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>开关防火墙</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start firewalld</span><br><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>重启防火墙</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">systemctl restart firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>设置防火墙开机状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开机自启防火墙</span></span><br><span class="line">systemctl <span class="built_in">enable</span> firewalld</span><br><span class="line"><span class="comment">#开机默认关闭</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br></pre></td></tr></table></div></figure></li>
+<li><p>查看防火墙设置开机自启是否成功</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl is-enabled firewalld; <span class="built_in">echo</span> $?</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-docker-install/">Linux 下 Docker 和 Docker-compose 环境搭建</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="Linux-下-Docker-和-Docker-compose-环境的搭建"   >
+          <a href="#Linux-下-Docker-和-Docker-compose-环境的搭建" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux-下-Docker-和-Docker-compose-环境的搭建" class="headerlink" title="Linux 下 Docker 和 Docker-compose 环境的搭建"></a>Linux 下 Docker 和 Docker-compose 环境的搭建</h2>
+      <ol>
+<li><p>安装 docker-ce</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -SsL get.docker.com | sh</span><br></pre></td></tr></table></div></figure></li>
+<li><p>安装 python-pip</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python3-pip</span><br></pre></td></tr></table></div></figure></li>
+<li><p>更新 pip</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install --upgrade pip</span><br></pre></td></tr></table></div></figure></li>
+<li><p>安装 docker-compose</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></div></figure>
+
+<p>检查 docker-compose 版本</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose version</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/jWPotzHM2qyKscx.png" alt="微信截图_20220228134909.png"></p>
+</li>
+</ol>
+<p>属于是站在巨人的肩上摘苹果了</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/28/linux-jdk/">Linux 环境下 jdk/jre 的安装配置过程</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="Linux-环境下-jdk-jre-的安装配置过程"   >
+          <a href="#Linux-环境下-jdk-jre-的安装配置过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#Linux-环境下-jdk-jre-的安装配置过程" class="headerlink" title="Linux 环境下 jdk/jre 的安装配置过程"></a>Linux 环境下 jdk/jre 的安装配置过程</h2>
+      <p>CentOS 7 示例</p>
+<ol>
+<li><p>下载解压 jdk 包</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://jdk.java.net/17/" >openjdk</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 /usr/local 目录下安装jdk</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz</span><br><span class="line">tar -zxvf jdk-17.0.2.tar.gz</span><br><span class="line">mv jdk-17.0.2 java</span><br></pre></td></tr></table></div></figure></li>
+<li><p>添加环境变量</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入 profile 文件，按 i 进入编辑模式</span></span><br><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment">#在文件最下方添加 G A</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin;</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br><span class="line"><span class="comment">#:wq 保存并退出 vim</span></span><br><span class="line"><span class="comment">#重新加载当前 bash 的环境变量</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line">java -version</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/weUBQbXJm29GspA.png" alt="微信截图_20220228133240.png"></p>
+</li>
+</ol>
+<p>搞定， JDK 环境有了</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/bitwarden/">密钥管理器 bitwarden 私有托管服务器搭建</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="bitwarden"   >
+          <a href="#bitwarden" class="heading-link"><i class="fas fa-link"></i></a><a href="#bitwarden" class="headerlink" title="bitwarden"></a>bitwarden</h1>
+      
+        <h4 id="Why-I-use-it"   >
+          <a href="#Why-I-use-it" class="heading-link"><i class="fas fa-link"></i></a><a href="#Why-I-use-it" class="headerlink" title="Why I use it?"></a>Why I use it?</h4>
+      <p>日益增多的账号给我带来了烦恼，我总是用固定的几个密码组合，虽然不至于让我丢失账号密码，但是密码安全性也摆在那里，如果有一个密码被泄露了，那么其它使用相同密码的平台的我的账号也会遭殃，而且作为半个偏运维人员，我总是有着很多很多密码，所以为了我的密码强度以及安全性，我决定用开源的bitwarden，我先说一下我对几个平台的看法，</p>
+<p>1password  要收费(学生党的话还是尽量把钱花在刀刃上)，其他都好</p>
+<p>lastpass       曾经出过安全事故，但感觉也不错</p>
+<p>Keepass       网络功能需要配合网盘</p>
+<p>bitwarden    开源，可自建后台，速度快体积小免费插件多</p>
+<p>比较吸引我的还是bitwarden，开源，又可以自部署平台，完全可以信任了，用的人也多，生态也不错。</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bitwarden.com/help/install-on-premise-linux" >bitwarden后台官方部署教程</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h4 id="前期准备"   >
+          <a href="#前期准备" class="heading-link"><i class="fas fa-link"></i></a><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h4>
+      <ol>
+<li><p>一台 Linux 虚拟机 我用的 CentOS7 </p>
+</li>
+<li><p>装上 Docker 和 Docker-Compose</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.docker.com/ | bash -x</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></div></figure></li>
+<li><p>找个地方放 bitwarden.sh</p>
+</li>
+<li><p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bitwarden.com/host/" >申请installation id/key</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>配置好域名解析，申请 SSL 证书（如果需要的话）</p>
+</li>
+<li><p>(optional) 创建 Bitwarden 的 User 和目录（可以省略， 我直接省略了）</p>
+</li>
+</ol>
+
+        <h4 id="开始安装"   >
+          <a href="#开始安装" class="heading-link"><i class="fas fa-link"></i></a><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h4>
+      <ol>
+<li><p>下载安装脚本</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -Lso bitwarden.sh https://go.btwrdn.co/bw-sh &amp;&amp; chmod 700 bitwarden.sh</span><br></pre></td></tr></table></div></figure></li>
+<li><p>安装</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bitwarden.sh install</span><br></pre></td></tr></table></div></figure>
+
+<p>引导做得很完善，记得每一步都要输入正确， 不然就得把 /bitwarden 目录删掉重来了</p>
+</li>
+<li><p>(optional) 如果使用自己已有的 SSL 证书，要把证书，私钥，中间证书都放到 ./bitwarden/ssl/your.domain</p>
+</li>
+<li><p>第一次启动</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bitwarden.sh start</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+<p>​        会开始拉取 docker 镜像，网不好就需要一会儿</p>
+<p>​        装好了之后，在各个 APP 和浏览器中配置好 Server URL 就可以开始使用了，稳的一批</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/22/pve-import-ROS/">在 PVE 中导入 Mikrotik RouterOS 并保留授权</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://oss.yhsyc.club/img/v6NzP7bHEncSTse.png" alt="a6i6g-6j9kh.png"></p>
+<ol>
+<li>
+        <h5 id="准备工作"   >
+          <a href="#准备工作" class="heading-link"><i class="fas fa-link"></i></a><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h5>
+      <p>首先把 ROS 镜像放到 PVE 宿主机上面去。什么格式都行啦，.vmdk .img  .ovf 都可以直接导</p>
+</li>
+<li>
+        <h5 id="导入"   >
+          <a href="#导入" class="heading-link"><i class="fas fa-link"></i></a><a href="#导入" class="headerlink" title="导入"></a>导入</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name &lt;yourTarget&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>cd 到放镜像的文件夹</p>
+<p>然后开导</p>
+<p>ovf 格式：(ovf 格式的话不需要事先添加虚拟机)</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importovf &lt;要创建的虚拟机 ID &gt; RouterOS.ovf &lt;存储 (<span class="built_in">local</span>、local-lvm)&gt; --format qcow2</span><br></pre></td></tr></table></div></figure>
+
+<p>vmdk 格式:（要事先创建一个虚拟机，要注意<strong>用 IDE 磁盘管理</strong>）</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk &lt;已有的虚拟机 ID &gt; RouterOS.vmdk &lt;存储 (<span class="built_in">local</span>、local-lvm)&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>实例:</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk 233 ./RouterOS.vmdk local-lvm</span><br></pre></td></tr></table></div></figure>
+
+<p>233 是虚拟机的 id</p>
+</li>
+<li>
+        <h5 id="保留授权码"   >
+          <a href="#保留授权码" class="heading-link"><i class="fas fa-link"></i></a><a href="#保留授权码" class="headerlink" title="保留授权码"></a>保留授权码</h5>
+      <p>进入宿主机 ssh、VNC or telnet 你钟意就行</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/pve/qemu-server/233.conf</span><br></pre></td></tr></table></div></figure>
+
+<p>然后在 ide: local:233/vm-233-disk-0.qcow2 后添加以下内容，vi 的话使用命令 A</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">,model=VMware%20Virtual%20IDE%20Hard%20Drive,serial=00000000000000000001</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/esoVM9JEi4nRWYX.png" alt="微信截图_20220222201405.png"></p>
+</li>
+</ol>
+<p>注意事项：磁盘管理一定要用 IDE，否则会保留授权码失败或丢虚拟磁盘</p>
+<p><img src="https://oss.yhsyc.club/img/9efCTgVxUPc7MW5.png" alt="微信图片_20220222201333.png"></p>
+<p>都搞定了就直接开机就能用了，起飞~</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/13/manjaro-experience/">Manjaro 当作主力机的使用体验</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://oss.yhsyc.club/img/tQ38wAlj7YKoJ6s.png" alt="acisj-8wm4w.png"></p>
+<p>经过7个月的使用，manjaro 系统终于被我玩坏了，因为我的强制掉电操作，它的 KDE 桌面挂掉了，但是还是可以进入 tty2 等 terminal，所幸数据都还在，我直接全部 ftp 到我的群晖里面，然后重装成 Windows11 了。那么我要总结一下讲 manjaro 作为我的笔记本系统的使用感受。</p>
+<p>最最最大的好处就是它是 Linux 内核系统，我可以随心所欲地用 Linux 的终端做很多事情，也方便了我的 Linux 操作系统课程的学习。</p>
+<p>我挺自豪的，拜托，笔记本装 manjaro 系统来作为日常使用超酷的好嘛</p>
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5><p>Manjaro 的优点</p>
+<ol>
+<li>它是 Arch Linux（这是最重要的，直接是生产环境）</li>
+<li>超级方便的包管理工具 yay</li>
+<li>KDE 可以非常地个性化，定制自己喜欢的主题</li>
+<li>组件化更加地突出了,它是高效率的生产工具</li>
+<li>相比其他 Arch Linux 的发行版，它的驱动最完整（但没有我的指纹输入的驱动，虽然可以自己写，但是我是懒鬼）</li>
+<li>因为是 Linux，可以直接当路由来用，非常完整的网络内核，可以做到很多事情，起隧道，非常全的协议连接，也可以保存我所有的本地网络</li>
+<li>玩不了什么游戏，虽然可以 CrossOver 装上很多 windows 上的东西，但是毕竟在装在虚拟机里面跑，性能就摆在那里，打个炉石动画都比 Mac mini 慢很多（当然啦，暴雪直接就有 Mac 版)。Value 家的东西全都有 Linux 发行版，比如 CSGO。</li>
+</ol>
+<p>Manjaro 的缺点</p>
+<ol>
+<li>没有所有方便日常生活的工具，比如没有 Office，微软家的东西基本都没有，wechat要通过 wine 或者 crossover 去安装运行，经常因为运行库的问题而运行不了，QQ 的体验更加差劲，这里就要表扬 tg，直接做了 arch 版本，可以在 snapstore 里面直接安装。非常方便</li>
+<li>KDE 经常崩溃或者某些组件挂掉，对 AMD 显卡驱动兼容不友好，某些动画经常鬼畜</li>
+<li>经常要去找答案，经常要折腾，日常升级就要去 Github 看 issue，等半天别人解决得了自己也不一定能解决得了，肯定是有解决方法的，但是要整多久就不一定了，我觉得这是它作为主力机来说最大的缺点，就是它不稳定，如果你不更新的话又不能体验到新的东西，而且有时候更新是为了 fix bug，反而更新之后直接挂了，这很不合理</li>
+</ol>
+<p>没有什么缺点了，它除了要折腾，什么都好，如果说有一天，大家都用 Linux 作为日常主力机，所有软件产商都发行 Linux 的软件包版本，那么我肯定会把 Linux当作主力机，但是现在看来，这不是很可能，现在体验感生态最好的应该还是 Apple 家，我年底也应该就冲个 M2 or M1 MAX 了。因为我换回 Windows 之后，我马上理解到了，日常使用起来舒服顺手，马上进入工作状态，才是一个该被装在笔记本里面的系统，而 Linux 现在的状态，就应该就是拿来当作服务器里的生产工具，它非常好用非常高效率，也非常稳定。希望 Arch Linux 可以发展到那个高度吧。我先滚回 Windows 的舒适圈了。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/07/crontab/">crontab 的基本使用</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h3 id="crontab-的基本使用"   >
+          <a href="#crontab-的基本使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#crontab-的基本使用" class="headerlink" title="crontab 的基本使用"></a>crontab 的基本使用</h3>
+      <p>用 crontab 肯定要写好 crontab 啦</p>
+<p>Linux 格式的 crontab</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*    *    *    *    *</span><br><span class="line">-    -    -    -    -</span><br><span class="line">|    |    |    |    |</span><br><span class="line">|    |    |    |    +----- 星期中星期几 (0 - 6) (星期天 为0)</span><br><span class="line">|    |    |    +---------- 月份 (1 - 12) </span><br><span class="line">|    |    +--------------- 一个月中的第几天 (1 - 31)</span><br><span class="line">|    +-------------------- 小时 (0 - 23)</span><br><span class="line">+------------------------- 分钟 (0 - 59)</span><br></pre></td></tr></table></div></figure>
+
+<p>后面加上要做的事情，指令，比如说  每隔一分钟输出当前时间到 txt 文件中</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/1 * * * * date &gt;&gt; /home/sunnyrian/crontab.txt</span><br></pre></td></tr></table></div></figure>
+
+<p>我们把它写在一个 X.sh 中，然后添加到当前用户的 crontab 定时任务中，那么就会从下一分钟每间隔一分钟执行一次了</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab X.sh</span><br></pre></td></tr></table></div></figure>
+
+<p>查看当前用户的定时任务</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></div></figure>
+
+<p>remove 去除当前用户的定时任务</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -r</span><br></pre></td></tr></table></div></figure>
+
+<p>测试一个 crontab 文件有没有写法错误</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -T &lt;X.sh&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/jNhycDuJGV2X4fa.png" alt="2022-02-07_19-13.png"></p>
+<p>这样就可以快速设置好定时任务啦</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/02/07/diversion/">RouterOS 实现电信移动家宽分流策略</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-02-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h4 id="RouterOS-实现电信移动家宽分流策略"   >
+          <a href="#RouterOS-实现电信移动家宽分流策略" class="heading-link"><i class="fas fa-link"></i></a><a href="#RouterOS-实现电信移动家宽分流策略" class="headerlink" title="RouterOS 实现电信移动家宽分流策略"></a>RouterOS 实现电信移动家宽分流策略</h4>
+      <p>为了充分利用家里的两条家用宽带，一条电信 1 Gbps 带动态公网，一条移动 500 Mbps 上下对等移动大内网</p>
+<p>用 RouterOS 进行 dst 选路分流，让访问移动国内IP的流量 route 到移动出口上，让其他流量走到电信出口</p>
+<p>需要准备的东西:</p>
+<ol>
+<li><p>RouterOS</p>
+</li>
+<li><p>国内移动 IP 地址段( cmcc 的地址段真的少的可怜 awa ，目前就 53 条)</p>
+<p>可以在这里搞到</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://ispip.clang.cn/" >https://ispip.clang.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>两条出口线路</p>
+</li>
+<li><p>reserved ip 地址段,不走分流策略的 ip，比如所有内网地址,10.0.0.0/8, 192.168.0.0/16,255.255.255.255 等等，不限于这些，根据个人需要添加</p>
+</li>
+</ol>
+
+        <h6 id="第一步"   >
+          <a href="#第一步" class="heading-link"><i class="fas fa-link"></i></a><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h6>
+      <p>​    导入移动IP地址段到 ROS</p>
+<p>​    最好把地址段整成 .rsc 格式，直接在 ROS 中 import ipset.rsc (像下面这样)</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/ip firewall address-list</span><br><span class="line">remove [find where list=dst-cmcc-china]</span><br><span class="line">add address=x.x.x.x/x list=dst-cmcc-china</span><br><span class="line">add address=x.x.x.x/x list=dst-cmcc-china	</span><br></pre></td></tr></table></div></figure>
+
+<p>​    添加 reserved ip 地址段到 Address List</p>
+
+        <h6 id="第二步"   >
+          <a href="#第二步" class="heading-link"><i class="fas fa-link"></i></a><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h6>
+      <p>​    添加 prerouting chain</p>
+<p>​    勾选 Connection NAT State 为 ！dstnat<img src="https://oss.yhsyc.club/img/pdaFfsuQLrBtRAo.png" alt="2022-02-07_16-46.png"></p>
+<p>​    Advanced Dst. Address List: !reserved<img src="https://oss.yhsyc.club/img/x7nhawqfYbiRIv1.png" alt="2022-02-07_16-46_1.png"></p>
+<p>​    action 设置为 jump 到 dst-internet 进行分流    </p>
+
+        <h6 id="第三步"   >
+          <a href="#第三步" class="heading-link"><i class="fas fa-link"></i></a><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h6>
+      <p>​    在 mangle 中添加 dst-internet (名字自己取) chain 来 filter 出 Dst.Address List 为 dst-cmcc-china 的流量，mark routing cmcc</p>
+<p>​    然后添加 routing mark 为 cmcc 的路由到移动的出口 不勾选 Passthrough</p>
+<p>​    第二条 chain (和上一条一样名字) 非 dst-cmcc-china 要 accept，走默认路由，即走电信出口</p>
+<p>​    mangle 还是需要根据自己的实际需要去调整的</p>
+<p>   然后就搞定晒，可以测速体验一下咯，在 speedtest.net 选择移动测速点的话就会用移动出口啦</p>
+<p>   访问国内移动 IP 就会走移动出口啦</p>
+<p>今日复习知识:死锁的四个必要条件</p>
+<p>1、互斥条件：一个资源每次只能被一个进程使用;</p>
+<p>2、请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放;</p>
+<p>3、不剥夺条件：进程已获得资源，在未使用完之前，不能强行剥夺;</p>
+<p>4、循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系;</p>
+<p>如果四个条件都满足，那么死锁的产生是必然的</p>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

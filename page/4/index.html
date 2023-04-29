@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png?v=2.6.2" sizes="180x180"><link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg?v=2.6.2" color="#54bcff"><meta name="baidu-site-verification" content="code-t0k3jDznr1"><meta name="description" content="Information Technology Sharing">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sunnyrian&#39;s Blog">
+<meta property="og:url" content="http://yhsyc.club/page/4/index.html">
+<meta property="og:site_name" content="Sunnyrian&#39;s Blog">
+<meta property="og:description" content="Information Technology Sharing">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Sunnyrian">
+<meta property="article:tag" content="Network Linux Maintenance Programming">
+<meta name="twitter:card" content="summary"><title>Sunnyrian's Blog</title><link ref="canonical" href="http://yhsyc.club/page/4/index.html"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><!-- hexo injector head_end start --><script async src="https://umami.yhsyc.club/script.js" data-website-id="b92660cb-7b84-4a27-b715-da352c4dcbba"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">Sunnyrian's Blog</div><div class="header-banner-info__subtitle">Jinx的含义就是Jinx</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/28/tmux/">Tmux终端复用器的使用说明</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-28</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://oss.yhsyc.club/img/E8NfHnSgsOFdhVa.png" alt="tmux.png"></p>
+
+        <h2 id="Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用"   >
+          <a href="#Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用" class="heading-link"><i class="fas fa-link"></i></a><a href="#Tmux-一款终端复用器（terminal-multiplexer-，高效便捷实用" class="headerlink" title="Tmux   一款终端复用器（terminal multiplexer)，高效便捷实用"></a>Tmux   一款终端复用器（terminal multiplexer)，高效便捷实用</h2>
+      
+        <h4 id="可以做到什么？"   >
+          <a href="#可以做到什么？" class="heading-link"><i class="fas fa-link"></i></a><a href="#可以做到什么？" class="headerlink" title="可以做到什么？"></a>可以做到什么？</h4>
+      <ol>
+<li>将<strong>会话与窗口解绑</strong>，当我们关闭窗口时（exit 或者关闭一个 terminal）,不关闭 tmux 的会话 (session)，运行中的进程也不会被杀死，可以在一台 Linux 机子上用一个会话跑多个 tmux 会话窗口运行多个命令行程序</li>
+<li>可以 vertical 和 horizon <strong>拆分窗口</strong>，配置好 config 后可以在多个窗口中自由切换，甚至可以多人共享会话</li>
+<li>支持 attach 进上一次的会话，即<strong>保留</strong>了<strong>工作状态</strong> (session)，让我们工作的时候不需要繁琐地进入工作环境，支持保留多个工作状态</li>
+</ol>
+<hr>
+
+        <h6 id="安装"   >
+          <a href="#安装" class="heading-link"><i class="fas fa-link"></i></a><a href="#安装" class="headerlink" title="安装"></a>安装</h6>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Manjaro</span></span><br><span class="line">yay -S tmux</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+
+        <h6 id="常用指令"   >
+          <a href="#常用指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h6>
+      <p>新建 session</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux</span><br></pre></td></tr></table></div></figure>
+
+<p>上面的命令会直接创建一个 session，默认会生成一个数字编号，可以通过 $ tmux ls来看到</p>
+<p>我们也可以在 new session 的时候直接指定这个 session 的名字，来方便我们记忆和回到这个 session</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>离开 session</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux detach</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>查看 session列表</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux ls</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>进入 session</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入上一个 session</span></span><br><span class="line">tmux attach</span><br><span class="line"><span class="comment">#进入指定 session</span></span><br><span class="line">tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>切换 session</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#切换到上一个 session</span></span><br><span class="line">tmux switch</span><br><span class="line"><span class="comment">#切换到指定 session</span></span><br><span class="line">tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>杀死 session</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#杀死上一个 session</span></span><br><span class="line">tmux <span class="built_in">kill</span></span><br><span class="line"><span class="comment">#杀死指定 session</span></span><br><span class="line">tmux <span class="built_in">kill</span> -t &lt;session-name&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>增加横向窗口</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux split-windows -h</span><br></pre></td></tr></table></div></figure>
+
+<p>去掉 -h 就是增加纵向窗口</p>
+<p>多 panel 时</p>
+<p><strong>技巧-选中并复制单个 panel 中的文字</strong></p>
+<p>Shift + Alt + 鼠标框选 再复制就可以啦</p>
+<p><strong>启用鼠标滚动</strong></p>
+<p>按 Ctrl B 再按冒号 :       进入命令行模式</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -g mouse on</span><br></pre></td></tr></table></div></figure>
+
+<p>就可以直接通过滚轮在不通窗口上下翻页啦</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/22/kms/">使用本地 KMS 服务器激活 Windows 系统</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-23</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h6 id="在本地部署了-kms-服务器，在-windows-中激活系统的操作"   >
+          <a href="#在本地部署了-kms-服务器，在-windows-中激活系统的操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#在本地部署了-kms-服务器，在-windows-中激活系统的操作" class="headerlink" title="在本地部署了 kms 服务器，在 windows 中激活系统的操作"></a>在本地部署了 kms 服务器，在 windows 中激活系统的操作</h6>
+      <p>设置本地 kms 服务器</p>
+<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slmgr /skms &lt;ip<span class="literal">-address</span>&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>使用 kms 服务器自动激活系统</p>
+<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slmgr /ato</span><br></pre></td></tr></table></div></figure>
+
+<p>查看系统过期时间</p>
+<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slmgr /xpr</span><br></pre></td></tr></table></div></figure>
+
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/22/alpine-instructions/">Alpine 的一些指令</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-22</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt"><p><img src="https://oss.yhsyc.club/img/sxymAliEUcRPqOz.png" alt="a4y9b-enpz8.png"></p>
+<p>alpine 指令</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alpine-tun-tool</span><br></pre></td></tr></table></div></figure>
+
+<p>重启</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-service networking restart </span><br></pre></td></tr></table></div></figure>
+
+<p>管理 alpine 启动项 添加 frr 开机启动</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rc-update add frr</span><br></pre></td></tr></table></div></figure>
+
+<p>/etc/wireguard 存放了 wireguard 接口配置</p>
+<p>/etc/udp2raw</p>
+<p>mtu 1360</p>
+<p>AllowIPS:  x.x.x.x/x</p>
+<p>启用 bfd: 在/etc/frr/daemons 修改 bfd=yes</p>
+<p>进入 frr 指令</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vtysh</span><br></pre></td></tr></table></div></figure>
+
+<p>显示 frr bgp 状态</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show bgp summary</span><br></pre></td></tr></table></div></figure>
+
+<p>显示 bgp 中的路由</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> show ip bgp</span><br></pre></td></tr></table></div></figure>
+
+<p>前面带 * 号的是有效路由，不带的是无效路由</p>
+<p>用 curl 下载东西</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://www.XXXX.tar.gz</span><br></pre></td></tr></table></div></figure>
+
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/20/dpkg/">使用 dpkg 在 Arch Linux 上安装 deb 包</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h5 id="Debian-package-manager"   >
+          <a href="#Debian-package-manager" class="heading-link"><i class="fas fa-link"></i></a><a href="#Debian-package-manager" class="headerlink" title="Debian package manager"></a>Debian package manager</h5>
+      <p>有时候 Aur 源中没有我们想要的软件，但是你找到了一个适用于 Arch 的 deb 包，我们就可以用下面这个Debian package manager 来安装管理这些deb包</p>
+
+        <h6 id="常用指令"   >
+          <a href="#常用指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h6>
+      <ul>
+<li>安装一个包 - Install a package: </li>
+</ul>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -i path/to/file.deb</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>删除一个包 - Remove a package: </li>
+</ul>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -r package_name</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>列出所有已安装的 deb 包 - List installed packages: </li>
+</ul>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -l [pattern]</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>列出该包的目录信息 - List a package’s contents: </li>
+</ul>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -L package_name</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+
+
+        <h5 id="fetchscreen-可以显示当前-Linux-系统信息"   >
+          <a href="#fetchscreen-可以显示当前-Linux-系统信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#fetchscreen-可以显示当前-Linux-系统信息" class="headerlink" title="fetchscreen 可以显示当前 Linux 系统信息"></a>fetchscreen 可以显示当前 Linux 系统信息</h5>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetchscreen</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yay -S fetchscreen</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://oss.yhsyc.club/img/8nFNHLW4SIhVE7X.png" alt="2022-01-20_21-52.png"></p>
+<p>尝试自己起了一个图床，感到图床还是一个比较需要维护的服务，暂定以后再起;同时感到公共图床已经能满足大部分需求了，还快，不需要自己管理维护，但是要忍受使用时的广告 awa</p>
+<p>或者使用本地存储也是一个方案，但是图床服务也许确实有必要？</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/18/checksum/">校验和计算 Openwrt 添加 frr 包</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-18</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-09-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h4 id="Debian-想要计算-md5-checksum-的话，可以安装-coreutils"   >
+          <a href="#Debian-想要计算-md5-checksum-的话，可以安装-coreutils" class="heading-link"><i class="fas fa-link"></i></a><a href="#Debian-想要计算-md5-checksum-的话，可以安装-coreutils" class="headerlink" title="Debian 想要计算 md5 checksum 的话，可以安装 coreutils"></a>Debian 想要计算 md5 checksum 的话，可以安装 coreutils</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install coreutils</span><br></pre></td></tr></table></div></figure>
+
+<p>计算md5：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5sum &lt;yourtarget&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="Windows-计算检验和"   >
+          <a href="#Windows-计算检验和" class="heading-link"><i class="fas fa-link"></i></a><a href="#Windows-计算检验和" class="headerlink" title="Windows 计算检验和"></a>Windows 计算检验和</h4>
+      <figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">certutil <span class="literal">-hashfile</span>  &lt;文件名&gt;  &lt;hash类型&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="Openwrt-计算-sha256-只需要："   >
+          <a href="#Openwrt-计算-sha256-只需要：" class="heading-link"><i class="fas fa-link"></i></a><a href="#Openwrt-计算-sha256-只需要：" class="headerlink" title="Openwrt 计算 sha256,只需要："></a>Openwrt 计算 sha256,只需要：</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sha256sum &lt;yourtarget&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="Openwrt-添加-frr"   >
+          <a href="#Openwrt-添加-frr" class="heading-link"><i class="fas fa-link"></i></a><a href="#Openwrt-添加-frr" class="headerlink" title="Openwrt 添加 frr"></a>Openwrt 添加 frr</h4>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg update</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg install frr frr-babeld frr-bfdd frr-bgpd frr-eigrpd frr-fabricd frr-isisd frr-ldpd frr-libfrr frr-nhrpd frr-ospf6d frr-ospfd frr-pbrd frr-pimd frr-ripd frr-ripngd frr-staticd frr-vrrpd frr-vtysh frr-watchfrr frr-zebra</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h4 id="如果-depoly-出来的网站效果没有发生变化，也许是浏览器缓存的问题"   >
+          <a href="#如果-depoly-出来的网站效果没有发生变化，也许是浏览器缓存的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#如果-depoly-出来的网站效果没有发生变化，也许是浏览器缓存的问题" class="headerlink" title="如果 depoly 出来的网站效果没有发生变化，也许是浏览器缓存的问题"></a>如果 depoly 出来的网站效果没有发生变化，也许是浏览器缓存的问题</h4>
+      <p>有近似的html和jss，浏览器认为服务器资源没有发生变化，不重新发送get请求获取新的资源</p>
+<p>所以这时候就要清理当前页面的浏览器缓存</p>
+<p>小Tips: 可以先 F12 或者 右键 inspect 打开控制台，然后右键刷新按钮</p>
+<p><img src="https://oss.yhsyc.club/img/tsj1QD9EB6lHodn.png" alt="ClearCache.png"></p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2022/01/17/fledgling/">初出茅庐</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-01-17</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-03-10</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>第一次搭建自己的博客<del>（终于出栈了）</del></p>
+<p>以后终于可以在自己的博客里面写一些东西了</p>
+<p>我会把新学到的东西的实践写到这上面</p>
+<p>也会更新一些日常</p>
+<p>同时也会把以前学到的知识和技巧同步到这上面来</p>
+<p>巩固复习一下同时也便利大家和自己</p>
+<p>一定要坚持下去！</p>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/page/3/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/we-white.svg" alt="avatar"></div><p class="sidebar-ov-author__text">强者愈强,弱者愈弱</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="https://wechat.com" target="_blank" rel="noopener" data-popover="Sunnyrian233" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a><a class="sidebar-ov-social-item" href="https://t.me/Sunnyrian" target="_blank" rel="noopener" data-popover="Sunnyrian" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-telegram"></i></span></a><a class="sidebar-ov-social-item" href="https://im.qq.com" target="_blank" rel="noopener" data-popover="1748314490" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">36</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">54</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Sunnyrian</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" title="粤ICP备2021174751号" target="_blank" rel="noopener">粤ICP备2021174751号</a></span></div><div><span>Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a></span><span class="footer__devider">|</span><span>Theme - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.1/dist/canvas-nest.min.js" color="0,0,0" opacity="0.6" count="99" zIndex="-1"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>
